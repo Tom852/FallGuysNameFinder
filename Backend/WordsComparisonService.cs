@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using Tesseract;
 using Serilog;
+using System.Text.RegularExpressions;
 
 namespace Backend
 {
@@ -17,33 +18,56 @@ namespace Backend
 
         public WordsComparisonService(DataStorageStuff storageAccess)
         {
-            this.AllowedNames = storageAccess.Read();
+            this.Patterns = storageAccess.Read();
         }
 
-        public WordsComparisonService(List<Name> allowedNames)
+        public WordsComparisonService(List<Pattern> patterns)
         {
-            AllowedNames = allowedNames;
+            Patterns = patterns;
         }
 
-        public List<Name> AllowedNames { get; }
+        public List<Pattern> Patterns { get; }
 
-        public bool Test(string s)
+        public bool Test(string[] s)
         {
 
             var nameToTest = new Name(s);
 
-            return this.AllowedNames.Any(goodName => Matches(goodName, nameToTest));
+            return this.Patterns.Any(goodName => Matches(goodName, nameToTest));
 
 
         }
 
-        private bool Matches(Name pattern, Name toTest)
+        private bool Matches(Pattern pattern, Name toTest)
         {
 
+            if (TestForAlliteration(toTest))
+            {
+                Log.Information("Alliteration Found");
+                return true;
+            }
+            return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
+        }
 
-            return (pattern.First == "*" || toTest.First == pattern.First) &&
-                (pattern.Second == "*" || toTest.Second == pattern.Second) &&
-                (pattern.Third == "*" || toTest.Third == pattern.Third);
+        private bool TestForAlliteration(Name toTest)
+        {
+            var character = toTest.First[0];
+            return toTest.Second[0] == character && toTest.Third[0] == character;
+        }
+
+        private bool Matches(string pattern, string name)
+        {
+            Match match = Regex.Match(name, pattern, RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                Log.Debug("{0} did match to {1}", name, pattern);
+                return true;
+            }
+            else
+            {
+                Log.Debug("{0} did not match to {1}", name, pattern);
+                return false;
+            }
         }
 
     }

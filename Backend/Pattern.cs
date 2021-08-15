@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    public class Pattern
+    public class Name
     {
         public string First { get; set; }
         public string Second { get; set; }
         public string Third { get; set; }
 
-        public Pattern(string s)
+        public Name(string s)
             : this(s.Split(' '))
         {
         }
-        public Pattern(string[] splitted)
+        public Name(string[] splitted)
         {
             if (splitted.Length != 3)
             {
-                throw new Exception("Pattern must contain of 3 words separated by space.");
+                Log.Warning("Name should contain of 3 words separated by space. First 3 will be taken.");
             }
 
             First = splitted[0];

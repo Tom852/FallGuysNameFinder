@@ -11,25 +11,45 @@ namespace Backend
     public class DataStorageStuff
     {
         const string Appname = "FallGuysNameFinder";
+        const string ScreenshotFolderName = "Screenshots";
         const string FileName = "names.txt";
 
-        private string file;
+        public static string AppDir { get; private set; }
+        public static string ScreenshotDir { get; private set; }
+        public static string NamesFile { get; private set; }
 
-        public DataStorageStuff()
+        static DataStorageStuff()
         {
-            CreateFileIfNotExists();
+            var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            AppDir = Path.Combine(env, Appname);
+            ScreenshotDir = Path.Combine(env, Appname, ScreenshotFolderName);
+            NamesFile = Path.Combine(env, Appname, FileName);
+
+            if (!Directory.Exists(AppDir))
+            {
+                Directory.CreateDirectory(AppDir);
+            }
+            if (!Directory.Exists(ScreenshotDir))
+            {
+                Directory.CreateDirectory(ScreenshotDir);
+            }
+            if (!File.Exists(NamesFile))
+            {
+                var stream = File.Create(NamesFile);
+                stream.Close();
+            }
         }
 
-        public List<Name> Read()
+        public List<Pattern> Read()
         {
-            var lines = File.ReadAllLines(file);
-            List<Name> result = new List<Name>();
+            var lines = File.ReadAllLines(NamesFile);
+            List<Pattern> result = new List<Pattern>();
 
             foreach (var line in lines)
             {
                 try
                 {
-                    result.Add(new Name(line));
+                    result.Add(new Pattern(line));
                 }
                 catch (Exception e)
                 {
@@ -41,25 +61,7 @@ namespace Backend
 
         public void AddLine(string line)
         {
-            File.AppendAllLines(file, new List<string>() { line });
+            File.AppendAllLines(NamesFile, new List<string>() { line });
         }
-
-        private void CreateFileIfNotExists()
-        {
-            var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var dir = Path.Combine(env, Appname);
-            var file = Path.Combine(env, Appname, FileName);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            if (!File.Exists(file))
-            {
-                var stream = File.Create(file);
-                stream.Close();
-            }
-            this.file = file;
-        }
-
     }
 }

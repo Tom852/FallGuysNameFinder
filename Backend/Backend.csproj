@@ -78,11 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStorageStuff.cs" />
+    <Compile Include="Pattern.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="WordsComparisonService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenshotService.cs" />
     <Compile Include="OcrService.cs" />
   </ItemGroup>
   <ItemGroup>
