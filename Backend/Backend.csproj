@@ -87,7 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Backend_TemporaryKey.pfx" />
     <None Include="tessdata_fast-master\**\*.*" />
   </ItemGroup>
   <ItemGroup>
