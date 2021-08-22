@@ -28,8 +28,8 @@ namespace Backend
             {
                 try
                 {
-                    Log.Debug("Keypress executed...");
-                    PressT();
+                    Log.Debug("Pressing P");
+                    PressP();
 
                     Thread.Sleep(4000);
                     Log.Debug("Running OCR...");
@@ -39,17 +39,17 @@ namespace Backend
                         var match = comparisonService.Test(text);
                         if (match)
                         {
-                            Log.Information("SUCCU SACCA OMG WE GOT IT!!!");
+                            Log.Information("YEEEEEEEETAAASTIC!! OMG WE GOT IT!!!");
+                            Console.ReadKey();
                             break;
                         }
                         else
                         {
                             Log.Information("Pattern did not match, rerolling...");
-
                         }
                     } else
                     {
-                        Log.Warning("Could not parse text. Pleas confirm manually to continue by pressing enter.");
+                        Log.Warning("Could not parse text. Please confirm manually to continue by pressing enter.");
                         Console.ReadKey();
                     }
                     
@@ -63,7 +63,7 @@ namespace Backend
         }
 
 
-        private static void PressT()
+        private static void PressP()
         {
             SendKeys.SendWait("{P}");
         }

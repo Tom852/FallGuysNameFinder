@@ -18,7 +18,7 @@ namespace Backend
 
         public WordsComparisonService(DataStorageStuff storageAccess)
         {
-            this.Patterns = storageAccess.Read();
+            this.Patterns = storageAccess.ReadPatterns();
         }
 
         public WordsComparisonService(List<Pattern> patterns)
@@ -46,14 +46,15 @@ namespace Backend
                 Log.Information("Alliteration Found");
                 return true;
             }
+            if (TestForDoubleName(toTest))
+            {
+                Log.Information("Double-Name Found");
+                return true;
+            }
             return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
         }
 
-        private bool TestForAlliteration(Name toTest)
-        {
-            var character = toTest.First[0];
-            return toTest.Second[0] == character && toTest.Third[0] == character;
-        }
+
 
         private bool Matches(string pattern, string name)
         {
@@ -68,6 +69,22 @@ namespace Backend
                 Log.Debug("{0} did not match to {1}", name, pattern);
                 return false;
             }
+        }
+
+        private bool TestForAlliteration(Name toTest)
+        {
+            var character = toTest.First[0];
+            return toTest.Second[0] == character && toTest.Third[0] == character;
+        }
+
+        private bool TestForDoubleName(Name toTest)
+        {
+            var option1 = new string(toTest.First.Take(4).ToArray());
+            var option2 = new string(toTest.Second.Take(4).ToArray());
+
+            var option1Fits = toTest.Second.StartsWith(option1) || toTest.Third.StartsWith(option1);
+            var option2Fits = toTest.Third.StartsWith(option2);
+            return option1Fits || option2Fits;
         }
 
     }

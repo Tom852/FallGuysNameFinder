@@ -6,7 +6,15 @@
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <StackPanel Orientation="Vertical" Margin="10px">
+        <Label Content="Fall Guys Names Finder" FontSize="24pt" FontWeight="Bold"></Label>
+        <Button Name="StartStop" Content="Start" Margin="0,10" Width="100" HorizontalAlignment="Left"/>
+        <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,10" VerticalAlignment="Top"
+                  ToolTip="Alliteration = All three words start with the same letter"/>
+        <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,10" VerticalAlignment="Top"
+                  ToolTip="Double Word = Two out of three words start with the same 4 letters."/>
+        <DataGrid Margin="0,10" ItemsSource="{Binding Patterns}" />
+        <Button Name="AddPattern" Content="Add Pattern" Margin="0,10" Width="100" HorizontalAlignment="Left" Click="AddPattern_Click"/>
+
+    </StackPanel>
 </Window>

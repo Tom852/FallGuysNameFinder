@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,18 +13,19 @@ namespace Backend
     {
         const string Appname = "FallGuysNameFinder";
         const string ScreenshotFolderName = "Screenshots";
-        const string FileName = "names.txt";
+        const string PatternFile = "patterns.txt";
+        const string OptionsFile = "options.json";
 
         public static string AppDir { get; private set; }
         public static string ScreenshotDir { get; private set; }
-        public static string NamesFile { get; private set; }
+        public static string PatternsFile { get; private set; }
 
         static DataStorageStuff()
         {
             var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             AppDir = Path.Combine(env, Appname);
             ScreenshotDir = Path.Combine(env, Appname, ScreenshotFolderName);
-            NamesFile = Path.Combine(env, Appname, FileName);
+            PatternsFile = Path.Combine(env, Appname, PatternFile);
 
             if (!Directory.Exists(AppDir))
             {
@@ -33,16 +35,21 @@ namespace Backend
             {
                 Directory.CreateDirectory(ScreenshotDir);
             }
-            if (!File.Exists(NamesFile))
+            if (!File.Exists(PatternsFile))
             {
-                var stream = File.Create(NamesFile);
+                var stream = File.Create(PatternsFile);
+                stream.Close();
+            }
+            if (!File.Exists(OptionsFile))
+            {
+                var stream = File.Create(OptionsFile);
                 stream.Close();
             }
         }
 
-        public List<Pattern> Read()
+        public List<Pattern> ReadPatterns()
         {
-            var lines = File.ReadAllLines(NamesFile);
+            var lines = File.ReadAllLines(PatternsFile);
             List<Pattern> result = new List<Pattern>();
 
             foreach (var line in lines)
@@ -59,9 +66,29 @@ namespace Backend
             return result;
         }
 
-        public void AddLine(string line)
+        public void AddPattern(string line)
         {
-            File.AppendAllLines(NamesFile, new List<string>() { line });
+            File.AppendAllLines(PatternsFile, new List<string>() { line });
+        }
+
+        public Options GetOptions()
+        {
+            using (StreamReader sr = new StreamReader(OptionsFile))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return (Options)serializer.Deserialize(reader, typeof(Options));
+            }
+        }
+
+        public void SaveOptions(Options o)
+        {
+            using (StreamWriter sw = new StreamWriter(OptionsFile))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(writer, o);
+            }
         }
     }
 }
