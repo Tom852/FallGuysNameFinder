@@ -19,7 +19,7 @@ namespace FallGuysNameFinder
     /// <summary>
     /// Interaction logic for AddPAtternWindow.xaml
     /// </summary>
-    public partial class AddPAtternWindow : Window
+    public partial class AddPatternWindow : Window
     {
         public event EventHandler OnOkClick;
         public event EventHandler OnCancelClick;
@@ -27,33 +27,33 @@ namespace FallGuysNameFinder
 
         public Pattern Pattern { get; set; }
 
-        public AddPAtternWindow(Pattern p)
+        public AddPatternWindow(Pattern p)
         {
             this.Pattern = p;
             this.DataContext = Pattern;
             InitializeComponent();
         }
 
-        public AddPAtternWindow()
+        public AddPatternWindow()
             : this(Pattern.GetEmpty())
         {
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            OnOkClick.Invoke(this, e);
+            OnOkClick?.Invoke(this, e);
             this.Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            OnCancelClick.Invoke(this, e);
+            OnCancelClick?.Invoke(this, e);
             this.Close();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            OnRemoveClick.Invoke(this, e);
+            OnRemoveClick?.Invoke(this, e);
             this.Close();
         }
     }

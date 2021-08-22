@@ -33,7 +33,7 @@
             <Label Content="Patterns" FontSize="16pt" FontWeight="Bold" HorizontalAlignment="Center"/>
 
             <DataGrid Margin="0,10" ItemsSource="{Binding Patterns}"
-                  Width="450" MaxHeight="400"
+                  Width="450" MaxHeight="158"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="False" CanUserResizeRows="False"
                   HorizontalScrollBarVisibility="Hidden"

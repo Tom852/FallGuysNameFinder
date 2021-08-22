@@ -55,12 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddPAtternWindow.xaml.cs">
-      <DependentUpon>AddPAtternWindow.xaml</DependentUpon>
+    <Compile Include="AddPatternWindow.xaml.cs">
+      <DependentUpon>AddPatternWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TrulyObservableCollection.cs" />
     <Compile Include="ViewModel.cs" />
-    <Page Include="AddPAtternWindow.xaml">
+    <Page Include="AddPatternWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

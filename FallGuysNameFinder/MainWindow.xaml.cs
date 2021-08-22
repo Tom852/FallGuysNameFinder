@@ -42,7 +42,7 @@ namespace FallGuysNameFinder
 
         private void AddPattern_Click(object sender, RoutedEventArgs e)
         {
-            var w = new AddPAtternWindow();
+            var w = new AddPatternWindow();
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
@@ -58,9 +58,13 @@ namespace FallGuysNameFinder
             if (dataGrid != null)
             {
                 var index = dataGrid.SelectedIndex;
+                if (index == -1)
+                {
+                    return;
+                }
                 var pattern = this.ViewModel.Patterns[index];
                 var clone = pattern.Clone();
-                var w = new AddPAtternWindow(clone);
+                var w = new AddPatternWindow(clone);
                 w.Show();
                 w.OnOkClick += (d1, d2) =>
                 {
