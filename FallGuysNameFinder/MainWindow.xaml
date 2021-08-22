@@ -6,15 +6,56 @@
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel Orientation="Vertical" Margin="10px">
-        <Label Content="Fall Guys Names Finder" FontSize="24pt" FontWeight="Bold"></Label>
-        <Button Name="StartStop" Content="Start" Margin="0,10" Width="100" HorizontalAlignment="Left"/>
-        <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,10" VerticalAlignment="Top"
-                  ToolTip="Alliteration = All three words start with the same letter"/>
-        <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,10" VerticalAlignment="Top"
-                  ToolTip="Double Word = Two out of three words start with the same 4 letters."/>
-        <DataGrid Margin="0,10" ItemsSource="{Binding Patterns}" />
-        <Button Name="AddPattern" Content="Add Pattern" Margin="0,10" Width="100" HorizontalAlignment="Left" Click="AddPattern_Click"/>
+    <DockPanel Margin="10px">
+        <Label Content="Fall Guys Names Finder" FontSize="24pt" FontWeight="Bold" DockPanel.Dock="Top" Margin="20" HorizontalAlignment="Center"/>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Name="ShowConsole" Content="Show Console" Margin="0,10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
+            <Button Name="StartStop" Content="Start" Margin="0,10" Width="100" HorizontalAlignment="Right"/>
+        </StackPanel>
 
-    </StackPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+            <Label Content="Options" FontSize="16pt" FontWeight="Bold"/>
+            <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                  ToolTip="Alliteration = All three words start with the same letter"
+                  IsChecked = "{Binding Options.StopOnAlliteration}"
+                  Click="OnOptionsClick"/>
+            <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                  ToolTip="Double Word = Two out of three words start with the same 4 letters."
+                  IsChecked="{Binding Options.StopOnDoubleWord}"
+                  Click="OnOptionsClick"/>
+            <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                  ToolTip="If the text recognition fails, should the software just continue or stop?"
+                  IsChecked="{Binding Options.StopOnError}"
+                  Click="OnOptionsClick"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+            <Label Content="Patterns" FontSize="16pt" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+            <DataGrid Margin="0,10" ItemsSource="{Binding Patterns}"
+                  Width="450" MaxHeight="400"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserResizeColumns="False" CanUserResizeRows="False"
+                  HorizontalScrollBarVisibility="Hidden"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column"
+                  MouseDoubleClick="DataGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="First" Binding="{Binding First}" Width="1*"/>
+                    <DataGridTextColumn Header="Second" Binding="{Binding Second}" Width="1*"/>
+                    <DataGridTextColumn Header="Third" Binding="{Binding Third}" Width="1*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Name="AddPattern" Content="Add Pattern" Margin="0,10" Width="100" HorizontalAlignment="Center"  Click="AddPattern_Click"/>
+        </StackPanel>
+
+
+
+
+
+    </DockPanel>
 </Window>

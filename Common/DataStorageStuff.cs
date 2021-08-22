@@ -1,31 +1,34 @@
-﻿using Newtonsoft.Json;
-using Serilog;
+﻿using Common.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace Backend
 {
     public class DataStorageStuff
     {
-        const string Appname = "FallGuysNameFinder";
+        const string RootFolderName = "FallGuysNameFinder";
         const string ScreenshotFolderName = "Screenshots";
-        const string PatternFile = "patterns.txt";
-        const string OptionsFile = "options.json";
+        const string PatternFileName = "patterns.txt";
+        const string OptionFileName = "options.json";
 
         public static string AppDir { get; private set; }
         public static string ScreenshotDir { get; private set; }
         public static string PatternsFile { get; private set; }
+        public static string OptionsFile { get; private set; }
 
         static DataStorageStuff()
         {
             var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            AppDir = Path.Combine(env, Appname);
-            ScreenshotDir = Path.Combine(env, Appname, ScreenshotFolderName);
-            PatternsFile = Path.Combine(env, Appname, PatternFile);
+            AppDir = Path.Combine(env, RootFolderName);
+            ScreenshotDir = Path.Combine(env, RootFolderName, ScreenshotFolderName);
+            PatternsFile = Path.Combine(env, RootFolderName, PatternFileName);
+            OptionsFile = Path.Combine(env, RootFolderName, OptionFileName);
 
             if (!Directory.Exists(AppDir))
             {
@@ -42,10 +45,17 @@ namespace Backend
             }
             if (!File.Exists(OptionsFile))
             {
-                var stream = File.Create(OptionsFile);
-                stream.Close();
+                using (var stream = File.Create(OptionsFile))
+                using (StreamWriter sw = new StreamWriter(stream))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(writer, new Options());
+                }
             }
         }
+
+
 
         public List<Pattern> ReadPatterns()
         {
@@ -66,18 +76,37 @@ namespace Backend
             return result;
         }
 
-        public void AddPattern(string line)
+        public void RemovePattern(int index)
         {
-            File.AppendAllLines(PatternsFile, new List<string>() { line });
+            var allLines = File.ReadAllLines(PatternsFile).ToList();
+            allLines.RemoveAt(index);
+            File.WriteAllLines(PatternsFile, allLines);
         }
+
+        public void AddPattern(string line) => File.AppendAllLines(PatternsFile, new List<string>() { line });
+
+
+        public void AddPattern(Pattern p) => AddPattern(p.ToString());
+
+        public void EditPattern(int index, string line)
+        {
+            var allLines = File.ReadAllLines(PatternsFile);
+            allLines[index] = line;
+            File.WriteAllLines(PatternsFile, allLines);
+        }
+
+        public void EditPattern(int index, Pattern pattern) => EditPattern(index, pattern.ToString());
+
 
         public Options GetOptions()
         {
+
             using (StreamReader sr = new StreamReader(OptionsFile))
             using (JsonReader reader = new JsonTextReader(sr))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                return (Options)serializer.Deserialize(reader, typeof(Options));
+                var result = (Options)serializer.Deserialize(reader, typeof(Options));
+                return result ?? throw new IOException("Could not parse Options");
             }
         }
 

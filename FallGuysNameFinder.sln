@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FallGuysNameFinder", "FallG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{12176B40-5454-49CB-8EA1-3407215C292A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{650ADF0E-2398-4044-8EB4-EF6C5278477F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{12176B40-5454-49CB-8EA1-3407215C292A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12176B40-5454-49CB-8EA1-3407215C292A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12176B40-5454-49CB-8EA1-3407215C292A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{650ADF0E-2398-4044-8EB4-EF6C5278477F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650ADF0E-2398-4044-8EB4-EF6C5278477F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650ADF0E-2398-4044-8EB4-EF6C5278477F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650ADF0E-2398-4044-8EB4-EF6C5278477F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

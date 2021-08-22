@@ -10,6 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Tesseract;
 using Serilog;
 using System.Text.RegularExpressions;
+using Common.Model;
 
 namespace Backend
 {

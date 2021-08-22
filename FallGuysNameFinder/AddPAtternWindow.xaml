@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
         Title="Add Pattern" Height="150" Width="600">
+    <Window.Resources>
+        <ResourceDictionary Source="ResourceDict.xaml" />
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -17,16 +21,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="Word1" Grid.Column="0" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
-        <Label Content="Word2" Grid.Column="1" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
-        <Label Content="Word3" Grid.Column="2" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
+        <Label Content="First" Grid.Column="0" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
+        <Label Content="Middle" Grid.Column="1" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
+        <Label Content="Last" Grid.Column="2" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
 
-        <TextBox Text="Bla" Name ="Text1" Grid.Column="0" Grid.Row="1" Margin="2"/>
-        <TextBox Text="Bla" Name ="Text2" Grid.Column="1" Grid.Row="1" Margin="2"/>
-        <TextBox Text="Bla" Name ="Text3" Grid.Column="2" Grid.Row="1" Margin="2"/>
+        <TextBox Text="{Binding First}" Name ="Text1" Grid.Column="0" Grid.Row="1" Margin="2"/>
+        <TextBox Text="{Binding Second}" Name ="Text2" Grid.Column="1" Grid.Row="1" Margin="2"/>
+        <TextBox Text="{Binding Third}" Name ="Text3" Grid.Column="2" Grid.Row="1" Margin="2"/>
 
-        <Button Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left"/>
-        <Button Content="Cancel" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Right"/>
+        <Button Content="Remove" Grid.Column="0" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Remove_Click"/>
+        <Button Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Ok_Click"/>
+        <Button Content="Cancel" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Right" Click="Cancel_Click"/>
 
     </Grid>
 

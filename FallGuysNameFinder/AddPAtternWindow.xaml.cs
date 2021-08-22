@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Backend;
+using Common.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,40 @@ namespace FallGuysNameFinder
     /// </summary>
     public partial class AddPAtternWindow : Window
     {
-        public AddPAtternWindow()
+        public event EventHandler OnOkClick;
+        public event EventHandler OnCancelClick;
+        public event EventHandler OnRemoveClick;
+
+        public Pattern Pattern { get; set; }
+
+        public AddPAtternWindow(Pattern p)
         {
+            this.Pattern = p;
+            this.DataContext = Pattern;
             InitializeComponent();
+        }
+
+        public AddPAtternWindow()
+            : this(Pattern.GetEmpty())
+        {
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            OnOkClick.Invoke(this, e);
+            this.Close();
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            OnCancelClick.Invoke(this, e);
+            this.Close();
+        }
+
+        private void Remove_Click(object sender, RoutedEventArgs e)
+        {
+            OnRemoveClick.Invoke(this, e);
+            this.Close();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Backend;
+using Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,40 +10,11 @@ using System.Threading.Tasks;
 
 namespace FallGuysNameFinder
 {
-    public class ViewModel : INotifyPropertyChanged
+    public class ViewModel
     {
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<Pattern> Patterns { get; set; }
+        public Options Options { get; set; }
 
-
-        private bool _a;
-        public bool StopOnAlliteration
-        {
-            get => _a;
-            set
-            {
-                if (_a != value)
-                {
-                    _a = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnAlliteration)));
-                }
-            }
-        }
-
-        private bool _dw;
-        public bool StopOnDoubleWord
-        {
-            get => _dw;
-            set
-            {
-                if (_dw != value)
-                {
-                    _dw = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnDoubleWord)));
-                }
-            }
-        }
     }
 }
