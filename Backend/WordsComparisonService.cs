@@ -16,10 +16,12 @@ namespace Backend
 {
     public class WordsComparisonService
     {
+        const string Wildcard = "*";
 
         public WordsComparisonService(DataStorageStuff storageAccess)
         {
             this.Patterns = storageAccess.ReadPatterns();
+            this.Options = storageAccess.GetOptions();
         }
 
         public WordsComparisonService(List<Pattern> patterns)
@@ -28,48 +30,51 @@ namespace Backend
         }
 
         public List<Pattern> Patterns { get; }
+        public Options Options { get; }
+
 
         public bool Test(string[] s)
         {
 
             var nameToTest = new Name(s);
+            if (Options.StopOnAlliteration && TestForAlliteration(nameToTest))
+            {
+                Log.Information("Alliteration detected");
+                return true;
+            }
 
-            return this.Patterns.Any(goodName => Matches(goodName, nameToTest));
+            if (Options.StopOnDoubleWord && TestForDoubleName(nameToTest))
+            {
+                Log.Information("Double-word detected");
+                return true;
+            }
 
+            var patternMatch = TestForPatternMatch(nameToTest);
+            if (patternMatch)
+            {
+                Log.Information("Pattern matched");
+            }
+            else
+            {
+                Log.Information("No Pattern matched");
+            }
+            return patternMatch;
+        }
 
+        private bool TestForPatternMatch(Name nameToTest)
+        {
+            return Patterns.Any(pattern => Matches(pattern, nameToTest));
         }
 
         private bool Matches(Pattern pattern, Name toTest)
         {
-
-            if (TestForAlliteration(toTest))
-            {
-                Log.Information("Alliteration Found");
-                return true;
-            }
-            if (TestForDoubleName(toTest))
-            {
-                Log.Information("Double-Name Found");
-                return true;
-            }
             return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
         }
 
 
-
         private bool Matches(string pattern, string name)
         {
-            Match match = Regex.Match(name, pattern, RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                Log.Debug("{0} did match to {1}", name, pattern);
-                return true;
-            }
-            else
-            {
-                Log.Debug("{0} did not match to {1}", name, pattern);
-                return false;
-            }
+            return pattern == Wildcard || pattern.ToLower().Trim() == name.ToLower().Trim();
         }
 
         private bool TestForAlliteration(Name toTest)

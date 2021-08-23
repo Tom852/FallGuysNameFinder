@@ -16,8 +16,6 @@ namespace Backend
 {
     public class OcrService
     {
-        const int MAXATTEMPTS = 10;
-
         int[,] variations = new int[,] {
             { 0,0,0,0, },
             { -10, -10, 20, 20,  },
@@ -65,14 +63,14 @@ namespace Backend
                     }
                     else
                     {
-                        Log.Information("Parsing failed.");
+                        Log.Information("Parsing failed. Screenshot will be saved.");
                         bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
                     }
                 }
 
 
             }
-            Log.Information("Could not parse text.");
+            Log.Warning("Could not parse text.");
             result = new string[] { };
             return false;
         }

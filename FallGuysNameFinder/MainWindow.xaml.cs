@@ -4,7 +4,9 @@ using Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace FallGuysNameFinder
 {
@@ -26,6 +29,7 @@ namespace FallGuysNameFinder
     {
         public ViewModel ViewModel { get; set; } = new ViewModel();
         public DataStorageStuff DataStuff { get; }
+        public Engine BackendEngine { get; private set; }
 
         public MainWindow()
         {
@@ -104,7 +108,48 @@ namespace FallGuysNameFinder
 
         private void ShowConsole_Click(object sender, RoutedEventArgs e)
         {
-            ConsoleAllocator.ShowConsoleWindow();
+            if (this.ViewModel.IsConsoleShown)
+            {
+                ConsoleAllocator.HideConsoleWindow();
+                ViewModel.IsConsoleShown = false;
+            }
+            else
+            {
+                ConsoleAllocator.ShowConsoleWindow();
+                ViewModel.IsConsoleShown = true;
+            }
+        }
+
+        private void StartStop_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ViewModel.IsRunning)
+            {
+                this.BackendEngine.Stop();
+            }
+            else
+            {
+                this.ViewModel.Options = DataStuff.GetOptions();
+                this.ViewModel.Patterns = new ObservableCollection<Pattern>(DataStuff.ReadPatterns());
+
+                if (!this.ViewModel.IsConsoleShown)
+                {
+                    ViewModel.IsConsoleShown = true;
+                    ConsoleAllocator.ShowConsoleWindow();
+                }
+
+                this.BackendEngine = new Engine();
+                BackendEngine.Initialize();
+
+ 
+                
+                BackendEngine.Start();
+                this.ViewModel.IsRunning = true;
+                this.BackendEngine.OnStop += (a, b) =>
+                {
+                    this.ViewModel.IsRunning = false;
+                };
+            }
+
         }
     }
 }

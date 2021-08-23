@@ -24,6 +24,7 @@ namespace Backend
                 Log.Warning("Name should contain of 3 words separated by space. First 3 will be taken.");
             }
 
+            // todo: Great FallGuy fixen
             First = splitted[0];
             Second = splitted[1];
             Third = splitted[2];
