@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleAllocator.cs" />
+    <Compile Include="PossibleNames.cs" />
+    <Compile Include="PossibleNamesDefaults.cs" />
     <Compile Include="DataStorageStuff.cs" />
     <Compile Include="ForeGroundWindowChecker.cs" />
     <Compile Include="Model\Options.cs" />

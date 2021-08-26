@@ -11,12 +11,13 @@ using Tesseract;
 using Serilog;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Backend
 {
     public class OcrService
     {
-        const float CONFIDENCE_LIMIT = 0.7f; // rather take it low here, and very words by list.
+        const float CONFIDENCE_LIMIT = 0.85f;
 
         int[,] variations = new int[,] {
             { 0,0,0,0, },
@@ -56,18 +57,38 @@ namespace Backend
                     }
 
                     Log.Debug("Parsing Attempt {i}-{j}", i, j);
-                    var success = DoOcr(bmp, out var text);
+                    var ocrSuccess = DoOcr(bmp, out var text);
+                    var refined = Refine(text);
+                    bool isViable = Validate(refined);
 
-                    // toido: coinfidence würd ich gar nicht merh anschauen tbh.
-                    if (success)
+                    if (isViable)
                     {
-                        Log.Information("Parsing successful.");
-                        result = FilterGargbae(text);
+                        Log.Debug("Parsing successful. Viable Name detected.");
+                        result = refined.ToArray();
                         return true;
                     }
-                    else
+                    if (ocrSuccess)
                     {
-                        Log.Information("Parsing failed. Screenshot will be saved.");
+                        var p1 = PossibleNames.FirstNames();
+                        var p2 = PossibleNames.SecondNames();
+                        var p3 = PossibleNames.ThirdNames();
+
+                        var s1 = p1.Contains(refined[0]);
+                        var s2 = p2.Contains(refined[1]);
+                        var s3 = p3.Contains(refined[2]);
+
+                        Console.WriteLine();
+                        Console.WriteLine("DEBUG INFORMATION");
+                        Log.Debug("Words 1 - Success {0} - Word {1}", s1, refined[0]);
+                        Log.Debug("Words 2 - Success {0} - Word {1}", s2, refined[1]);
+                        Log.Debug("Words 2 - Success {0} - Word {1}", s3, refined[2]);
+                        throw new Exception("OCR is very confident, but name seems not viable. Is a name possibility not within the possibility collection? Was the name refined in a wrong way?");
+                    }
+                    
+                    Log.Information("Parsing failed.");
+                    if (j == 3)
+                    {
+                        Log.Information("Screenshot saved.");
                         bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
                     }
                 }
@@ -144,10 +165,62 @@ namespace Backend
             }
         }
 
-        private string[] FilterGargbae(string input)
+        private List<string> Refine(string input)
         {
+            string pattern = @"([A-Z][a-z]{2,}|VIP|MVP)";
+            Regex r = new Regex(pattern);
+            var matches = r.Matches(input);
 
-            return input.Split(' ').Where(s => s.Length >= 3).Select(s => s.Trim()).ToArray();
+            List<string> words = new List<string>();
+            foreach (Match m in matches)
+            {
+                words.Add(m.Value);
+            }
+
+            Log.Information("Text was refined to {0}", string.Join(" ", words));
+
+            return words;
+        }
+
+        private bool Validate(List<string> words)
+        {
+            if (words.Count < 3)
+            {
+                return false;
+            }
+            if (words.Count == 3)
+            {
+                return ValidateTripe(words.ToArray());
+            }
+
+            for (int i = 0; i < words.Count - 3; i++)
+            {
+                var subcollection = words.Skip(i).Take(3);
+                var isGood = ValidateTripe(subcollection.ToArray());
+                if (isGood)
+                {
+                    Log.Information("Viable Subcollection detected");
+                    words = subcollection.ToList();
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        private bool ValidateTripe(string[] words)
+        {
+            if (words.Length!=3)
+            {
+                throw new Exception("words length is not 3.");
+            }
+            var p1 = PossibleNames.FirstNames();
+            var p2 = PossibleNames.SecondNames();
+            var p3 = PossibleNames.ThirdNames();
+
+            // todo: würde heir bereits alles toupper haben wollen, damit das schonmal raus ist.
+
+            return p1.Contains(words[0]) && p2.Contains(words[1]) && p3.Contains(words[2]);
         }
 
 

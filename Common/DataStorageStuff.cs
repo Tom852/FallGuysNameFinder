@@ -22,6 +22,10 @@ namespace Backend
         public static string PatternsFile { get; private set; }
         public static string OptionsFile { get; private set; }
 
+        public static string FirstNamesFile { get; private set; }
+        public static string SecondNamesFile { get; private set; }
+        public static string ThirdNamesFile { get; private set; }
+
         static DataStorageStuff()
         {
             var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -29,6 +33,9 @@ namespace Backend
             ScreenshotDir = Path.Combine(env, RootFolderName, ScreenshotFolderName);
             PatternsFile = Path.Combine(env, RootFolderName, PatternFileName);
             OptionsFile = Path.Combine(env, RootFolderName, OptionFileName);
+            FirstNamesFile = Path.Combine(env, RootFolderName, "Names1.txt");
+            SecondNamesFile = Path.Combine(env, RootFolderName, "Names2.txt");
+            ThirdNamesFile = Path.Combine(env, RootFolderName, "Names3.txt");
 
             if (!Directory.Exists(AppDir))
             {
@@ -52,6 +59,27 @@ namespace Backend
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Serialize(writer, new Options());
                 }
+            }
+
+            if (!File.Exists(FirstNamesFile))
+            {
+                var stream = File.Create(FirstNamesFile);
+                stream.Close();
+                File.WriteAllLines(FirstNamesFile, PossibleNamesDefaults.FirstNames);
+            }
+
+            if (!File.Exists(SecondNamesFile))
+            {
+                var stream = File.Create(SecondNamesFile);
+                stream.Close();
+                File.WriteAllLines(SecondNamesFile, PossibleNamesDefaults.SecondNames);
+            }
+
+            if (!File.Exists(ThirdNamesFile))
+            {
+                var stream = File.Create(ThirdNamesFile);
+                stream.Close();
+                File.WriteAllLines(ThirdNamesFile, PossibleNamesDefaults.ThirdNames);
             }
         }
 
@@ -118,6 +146,27 @@ namespace Backend
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(writer, o);
             }
+        }
+
+        // todo: unbediungt cachen.
+        public string[] GetNamePossibilities(int namePosition)
+        {
+
+            switch (namePosition)
+            {
+                case 1:
+                    return File.ReadAllLines(FirstNamesFile);
+                case 2:
+                    return File.ReadAllLines(SecondNamesFile);
+                case 3:
+                    return File.ReadAllLines(ThirdNamesFile);
+                default:
+                    throw new Exception("Name Pos must be 1 for Firstname, 3 for Third Name, etc");
+
+            }
+
+
+
         }
     }
 }
