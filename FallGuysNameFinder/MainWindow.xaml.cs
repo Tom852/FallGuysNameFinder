@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,6 +31,7 @@ namespace FallGuysNameFinder
         public ViewModel ViewModel { get; set; } = new ViewModel();
         public DataStorageStuff DataStuff { get; }
         public Engine BackendEngine { get; private set; }
+        public DispatcherTimer PenetrantForeGroundChecker { get; private set; }
 
         public MainWindow()
         {
@@ -42,6 +44,20 @@ namespace FallGuysNameFinder
             DataContext = ViewModel;
 
             InitializeComponent();
+
+            SetupDispatchers();
+        }
+
+        private void SetupDispatchers()
+        {
+           
+
+            this.PenetrantForeGroundChecker = new DispatcherTimer();
+            PenetrantForeGroundChecker.Interval = TimeSpan.FromSeconds(1);
+            PenetrantForeGroundChecker.Tick += (a, b) =>
+            {
+                this.ViewModel.FgNotForeground = !ForeGroundWindowChecker.IsFgInForeGround();
+            };
         }
 
         private void AddPattern_Click(object sender, RoutedEventArgs e)
@@ -50,36 +66,68 @@ namespace FallGuysNameFinder
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                AddThePattern(w.Pattern);
+                AddPattern(w.Pattern);
             };
         }
 
-
+        private void EditPattern_Click(object sender, RoutedEventArgs e)
+        {
+            ShowEditPatternMask(dGrid);
+        }
 
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             if (dataGrid != null)
             {
-                var index = dataGrid.SelectedIndex;
-                if (index == -1)
-                {
-                    return;
-                }
-                var pattern = this.ViewModel.Patterns[index];
-                var clone = pattern.Clone();
-                var w = new AddPatternWindow(clone);
-                w.Show();
-                w.OnOkClick += (d1, d2) =>
-                {
-                    EditPattern(index, w.Pattern);
-                };
-                w.OnRemoveClick += (d1, d2) =>
-                {
-                    RemovePattern(index);
-                };
+                ShowEditPatternMask(dataGrid);
 
             }
+        }
+
+        private void RemovePattern_Click(object sender, RoutedEventArgs e)
+        {
+            var index = dGrid.SelectedIndex;
+            if (index != -1)
+            {
+                RemovePattern(index);
+            }
+        }
+
+        private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            DataGrid grid = sender as DataGrid;
+            var index = dGrid.SelectedIndex;
+
+            switch (e.Key)
+            {
+                case Key.Delete:
+                case Key.Back:
+                    RemovePattern(index);
+                    e.Handled = true;
+                    break;
+            }
+        }
+
+        private void ShowEditPatternMask(DataGrid dataGrid)
+        {
+            var index = dataGrid.SelectedIndex;
+            if (index == -1)
+            {
+                return;
+            }
+            var pattern = this.ViewModel.Patterns[index];
+            var clone = pattern.Clone();
+            var w = new AddPatternWindow(clone);
+            w.Show();
+            w.OnOkClick += (d1, d2) =>
+            {
+                EditPattern(index, w.Pattern);
+            };
+            w.OnRemoveClick += (d1, d2) =>
+            {
+                RemovePattern(index);
+            };
         }
 
         private void OnOptionsClick(object sender, RoutedEventArgs e)
@@ -87,7 +135,7 @@ namespace FallGuysNameFinder
             this.DataStuff.SaveOptions(this.ViewModel.Options);
         }
 
-        private void AddThePattern(Pattern p)
+        private void AddPattern(Pattern p)
         {
             DataStuff.AddPattern(p);
             this.ViewModel.Patterns.Add(p);
@@ -97,6 +145,17 @@ namespace FallGuysNameFinder
         {
             DataStuff.RemovePattern(index);
             this.ViewModel.Patterns.RemoveAt(index);
+
+            var totalElements = this.ViewModel.Patterns.Count;
+            if (index < totalElements)
+            {
+                dGrid.SelectedIndex = index;
+            }
+            else if (index == totalElements)
+            {
+                dGrid.SelectedIndex = index - 1; //on 0, will be set to -1 which is none selected which is ok.
+
+            }
         }
 
         private void EditPattern(int index, Pattern p)
@@ -124,6 +183,7 @@ namespace FallGuysNameFinder
         {
             if (this.ViewModel.IsRunning)
             {
+                this.ViewModel.StartStopButtonDesc = "Stopping...";
                 this.BackendEngine.Stop();
             }
             else
@@ -144,12 +204,19 @@ namespace FallGuysNameFinder
                 
                 BackendEngine.Start();
                 this.ViewModel.IsRunning = true;
+                this.ViewModel.StartStopButtonDesc = "Stop";
+
                 this.BackendEngine.OnStop += (a, b) =>
                 {
                     this.ViewModel.IsRunning = false;
+                    this.PenetrantForeGroundChecker.Stop(); // todo: mal noch was hier machen.
+                    this.ViewModel.FgNotForeground = false;
+                    this.ViewModel.StartStopButtonDesc = "Start";
                 };
+                this.PenetrantForeGroundChecker.Start();
             }
 
         }
+
     }
 }

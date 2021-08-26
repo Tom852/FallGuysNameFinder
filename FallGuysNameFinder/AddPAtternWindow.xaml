@@ -29,9 +29,8 @@
         <TextBox Text="{Binding Second}" Name ="Text2" Grid.Column="1" Grid.Row="1" Margin="2"/>
         <TextBox Text="{Binding Third}" Name ="Text3" Grid.Column="2" Grid.Row="1" Margin="2"/>
 
-        <Button Content="Remove" Grid.Column="0" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Remove_Click"/>
-        <Button Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Ok_Click"/>
         <Button Content="Cancel" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Right" Click="Cancel_Click"/>
+        <Button Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Ok_Click"/>
 
     </Grid>
 

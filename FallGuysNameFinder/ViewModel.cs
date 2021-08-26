@@ -16,6 +16,9 @@ namespace FallGuysNameFinder
         private Options options;
         private bool isRunning;
         private bool isConsoleShown;
+        private bool fgNotForeground;
+        private string startstopdesc = "Start";
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,14 +39,21 @@ namespace FallGuysNameFinder
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Options)));
             }
         }
-
+        
         public bool IsRunning
         {
             get => isRunning; set
             {
                 isRunning = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StartStopButtonDesc)));
+            }
+        }
+        public bool FgNotForeground
+        {
+            get => fgNotForeground; set
+            {
+                fgNotForeground = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FgNotForeground)));
             }
         }
         public bool IsConsoleShown
@@ -56,7 +66,15 @@ namespace FallGuysNameFinder
             }
         }
 
-        public string StartStopButtonDesc => IsRunning ? "Stop" : "Start";
+        public string StartStopButtonDesc
+        {
+            get => startstopdesc; set
+            {
+                startstopdesc = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StartStopButtonDesc)));
+            }
+        }
+
         public string ShowConsoleButtonDesc => IsConsoleShown ? "Hide Console" : "Show Console";
         
 

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ConsoleAllocator.cs" />
     <Compile Include="DataStorageStuff.cs" />
+    <Compile Include="ForeGroundWindowChecker.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

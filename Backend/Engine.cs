@@ -44,7 +44,6 @@ namespace Backend
         public void Stop()
         {
             stopRequested = true;
-            t.Join();
         }
 
         public void Start()
@@ -140,6 +139,7 @@ namespace Backend
 
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
+
 
 
         private void BringToFront()
