@@ -36,7 +36,7 @@ namespace Backend
         public bool Test(string[] s)
         {
 
-            var nameToTest = new Name(s);
+            var nameToTest = new ParsedName(s);
             if (Options.StopOnAlliteration && TestForAlliteration(nameToTest))
             {
                 Log.Information("Alliteration detected");
@@ -61,12 +61,12 @@ namespace Backend
             return patternMatch;
         }
 
-        private bool TestForPatternMatch(Name nameToTest)
+        private bool TestForPatternMatch(ParsedName nameToTest)
         {
             return Patterns.Any(pattern => Matches(pattern, nameToTest));
         }
 
-        private bool Matches(Pattern pattern, Name toTest)
+        private bool Matches(Pattern pattern, ParsedName toTest)
         {
             return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
         }
@@ -77,13 +77,13 @@ namespace Backend
             return pattern == Wildcard || pattern.ToLower().Trim() == name.ToLower().Trim();
         }
 
-        private bool TestForAlliteration(Name toTest)
+        private bool TestForAlliteration(ParsedName toTest)
         {
             var character = toTest.First[0];
             return toTest.Second[0] == character && toTest.Third[0] == character;
         }
 
-        private bool TestForDoubleName(Name toTest)
+        private bool TestForDoubleName(ParsedName toTest)
         {
             var option1 = new string(toTest.First.Take(4).ToArray());
             var option2 = new string(toTest.Second.Take(4).ToArray());

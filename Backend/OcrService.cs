@@ -16,6 +16,8 @@ namespace Backend
 {
     public class OcrService
     {
+        const float CONFIDENCE_LIMIT = 0.7f; // rather take it low here, and very words by list.
+
         int[,] variations = new int[,] {
             { 0,0,0,0, },
             { -10, -10, 20, 20,  },
@@ -41,20 +43,22 @@ namespace Backend
                     switch (j)
                     {
                         case 0:
-                            break;
-                        case 1:
                             ToMonochromeInverted(bmp);
                             break;
-                        case 2:
+                        case 1:
                             ToMonochrome(bmp);
                             break;
-                        case 3:
+                        case 2:
                             ToGrayScale(bmp);
+                            break;
+                        case 3:
                             break;
                     }
 
-                    Log.Information("Parsing Attempt {i}-{j}", i, j);
+                    Log.Debug("Parsing Attempt {i}-{j}", i, j);
                     var success = DoOcr(bmp, out var text);
+
+                    // toido: coinfidence würd ich gar nicht merh anschauen tbh.
                     if (success)
                     {
                         Log.Information("Parsing successful.");
@@ -127,15 +131,15 @@ namespace Backend
 
         private bool DoOcr(Bitmap b, out string text)
         {
-            using (var engine = new TesseractEngine(@"./tessdata_fast-master", "eng", EngineMode.Default))
+            using (var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
             {
 
-                using (Page page = engine.Process(b, PageSegMode.SingleBlock))
+                using (Page page = engine.Process(b, PageSegMode.SingleBlock)) // todo: single line?
                 {
                     text = page.GetText();
                     var confidence = page.GetMeanConfidence();
                     Log.Information("With confidence {confidence}, the following text was parsed: {text}", confidence, text.Trim() );
-                    return confidence > 0.5;
+                    return confidence > CONFIDENCE_LIMIT;
                 }
             }
         }
