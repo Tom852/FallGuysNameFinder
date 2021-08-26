@@ -19,18 +19,23 @@ namespace Backend
     {
         const float CONFIDENCE_LIMIT = 0.85f;
 
+        const double xStart = 0.60;
+        const double yStart = 0.29;
+        const double xEnd = 0.745;
+        const double yEnd = 0.335;
+
         int[,] variations = new int[,] {
             { 0,0,0,0, },
             { -10, -10, 20, 20,  },
+            { 5, 5, -5, -5,  },
+            { 10, 10, -20, -20,  },
+            { 10, 0, -20, 0,  },
+            { 20, 0, -40, 0,  },
+
             { -10, 0, 20, 0,  },
             { -20, -20, 40, 40,  },
             { -30, -30, 60, 40,  },
             { -40, -40, 80, 80, },
-            { -50, -50, 100, 100, },
-            { -100, 0, 100, 0, },
-            { -100, 0, 200, 0, },
-            { -200, 0, 200, 0, },
-            { -200, 0, 300, 0, },
         };
 
         public bool ReadFromScreen(out string[] result)
@@ -55,6 +60,10 @@ namespace Backend
                         case 3:
                             break;
                     }
+
+                    //todo: debug!
+                    bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
+
 
                     Log.Debug("Parsing Attempt {i}-{j}", i, j);
                     var ocrSuccess = DoOcr(bmp, out var text);
@@ -107,23 +116,21 @@ namespace Backend
 
             var screenSize = Screen.PrimaryScreen.Bounds.Size;
 
-            int startX = 1160 + startVariationX;
-            int startY = 320 + startVariationY;
+            double startX = screenSize.Width*xStart + startVariationX;
+            double startY = screenSize.Height*yStart + startVariationY;
 
-            if (screenSize.Width != 1920)
-            {
-                throw new Exception("Only 1920x1080 and 1920x1200 supported.");
-            }
 
+            double sizeX = screenSize.Width * (xEnd - xStart) + sizeVariationX;
+            double sizeY = screenSize.Height * (yEnd - yStart) + sizeVariationY;
+
+            // 1920 x 1200 special case :)
             if (screenSize.Height == 1200)
             {
-                startY += 60;
+                startY = 1080 * yStart + 60 + startVariationY;
+                sizeY = 1080 * (yEnd - yStart) + sizeVariationY;
             }
 
-            int widthX = 270 + sizeVariationX;
-            int widthY = 35 + sizeVariationY;
-
-            var sizeToCapture = new Size(widthX, widthY);
+            var sizeToCapture = new Size((int)sizeX, (int)sizeY);
 
 
 
@@ -134,13 +141,13 @@ namespace Backend
             var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
 
 
-            gfxScreenshot.CopyFromScreen(Screen.PrimaryScreen.Bounds.X + startX,
-                                        Screen.PrimaryScreen.Bounds.Y + startY,
+            gfxScreenshot.CopyFromScreen(Screen.PrimaryScreen.Bounds.X + (int)startX,
+                                        Screen.PrimaryScreen.Bounds.Y + (int)startY,
                                 0,
                                 0,
                                 sizeToCapture,
                                 CopyPixelOperation.SourceCopy);
-
+            
             return bmpScreenshot;
         }
 
