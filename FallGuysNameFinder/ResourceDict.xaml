@@ -2,5 +2,147 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:FallGuysNameFinder">
 
+    <SolidColorBrush x:Key="AccentTextColor" Color="LightCyan" />
+
+    <SolidColorBrush x:Key="VeryBrightColor" Color="#f0f8ff"/>
+    <SolidColorBrush x:Key="LightColor" Color="#ddeeff"/>
+    <SolidColorBrush x:Key="MediumColor" Color="#bbccdd"/>
+    <SolidColorBrush x:Key="DarkColor" Color="#aabbcc"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#445566"/>
+
+    <SolidColorBrush x:Key="InactiveBackground" Color="Gray"/>
+    <SolidColorBrush x:Key="InactiveForeground" Color="LightGray"/>
+
+
+
+    <RadialGradientBrush x:Key="GradientBackground" GradientOrigin="0.496,1.052">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <ScaleTransform CenterX="0.5" CenterY="0.5" 
+                                                        ScaleX="1.5" ScaleY="1.5"/>
+                <TranslateTransform X="0.02" Y="0.3"/>
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+        <GradientStop Offset="1" Color="#ddeeff"/>
+        <GradientStop Offset="0.3" Color="#ddeeff"/>
+    </RadialGradientBrush>
+
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    <local:InverseBooleanConverter x:Key="InvertedBool" />
+    <FontFamily x:Key="FGFont">pack://application:,,,/#Titan One</FontFamily>
+
+    <Style x:Key="MyButton" TargetType="Button">
+        <Setter Property="Width" Value="32"></Setter>
+        <Setter Property="Height" Value="32"></Setter>
+        <Setter Property="FontSize" Value="16"></Setter>
+        <Setter Property="Margin" Value="2"></Setter>
+        <Setter Property="Foreground" Value="Black"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}" >
+                    <Grid>
+                        <Border x:Name="border" CornerRadius="8" BorderThickness="2" BorderBrush="Black" Background="{TemplateBinding Background}">
+                                
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                        HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold"
+                                              TextElement.FontSize="10pt">
+                            </ContentPresenter>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BackgroundColor}" />
+                <Setter Property="Foreground" Value="{StaticResource AccentTextColor}"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray" />
+                <Setter Property="Foreground" Value="DarkGray"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource AccentTextColor}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="true"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource AccentTextColor}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource InactiveForeground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+    
+    <Style TargetType="{x:Type DataGridRow}">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="{StaticResource DarkColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource MediumColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Foreground" Value="{StaticResource AccentTextColor}"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridColumnHeader">
  
+                        <Border BorderThickness="0.5" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="Black">
+                            <Grid>
+                                <TextBlock Text="{TemplateBinding  Content}" 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Left" 
+                                           FontWeight="DemiBold"
+                                           FontSize="10pt"
+                                   Foreground="{TemplateBinding Foreground}"/>
+                            </Grid>
+                        </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type DataGrid}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Black" />
+    </Style>
+
 </ResourceDictionary>

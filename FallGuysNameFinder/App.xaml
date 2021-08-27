@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:FallGuysNameFinder"
              StartupUri="MainWindow.xaml">
         <Application.Resources>
-            <FontFamily x:Key="FGFont">pack://application:,,,/#Titan One</FontFamily>
-        </Application.Resources>
+            <ResourceDictionary Source="ResourceDict.xaml" />
+    </Application.Resources>
 </Application>

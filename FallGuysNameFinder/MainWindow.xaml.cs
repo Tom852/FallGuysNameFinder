@@ -50,8 +50,6 @@ namespace FallGuysNameFinder
 
         private void SetupDispatchers()
         {
-           
-
             this.PenetrantForeGroundChecker = new DispatcherTimer();
             PenetrantForeGroundChecker.Interval = TimeSpan.FromSeconds(1);
             PenetrantForeGroundChecker.Tick += (a, b) =>
@@ -59,6 +57,7 @@ namespace FallGuysNameFinder
                 this.ViewModel.FgNotForeground = !ForeGroundWindowChecker.IsFgInForeGround();
             };
         }
+
 
         private void AddPattern_Click(object sender, RoutedEventArgs e)
         {
@@ -217,6 +216,5 @@ namespace FallGuysNameFinder
             }
 
         }
-
     }
 }

@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
-        Title="Add Pattern" Height="150" Width="600">
-    <Window.Resources>
-        <ResourceDictionary Source="ResourceDict.xaml" />
-    </Window.Resources>
+        Title="Add Pattern" Height="150" Width="600"
+        Background="{StaticResource GradientBackground}"
+        Icon="Icon1.ico">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,16 +20,16 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="First" Grid.Column="0" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
-        <Label Content="Middle" Grid.Column="1" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
-        <Label Content="Last" Grid.Column="2" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 10 2 2"/>
+        <Label Content="First" Grid.Column="0" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 5 2 2"/>
+        <Label Content="Middle" Grid.Column="1" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 5 2 2"/>
+        <Label Content="Last" Grid.Column="2" Grid.Row="0" FontSize="8pt" Foreground="Gray" Margin="2 5 2 2"/>
 
-        <TextBox Text="{Binding First}" Name ="Text1" Grid.Column="0" Grid.Row="1" Margin="2"/>
-        <TextBox Text="{Binding Second}" Name ="Text2" Grid.Column="1" Grid.Row="1" Margin="2"/>
-        <TextBox Text="{Binding Third}" Name ="Text3" Grid.Column="2" Grid.Row="1" Margin="2"/>
+        <TextBox Text="{Binding First}" Name ="Text1" Grid.Column="0" Grid.Row="1" Margin="5, 0" Background="{StaticResource VeryBrightColor}"/>
+        <TextBox Text="{Binding Second}" Name ="Text2" Grid.Column="1" Grid.Row="1" Margin="5, 0" Background="{StaticResource VeryBrightColor}"/>
+        <TextBox Text="{Binding Third}" Name ="Text3" Grid.Column="2" Grid.Row="1" Margin="5, 0" Background="{StaticResource VeryBrightColor}"/>
 
-        <Button Content="Cancel" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Right" Click="Cancel_Click"/>
-        <Button Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 2" Width="80px" HorizontalAlignment="Left" Click="Ok_Click"/>
+        <Button Style="{StaticResource MyButton}" Content="Cancel" Grid.Column="2" Grid.Row="2" Margin="2 20 10 10" Width="80px" HorizontalAlignment="Right" Click="Cancel_Click"/>
+        <Button Style="{StaticResource MyButton}" Content="OK" Grid.Column="2" Grid.Row="2" Margin="2 20 2 10" Width="80px" HorizontalAlignment="Left" Click="Ok_Click"/>
 
     </Grid>
 
