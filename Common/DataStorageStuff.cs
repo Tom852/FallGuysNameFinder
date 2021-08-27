@@ -26,6 +26,9 @@ namespace Backend
         public static string SecondNamesFile { get; private set; }
         public static string ThirdNamesFile { get; private set; }
 
+        public static string LogNamesFile { get; private set; }
+
+
         static DataStorageStuff()
         {
             var env = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -36,6 +39,7 @@ namespace Backend
             FirstNamesFile = Path.Combine(env, RootFolderName, "Names1.txt");
             SecondNamesFile = Path.Combine(env, RootFolderName, "Names2.txt");
             ThirdNamesFile = Path.Combine(env, RootFolderName, "Names3.txt");
+            LogNamesFile = Path.Combine(env, RootFolderName, "Log.log");
 
             if (!Directory.Exists(AppDir))
             {

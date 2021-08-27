@@ -283,6 +283,9 @@ namespace Backend
         public static readonly string[] ThirdNames = new string[]
         {
             "Artist",
+            "Peanut",
+"Lionheart",
+
             "Acrobat",
 "Android",
 "Animal",

@@ -25,7 +25,11 @@ namespace Backend
         public static void Main() { } // todo:
         public void Initialize()
         {
-            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug).CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File(DataStorageStuff.LogNamesFile, fileSizeLimitBytes: 1024*1024, rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5))
+                .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
+                .CreateLogger();
 
 
             Console.WriteLine("Initializing Backend Engine...");
@@ -33,7 +37,6 @@ namespace Backend
             Console.WriteLine("Note: If the results are garbage, try another background.");
 
             var dataStorageStuff = new DataStorageStuff();
-
 
             OcrService = new OcrService();
             ComparisonService = new WordsComparisonService(dataStorageStuff);
