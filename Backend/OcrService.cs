@@ -30,7 +30,7 @@ namespace Backend
         int[,] variations = new int[,] {
             { 0,0,0,0, },
             { -10, -10, 20, 20,  },
-            { 5, 5, -5, -5,  },
+            { 5, 5, 10, 10,  },
             { 10, 10, -20, -20,  },
             { 10, 0, -20, 0,  },
             { 20, 0, -40, 0,  },
@@ -213,7 +213,7 @@ namespace Backend
                 {
                     text = page.GetText();
                     var confidence = page.GetMeanConfidence();
-                    Log.Debug("With confidence {confidence}, the following text was parsed: {text}", confidence, text.Trim() );
+                    Log.Debug("With confidence {confidence}, the following text was parsed: '{text}'", confidence, string.IsNullOrWhiteSpace(text) ? "[No Text]" : text );
                     return confidence > CONFIDENCE_LIMIT;
                 }
             }
@@ -221,7 +221,7 @@ namespace Backend
 
         private List<string> Refine(string input)
         {
-            string pattern = @"([A-Z][a-z]{2,}|VIP|MVP)";
+            string pattern = @"([A-Z][a-z]{2,}|VIP|MVP|IceCream)";
             Regex r = new Regex(pattern);
             var matches = r.Matches(input);
 
@@ -231,7 +231,7 @@ namespace Backend
                 words.Add(m.Value);
             }
 
-            Log.Debug("Text was refined to {0}", string.Join(" ", words));
+            Log.Debug("Text was refined to '{0}'", string.Join(" ", words));
 
             return words;
         }

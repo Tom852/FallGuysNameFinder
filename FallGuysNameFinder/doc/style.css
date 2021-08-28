@@ -3,6 +3,7 @@
     background: #aabbee;
     font-family: sans-serif;
 }
+
 ol, ul {
     margin: 2px;
 }
@@ -24,11 +25,12 @@ h2 {
     margin-top: 2em;
     font-size: 16pt;
 }
+
 h1 + h2 {
     margin-top: 0px;
 }
 
-h4{
+h4 {
     margin: 0px;
     font-weight: bold;
     font-size: 12pt;
