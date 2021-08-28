@@ -39,14 +39,16 @@ h4{
     color: #aa0000;
 }
 
-.twoPics {
+.picarray {
     margin: 20px;
     padding: 20px;
-    display: grid;
-    grid-template: auto auto / auto auto;
+    display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
+
 figcaption {
     font-size: 10pt;
     font-style: italic;
+    text-align: center;
 }

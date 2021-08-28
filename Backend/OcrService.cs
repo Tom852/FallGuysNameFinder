@@ -68,7 +68,7 @@ namespace Backend
                     Log.Debug("Parsing Attempt {i}-{j}", i, j);
                     var ocrSuccess = DoOcr(bmp, out var text);
                     var refined = Refine(text);
-                    bool isViable = Validate(refined);
+                    bool isViable = Validate(ref refined);
 
                     if (isViable)
                     {
@@ -236,7 +236,7 @@ namespace Backend
             return words;
         }
 
-        private bool Validate(List<string> words)
+        private bool Validate(ref List<string> words)
         {
             if (words.Count < 3)
             {
