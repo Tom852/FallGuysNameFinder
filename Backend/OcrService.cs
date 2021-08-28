@@ -68,7 +68,7 @@ namespace Backend
 
                     if (isViable)
                     {
-                        Log.Debug("Parsing successful. Viable Name detected.");
+                        Log.Information("Parsing successful. Viable Name detected: {0}", string.Join(" ", refined));
                         result = refined.ToArray();
                         return true;
                     }
@@ -84,13 +84,13 @@ namespace Backend
 
                         Console.WriteLine();
                         Console.WriteLine("DEBUG INFORMATION");
-                        Log.Debug("Words 1 - Success {0} - Word {1}", s1, refined[0]);
-                        Log.Debug("Words 2 - Success {0} - Word {1}", s2, refined[1]);
-                        Log.Debug("Words 2 - Success {0} - Word {1}", s3, refined[2]);
+                        Log.Debug("Word 1 - Success {0} - Word {1}", s1, refined[0]);
+                        Log.Debug("Word 2 - Success {0} - Word {1}", s2, refined[1]);
+                        Log.Debug("Word 3 - Success {0} - Word {1}", s3, refined[2]);
                         throw new Exception("OCR is very confident, but name seems not viable. Is a name possibility not within the possibility collection? Was the name refined in a wrong way?");
                     }
                     
-                    Log.Information("Parsing failed.");
+                    Log.Debug("Parsing attempt failed.");
                     if (j == 3)
                     {
                         Log.Information("Screenshot saved.");
@@ -100,7 +100,6 @@ namespace Backend
 
 
             }
-            Log.Warning("Could not parse text.");
             result = new string[] { };
             return false;
         }
@@ -162,7 +161,7 @@ namespace Backend
                 {
                     text = page.GetText();
                     var confidence = page.GetMeanConfidence();
-                    Log.Information("With confidence {confidence}, the following text was parsed: {text}", confidence, text.Trim() );
+                    Log.Debug("With confidence {confidence}, the following text was parsed: {text}", confidence, text.Trim() );
                     return confidence > CONFIDENCE_LIMIT;
                 }
             }
@@ -180,7 +179,7 @@ namespace Backend
                 words.Add(m.Value);
             }
 
-            Log.Information("Text was refined to {0}", string.Join(" ", words));
+            Log.Debug("Text was refined to {0}", string.Join(" ", words));
 
             return words;
         }

@@ -104,11 +104,15 @@ namespace Backend
                         continue;
                     }
 
-                    Log.Debug("Pressing P");
                     PressP();
 
                     Thread.Sleep(3750 + new Random().Next(500));
-                    Log.Debug("Running OCR...");
+
+                    if (stopRequested)
+                    {
+                        break;
+                    }
+
                     bool success = OcrService.ReadFromScreen(out var text);
                     if (success)
                     {
@@ -162,6 +166,7 @@ namespace Backend
 
         private static void PressP()
         {
+                    Log.Debug("Pressing P");
             SendKeys.SendWait("{P}");
         }
 
