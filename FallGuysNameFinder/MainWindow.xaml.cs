@@ -55,7 +55,7 @@ namespace FallGuysNameFinder
             PenetrantForeGroundChecker.Interval = TimeSpan.FromSeconds(1);
             PenetrantForeGroundChecker.Tick += (a, b) =>
             {
-                this.ViewModel.FgStatus = ForeGroundWindowChecker.GetFgStatus();
+                this.ViewModel.FgStatus = FgWindowAccess.GetFgStatus();
             };
             this.PenetrantForeGroundChecker.Start();
         }

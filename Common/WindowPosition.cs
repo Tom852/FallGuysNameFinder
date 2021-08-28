@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Common
+{
+    public struct WindowPosition
+    {
+        public WindowPosition(int left, int right, int top, int bottom) => (Left, Right, Top, Bottom) = (left, right, top, bottom);
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+
+        public int SizeX => Right - Left;
+        public int SizeY => Bottom - Top;
+    }
+}

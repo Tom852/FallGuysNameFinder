@@ -2,10 +2,11 @@
 Version: Preview 0.2
 
 Owner: Thomas Kistler, thomaskistler@bluewin.ch
-Donate: https://www.paypal.me/tomk453
 
-Git Repo: https://github.com/Tom852/FallGuysNameFinder
+Repository: https://github.com/Tom852/FallGuysNameFinder
 
-Icon by Icons8: https://icons8.com
-OCR by Tesseract: https://github.com/tesseract-ocr
+Icon by Icons8: https://icons8.com (https://icons8.de/license)
+OCR by Tesseract: https://github.com/tesseract-ocr (Apache License 2.0)
+Font: Titan One Regular (SIL Open Font License)
 
+Support: https://www.paypal.me/tomk453

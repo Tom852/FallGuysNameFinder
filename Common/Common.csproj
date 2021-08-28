@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,10 +47,11 @@
     <Compile Include="ConsoleAllocator.cs" />
     <Compile Include="PossibleNames.cs" />
     <Compile Include="DataStorageStuff.cs" />
-    <Compile Include="ForeGroundWindowChecker.cs" />
+    <Compile Include="FgWindowAccess.cs" />
     <Compile Include="Model\Options.cs" />
     <Compile Include="Model\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowPosition.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">

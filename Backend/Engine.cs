@@ -97,7 +97,7 @@ namespace Backend
                 iterations++;
                 try
                 {
-                    if (!ForeGroundWindowChecker.IsFgInForeGround())
+                    if (!FgWindowAccess.IsFgInForeGround())
                     {
                         Log.Information("Fall Guys is not in foreground. Iteration skipped.");
                         Thread.Sleep(4000);
