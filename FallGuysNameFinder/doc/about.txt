@@ -1,0 +1,11 @@
+﻿Fall Guys Name Finder
+Version: Preview 0.2
+
+Owner: Thomas Kistler, thomaskistler@bluewin.ch
+Donate: https://www.paypal.me/tomk453
+
+Git Repo: https://github.com/Tom852/FallGuysNameFinder
+
+Icon by Icons8: https://icons8.com
+OCR by Tesseract: https://github.com/tesseract-ocr
+

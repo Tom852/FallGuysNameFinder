@@ -21,7 +21,6 @@ namespace Backend
         public static string ScreenshotDir { get; private set; }
         public static string PatternsFile { get; private set; }
         public static string OptionsFile { get; private set; }
-
         public static string LogNamesFile { get; private set; }
 
 

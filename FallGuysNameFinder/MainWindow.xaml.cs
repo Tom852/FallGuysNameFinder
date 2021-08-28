@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -191,17 +192,16 @@ namespace FallGuysNameFinder
                 this.ViewModel.Options = DataStuff.GetOptions();
                 this.ViewModel.Patterns = new ObservableCollection<Pattern>(DataStuff.ReadPatterns());
 
-                if (!this.ViewModel.IsConsoleShown)
-                {
-                    ViewModel.IsConsoleShown = true;
-                    ConsoleAllocator.ShowConsoleWindow();
-                }
+                // hmm, not sure if people want that.
+                //if (!this.ViewModel.IsConsoleShown)
+                //{
+                //    ViewModel.IsConsoleShown = true;
+                //    ConsoleAllocator.ShowConsoleWindow();
+                //}
 
                 this.BackendEngine = new Engine();
                 BackendEngine.Initialize();
 
- 
-                
                 BackendEngine.Start();
 
                 this.BackendEngine.OnStop += (a, b) =>
@@ -212,6 +212,30 @@ namespace FallGuysNameFinder
                 this.ViewModel.EngineStatus = EngineStatus.Running;
             }
 
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            var dir = System.IO.Path.GetDirectoryName(path);
+            var file = System.IO.Path.Combine(dir, "doc", "userGuide.html");
+            System.Diagnostics.Process.Start(file);
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            var dir = System.IO.Path.GetDirectoryName(path);
+            var file = System.IO.Path.Combine(dir, "doc", "about.txt");
+            var txt = System.IO.File.ReadAllText(file);
+
+            var window = new About();
+            window.Text.Text = txt;
+            window.Show();
         }
     }
 }

@@ -1,0 +1,52 @@
+﻿body
+{
+    background: #aabbee;
+    font-family: sans-serif;
+}
+ol, ul {
+    margin: 2px;
+}
+
+
+.code, code {
+    font-family: monospace;
+    font-size: 12pt;
+}
+.content {
+    margin-left: 30px;
+}
+
+h1:not(:first-of-type) {
+    margin-top: 2em;
+}
+
+h2 {
+    margin-top: 2em;
+    font-size: 16pt;
+}
+h1 + h2 {
+    margin-top: 0px;
+}
+
+h4{
+    margin: 0px;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.warn {
+    font-weight: bold;
+    color: #aa0000;
+}
+
+.twoPics {
+    margin: 20px;
+    padding: 20px;
+    display: grid;
+    grid-template: auto auto / auto auto;
+    justify-content: space-between;
+}
+figcaption {
+    font-size: 10pt;
+    font-style: italic;
+}

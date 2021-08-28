@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800"
+        Title="MainWindow" Height="500" Width="850"
         Background="{StaticResource GradientBackground}"
         Icon="Icon1.ico"
         >
@@ -17,16 +17,16 @@
         <DockPanel DockPanel.Dock="Bottom">
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="StartStop" Content="{Binding StartStopButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Right" Click="StartStop_Click"/>
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
-            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="Help" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
-            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
+            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="User Guide" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="Help_Click"/>
+            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="About_Click"/>
 
 
             <ProgressBar Name="ProgressBar" IsIndeterminate="True" Height="20" Margin="30, 5" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVis}}">
                 <ProgressBar.Foreground>
                     <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1">
-                        <GradientStop Color="LightGreen" Offset="0.0" />
-                        <GradientStop Color="Green" Offset="0.5" />
-                        <GradientStop Color="LightGreen" Offset="1" />
+                        <GradientStop Color="#DDEEFF" Offset="0.0" />
+                        <GradientStop Color="#778899" Offset="0.5" />
+                        <GradientStop Color="#FFDDEEFF" Offset="1" />
                     </LinearGradientBrush>
 
                 </ProgressBar.Foreground>
@@ -35,20 +35,19 @@
 
         </DockPanel>
 
-        <DockPanel DockPanel.Dock="Left">
-            <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-                <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
-                <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+            <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
+            <CheckBox Name="StopOnAlliteration" Content="Stop on alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Alliteration = All three words start with the same letter"
                   IsChecked = "{Binding Options.StopOnAlliteration}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick"/>
-                <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+            <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Double Word = Two out of three words start with the same 4 letters."
                   IsChecked="{Binding Options.StopOnDoubleWord}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick"/>
-                <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+            <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="If the text recognition fails, should the software just continue or stop?"
                   IsChecked="{Binding Options.StopOnError}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
@@ -56,9 +55,8 @@
 
 
 
-            </StackPanel>
 
-            <Grid DockPanel.Dock="Bottom" Margin="0, 0, 0, 20">
+            <Grid Margin="0, 40, 0, 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -72,7 +70,7 @@
 
                 <Label Grid.Row="0" Grid.ColumnSpan="2"
                     Content="Status" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
-                
+
                 <Label Grid.Row="1" Grid.Column="0"
                            Content="Engine:"/>
                 <Image Grid.Row="1" Grid.Column="1"
@@ -92,12 +90,8 @@
                            Width="16" Height="16"/>
                 <Label Grid.Row="2" Grid.Column="2"
                        Content="{Binding FgStatusDescription}"/>
-
             </Grid>
-            <StackPanel />
-
-        </DockPanel>
-
+        </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Label Content="Patterns" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}"/>
 

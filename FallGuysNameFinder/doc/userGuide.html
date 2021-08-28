@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Fall Guys Name Finder</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Options</h1>
+
+    <h2>Stop on Alliteration</h2>
+    <div class="content">
+
+
+        <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
+        <h4>Examples:</h4>
+        <ul class="code">
+            <li>Chic Chasing Crown</li>
+            <li>Gifted Gaming Goliath</li>
+        </ul>
+    </div>
+
+    <h2>Stop on double-word</h2>
+    <div class="content">
+        <p>The software will stop rerolling your name, whenever two of three words start with the same 4 letters.</p>
+        <h4>Examples:</h4>
+        <ul class="code">
+            <li>Bouncy Yeeted Yeeter</li>
+            <li>Nify Dancing Dancer</li>
+        </ul>
+        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter example. Gaming and Gamer don't share the same first four letters. You would have to add this combination manually (see below).</p>
+        <ul class="code">
+            <li>Cold Gaming Gamer</li>
+        </ul>
+    </div>
+
+    <h2>Stop on error</h2>
+    <div class="content">
+        <p>Sometimes, things may go wrong. Imagine you got your desired name, but the software doesn't recognize it. With this option, the program will halt. However, realistically, chances are super low that the error occurs on just the single perfect name. If you want to run the program over night, it would be uncool if it stops after just a few minutes. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
+        <p><b>Recommendation: </b>Test the software while you sit in front of your computer. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most cases. Enable the option if you are actively on your computer, disable it if you run it overnight.</p>
+        <p>Note that after 10 consecutive parsing fails, the engine stops regardless of your setting.</p>
+    </div>
+
+    <h1>Patterns</h1>
+    <h2>Adding, Editing, Removing</h2>
+    <div class="content">
+        <p>Add Patterns by clicking on the <code>add</code> button. To edit them, you can also double click in the list aside the proper button. To remove, you can also press <code>DEL</code> or <code>BACKSPACE</code>.</p>
+        <p>If you navigate to <code>%APPDATA%/FallGuysNameFinder/Patterns.txt</code>, you can also do a text-file-based editing (not recommended). Note that there is no file watcher. Restart the software after you edited this file.</p>
+    </div>
+
+    <h2>Pattern Format</h2>
+    <div class="content">
+
+        <p>To add a specific name, just enter the proper words. Please watch your spelling!</p>
+        <h4>Example</h4>
+        <ul class="code">
+            <li>Cold Gaming Gamer</li>
+        </ul>
+    </div>
+
+    <h2>Wildcards</h2>
+    <div class="content">
+        <img src="patterns.png" align="right" />
+        <p>There is the option to add a <code>*</code> as a wildcard or placeholder. Whatever will be rolled on that position, it will match.</p>
+        <h4>Examples</h4>
+        <ul class="code">
+            <li>* Gaming Gamer></li>
+            <li>Good * Yeeter</li>
+            <li>* * Hotdog</li>
+        </ul>
+        <p>The pattern <code>* * *</code> would match to everything.</p>
+        <p><span class="warn">Attention: </span> You can not use the star to wildcard single parts of a name. The following example does not work.</p>
+        <ul class="code">
+            <li>Good Yeeted Yeet*</li>
+        </ul>
+        <p>You have to record two patterns for this case:</p>
+        <ul class="code">
+            <li>Good Yeeted Yeeter</li>
+            <li>Good Yeeted Yeetus</li>
+        </ul>
+        <p>There is also no regex support or such, since it is just not necessary. Only few names have similarities like Yeetus and Yeeter.</p>
+    </div>
+
+    <h1>Setting up Fall Guys</h1>
+    <div class="content">
+        <p>The software takes screenshots of the ingame-footage. Thus, the result quality depends on your nameplate. Obey the following rules, whereas their importance goes from very high to high.</p>
+        <ol>
+            <li>Nameplate must <b>not have scribbles or drawings</b> in its backgorund. It should be as unicolor as possible.</li>
+            <li>The <b>left-side graphic</b> of the nameplate should be as far away from your name as possible. If it's too large, parts of it may get captured in the screenshot. This usually gets filtered, but may not be optimal.</li>
+            <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
+            <li>Observe the program's behaviour for a while before you leave it running afk, to ensure your nameplate works well.</li>
+        </ol>
+    </div>
+
+    <div class="twoPics">
+        <img src="badPlate1.png" />
+        <img src="gootPlate1.png" />
+        <figcaption>Bad Plate: Dino is too big. Circles in background.</figcaption>
+        <figcaption>Better Plate: Unicolor background, only few flame tips interfere, mediocre contrast.</figcaption>
+
+    </div>
+
+
+    <h1>Letting it run</h1>
+    <div class="content">
+        <p>After everything is setup, navigate to your profile page, so that the name can be rerolled. Press the start button and ensure that Fall Guys is in keyboard-focus (it must be the active window). You can move the console and the NameFinder to your secondary screens or just minimize them.</p>
+    </div>
+
+
+</body>
+</html>
