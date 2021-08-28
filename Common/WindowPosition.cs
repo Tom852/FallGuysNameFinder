@@ -14,7 +14,7 @@ namespace Common
         public int Top { get; set; }
         public int Bottom { get; set; }
 
-        public int SizeX => Right - Left;
-        public int SizeY => Bottom - Top;
+        public int Width => Right - Left;
+        public int Height => Bottom - Top;
     }
 }
