@@ -19,7 +19,7 @@
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
             <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="Help" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
             <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
-            
+
 
             <ProgressBar Name="ProgressBar" IsIndeterminate="True" Height="20" Margin="30, 5" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVis}}">
                 <ProgressBar.Foreground>
@@ -35,24 +35,68 @@
 
         </DockPanel>
 
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-            <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
-            <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+        <DockPanel DockPanel.Dock="Left">
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+                <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
+                <CheckBox Name="StopOnAlliteration" Content="Stop on Alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Alliteration = All three words start with the same letter"
                   IsChecked = "{Binding Options.StopOnAlliteration}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick"/>
-            <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Double Word = Two out of three words start with the same 4 letters."
                   IsChecked="{Binding Options.StopOnDoubleWord}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick"/>
-            <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="If the text recognition fails, should the software just continue or stop?"
                   IsChecked="{Binding Options.StopOnError}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick"/>
-        </StackPanel>
+
+
+
+            </StackPanel>
+
+            <Grid DockPanel.Dock="Bottom" Margin="0, 0, 0, 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.ColumnSpan="2"
+                    Content="Status" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
+                
+                <Label Grid.Row="1" Grid.Column="0"
+                           Content="Engine:"/>
+                <Image Grid.Row="1" Grid.Column="1"
+                       Source="{Binding EngineStatusIcon,
+                            Converter={StaticResource IconConverter},
+                            Mode=OneWay}"
+                           Width="16" Height="16"/>
+                <Label Grid.Row="1" Grid.Column="2"
+                       Content="{Binding EngineStatusDescription}"/>
+
+                <Label Grid.Row="2" Grid.Column="0"
+                       Content="Game:"/>
+                <Image Grid.Row="2" Grid.Column="1"
+                       Source="{Binding FgStatusIcon,
+                            Converter={StaticResource IconConverter},
+                            Mode=OneWay}"
+                           Width="16" Height="16"/>
+                <Label Grid.Row="2" Grid.Column="2"
+                       Content="{Binding FgStatusDescription}"/>
+
+            </Grid>
+            <StackPanel />
+
+        </DockPanel>
 
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Label Content="Patterns" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}"/>

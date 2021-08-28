@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +59,7 @@
     <Compile Include="AddPatternWindow.xaml.cs">
       <DependentUpon>AddPatternWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IconToImageConverter.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="TrulyObservableCollection.cs" />
     <Compile Include="ViewModel.cs" />

@@ -29,6 +29,7 @@
 
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
     <local:InverseBooleanConverter x:Key="InvertedBool" />
+    <local:IconToImageSourceConverter x:Key="IconConverter" />
     <FontFamily x:Key="FGFont">pack://application:,,,/#Titan One</FontFamily>
 
     <Style x:Key="MyButton" TargetType="Button">

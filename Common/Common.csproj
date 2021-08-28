@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EngineStatus.cs" />
+    <Compile Include="FgStatus.cs" />
     <Compile Include="ConsoleAllocator.cs" />
     <Compile Include="PossibleNames.cs" />
     <Compile Include="PossibleNamesDefaults.cs" />

@@ -10,6 +10,19 @@ namespace Common
 {
     public class ForeGroundWindowChecker
     {
+        public static FgStatus GetFgStatus()
+        {
+            if (!IsFgRunning())
+            {
+                return FgStatus.NotRunning;
+            }
+            if (!IsFgInForeGround())
+            {
+                return FgStatus.RunningButNoFocus;
+            }
+            return FgStatus.Foreground;
+        }
+
         public static bool IsFgInForeGround()
         {
             var fgWindow = GetForegroundWindow();

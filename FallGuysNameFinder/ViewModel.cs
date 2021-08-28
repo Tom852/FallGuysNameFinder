@@ -1,9 +1,11 @@
 ﻿using Backend;
+using Common;
 using Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +16,9 @@ namespace FallGuysNameFinder
     {
         private ObservableCollection<Pattern> patterns;
         private Options options;
-        private bool isRunning;
         private bool isConsoleShown;
-        private bool fgNotForeground;
-        private string startstopdesc = "Start";
+        private FgStatus fgStatus = FgStatus.NotRunning;
+        private EngineStatus engineStatus = EngineStatus.Stopped;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,23 +40,62 @@ namespace FallGuysNameFinder
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Options)));
             }
         }
-        
-        public bool IsRunning
+
+
+        public FgStatus FgStatus
         {
-            get => isRunning; set
+            get => fgStatus;
+            set
             {
-                isRunning = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
+                if (value == fgStatus) return;
+                fgStatus = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FgStatus)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FgStatusIcon)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FgStatusDescription)));
             }
         }
-        public bool FgNotForeground
+
+        // todo: mal noch aufräumen hier... ist mehr drin als nur vm.
+        public Icon FgStatusIcon
         {
-            get => fgNotForeground; set
+            get
             {
-                fgNotForeground = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FgNotForeground)));
+
+                switch (fgStatus)
+                {
+                    case FgStatus.Foreground:
+                        return SystemIcons.Information;
+                    case FgStatus.RunningButNoFocus:
+                        return SystemIcons.Warning;
+                    case FgStatus.NotRunning:
+                        return SystemIcons.Error;
+                    default:
+                        throw new Exception("Unkonwon FGStatus");
+                }
+
             }
         }
+
+        public string FgStatusDescription
+        {
+            get
+            {
+
+                switch (fgStatus)
+                {
+                    case FgStatus.Foreground:
+                        return "Foreground";
+                    case FgStatus.RunningButNoFocus:
+                        return "Background";
+                    case FgStatus.NotRunning:
+                        return "Not Found";
+                    default:
+                        throw new Exception("Unkonwon FGStatus");
+                }
+            }
+
+        }
+
         public bool IsConsoleShown
         {
             get => isConsoleShown; set
@@ -66,17 +106,70 @@ namespace FallGuysNameFinder
             }
         }
 
-        public string StartStopButtonDesc
+        public bool IsRunning => engineStatus == EngineStatus.Running;
+
+
+        public EngineStatus EngineStatus
         {
-            get => startstopdesc; set
+            get => engineStatus; set
             {
-                startstopdesc = value;
+                engineStatus = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EngineStatus)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EngineStatusDescription)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EngineStatusIcon)));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StartStopButtonDesc)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
             }
         }
 
+        public Icon EngineStatusIcon
+        {
+            get
+            {
+
+                switch (engineStatus)
+                {
+                    case EngineStatus.Running:
+                        return SystemIcons.Information;
+                    case EngineStatus.Stopping:
+                        return SystemIcons.Warning;
+                    case EngineStatus.Stopped:
+                        return SystemIcons.Error;
+                    default:
+                        throw new Exception("Unkonwon FGStatus");
+                }
+
+            }
+        }
+
+        public string StartStopButtonDesc
+        {
+            get
+            {
+                switch (engineStatus)
+                {
+                    case EngineStatus.Running:
+                        return "Stop";
+                    case EngineStatus.Stopping:
+                        return "Stopping...";
+                    case EngineStatus.Stopped:
+                        return "Start";
+                    default:
+                        throw new Exception("Unkonwn Engine Status");
+                }
+            }
+        }
+
+        public string EngineStatusDescription
+        {
+            get => engineStatus.ToString();
+        }
+
+
+
+
         public string ShowConsoleButtonDesc => IsConsoleShown ? "Hide Console" : "Show Console";
-        
+
 
     }
 }

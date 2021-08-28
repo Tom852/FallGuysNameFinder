@@ -30,8 +30,8 @@ namespace FallGuysNameFinder
     {
         public ViewModel ViewModel { get; set; } = new ViewModel();
         public DataStorageStuff DataStuff { get; }
-        public Engine BackendEngine { get; private set; }
-        public DispatcherTimer PenetrantForeGroundChecker { get; private set; }
+        public Engine BackendEngine { get; set; }
+        public DispatcherTimer PenetrantForeGroundChecker { get; set; }
 
         public MainWindow()
         {
@@ -45,17 +45,18 @@ namespace FallGuysNameFinder
 
             InitializeComponent();
 
-            SetupDispatchers();
+            SetupFallguysProcessChecker();
         }
 
-        private void SetupDispatchers()
+        private void SetupFallguysProcessChecker()
         {
             this.PenetrantForeGroundChecker = new DispatcherTimer();
             PenetrantForeGroundChecker.Interval = TimeSpan.FromSeconds(1);
             PenetrantForeGroundChecker.Tick += (a, b) =>
             {
-                this.ViewModel.FgNotForeground = !ForeGroundWindowChecker.IsFgInForeGround();
+                this.ViewModel.FgStatus = ForeGroundWindowChecker.GetFgStatus();
             };
+            this.PenetrantForeGroundChecker.Start();
         }
 
 
@@ -180,9 +181,9 @@ namespace FallGuysNameFinder
 
         private void StartStop_Click(object sender, RoutedEventArgs e)
         {
-            if (this.ViewModel.IsRunning)
+            if (this.ViewModel.EngineStatus != EngineStatus.Stopped)
             {
-                this.ViewModel.StartStopButtonDesc = "Stopping...";
+                this.ViewModel.EngineStatus = EngineStatus.Stopping;
                 this.BackendEngine.Stop();
             }
             else
@@ -202,17 +203,13 @@ namespace FallGuysNameFinder
  
                 
                 BackendEngine.Start();
-                this.ViewModel.IsRunning = true;
-                this.ViewModel.StartStopButtonDesc = "Stop";
 
                 this.BackendEngine.OnStop += (a, b) =>
                 {
-                    this.ViewModel.IsRunning = false;
-                    this.PenetrantForeGroundChecker.Stop(); // todo: mal noch was hier machen.
-                    this.ViewModel.FgNotForeground = false;
-                    this.ViewModel.StartStopButtonDesc = "Start";
+                    this.ViewModel.EngineStatus = EngineStatus.Stopped;
                 };
-                this.PenetrantForeGroundChecker.Start();
+
+                this.ViewModel.EngineStatus = EngineStatus.Running;
             }
 
         }
