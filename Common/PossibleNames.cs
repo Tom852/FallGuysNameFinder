@@ -7,20 +7,37 @@ using System.Linq;
 using System.Text;
 using Serilog;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Backend
 {
     public static class PossibleNames
     {
+        public static string PossibilitiesDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                string directory = Path.GetDirectoryName(path);
+                return Path.Combine(directory, "PossibleNames");
+            }
+        }
+
+
         private static string[] firsts;
         private static string[] seconds;
         private static string[] thirds;
+
+
 
         public static string[] FirstNames()
         {
             if (firsts == null)
             {
-                firsts = new DataStorageStuff().GetNamePossibilities(1);
+                var file = Path.Combine(PossibilitiesDirectory, "Possibilities1.txt");
+                firsts = File.ReadAllLines(file);
             }
             return firsts;
         }
@@ -29,7 +46,8 @@ namespace Backend
         {
             if (seconds == null)
             {
-                seconds = new DataStorageStuff().GetNamePossibilities(2);
+                var file = Path.Combine(PossibilitiesDirectory, "Possibilities2.txt");
+                seconds = File.ReadAllLines(file);
             }
             return seconds;
         }
@@ -38,7 +56,8 @@ namespace Backend
         {
             if (thirds == null)
             {
-                thirds = new DataStorageStuff().GetNamePossibilities(3);
+                var file = Path.Combine(PossibilitiesDirectory, "Possibilities3.txt");
+                thirds = File.ReadAllLines(file);
             }
             return thirds;
         }
