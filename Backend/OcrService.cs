@@ -61,10 +61,6 @@ namespace Backend
                             break;
                     }
 
-                    //todo: debug!
-                    bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
-
-
                     Log.Debug("Parsing Attempt {i}-{j}", i, j);
                     var ocrSuccess = DoOcr(bmp, out var text);
                     var refined = Refine(text);
