@@ -1,4 +1,5 @@
-﻿using Common.Model;
+﻿using Common;
+using Common.Model;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace Backend
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.File(DataStorageStuff.LogNamesFile, fileSizeLimitBytes: 1024*1024, rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5))
+                .WriteTo.File(DataStorageStuff.LogNamesFile, fileSizeLimitBytes: 1024 * 1024, rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5))
                 .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
                 .CreateLogger();
 
@@ -69,7 +70,7 @@ namespace Backend
             Console.WriteLine();
             Console.WriteLine("Starting Backend Engine in");
 
-            for (int i = 5; i>=1; i--)
+            for (int i = 5; i >= 1; i--)
             {
                 Console.WriteLine(i);
                 Thread.Sleep(1000);
@@ -77,7 +78,7 @@ namespace Backend
             Console.WriteLine();
 
 
-            //BringToFront();
+            //BringToFront(); // could make an option here but propbably not necessary?
 
             int iterations = 0;
             while (!stopRequested)
@@ -85,14 +86,17 @@ namespace Backend
                 iterations++;
                 try
                 {
-                    //BringToFront();
-                    //Thread.Sleep(500);
-                    //Its too aggressive.
+                    if (!ForeGroundWindowChecker.IsFgInForeGround())
+                    {
+                        Log.Information("Fall Guys is not in foreground. Iteration Skipped.");
+                        Thread.Sleep(4000);
+                        continue;
+                    }
 
                     Log.Debug("Pressing P");
                     PressP();
 
-                    Thread.Sleep(4000);
+                    Thread.Sleep(3750 + new Random().Next(500));
                     Log.Debug("Running OCR...");
                     bool success = OcrService.ReadFromScreen(out var text);
                     if (success)
@@ -105,7 +109,7 @@ namespace Backend
                         }
                         else
                         {
-                            Log.Information("Pattern did not match, rerolling...");
+                            Log.Debug("Pattern did not match, rerolling...");
                         }
                     }
                     else
@@ -131,7 +135,7 @@ namespace Backend
             }
 
             OnStop?.Invoke(this, new EventArgs());
-            Log.Information("Engine Stop after {iterations} iterations", iterations);
+            Log.Information("Engine stopped after {iterations} iterations", iterations);
         }
 
 
@@ -154,7 +158,7 @@ namespace Backend
             }
             catch
             {
-                Log.Warning("Didnt find Fall Guy Window");
+                Log.Warning("Fall Guys is not running and cannot be brought to Foreground.");
             }
 
         }
