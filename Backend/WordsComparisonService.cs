@@ -56,7 +56,7 @@ namespace Backend
             }
             else
             {
-                Log.Information("No Pattern matched");
+                Log.Debug("No Pattern matched");
             }
             return patternMatch;
         }

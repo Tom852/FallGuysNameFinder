@@ -13,12 +13,16 @@ using ImageFormat = System.Drawing.Imaging.ImageFormat;
 using System.IO;
 using System.Text.RegularExpressions;
 using Common;
+using FuzzySharp;
 
 namespace Backend
 {
     public class OcrService
     {
+
         const float CONFIDENCE_LIMIT = 0.85f;
+        const int MONOCHROME_WHITE_BOUNDARY = 250;
+        const int MONOCHROME_BRIGHT_BOUNDARY = 200;
 
         const double xStartPercentage = 0.60;
         const double yStartPercentrage = 0.29;
@@ -34,83 +38,230 @@ namespace Backend
             { 10, 10, -20, -20,  },
             { 10, 0, -20, 0,  },
             { 20, 0, -40, 0,  },
-
             { -10, 0, 20, 0,  },
             { -20, -20, 40, 40,  },
-            { -30, -30, 60, 40,  },
             { -40, -40, 80, 80, },
         };
 
+        List<List<string>> ToFuzzyAnyalyze = new List<List<string>>();
+        (string, int)[] FinalWords = new (string, int)[3];
+
+        const int amountOfColorModificaitons = 7;
         public bool ReadFromScreen(out string[] result)
         {
+            ToFuzzyAnyalyze = new List<List<string>>();
+            FinalWords = new (string, int)[3];
+
+            Bitmap[,] bmps = new Bitmap[variations.GetLength(0), amountOfColorModificaitons];
+            List<string> ocrRawTexts = new List<string>();
+
             for (int i = 0; i < variations.GetLength(0); i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < amountOfColorModificaitons; j++)
                 {
+                    Log.Information("OCR Attempt {0}-{1}", i, j);
+
                     var bmp = TakeScerenshot(variations[i, 0], variations[i, 1], variations[i, 2], variations[i, 3]);
-                    bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
 
                     switch (j)
                     {
                         case 0:
-                            ToMonochromeInverted(bmp);
+                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true);
                             break;
                         case 1:
-                            ToMonochrome(bmp);
+                            ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true);
                             break;
                         case 2:
-                            ToGrayScale(bmp);
+                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false);
                             break;
                         case 3:
+                            ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false);
+                            break;
+                        case 5:
+                            ToGrayScale(bmp);
+                            break;
+                        case 6:
                             break;
                     }
+                    bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg); // temporary :)
 
-                    Log.Debug("Parsing Attempt {i}-{j}", i, j);
-                    var ocrSuccess = DoOcr(bmp, out var text);
-                    var refined = Refine(text);
-                    bool isViable = Validate(ref refined);
 
-                    if (isViable)
+                    DoOcr(bmp, out var textRaw, out var confidence);
+                    if (confidence < 0.4)
                     {
-                        Log.Information("Parsing successful. Viable Name detected: {0}", string.Join(" ", refined));
-                        result = refined.ToArray();
+                        Log.Debug("Confidence too low. Dumping result.");
+                        continue;
+                    }
+
+                    if (textRaw.Trim() == string.Empty)
+                    {
+                        Log.Debug("No Text parsed. Dumping result.");
+                        continue;
+                    }
+
+                    var garbageFiltered = FilterArtifacts(textRaw);
+                    var agressiveFiltered = AggressiveArtifactFilter(textRaw);
+                    var spaceInvariant = DetectMissingSpaces(textRaw);
+
+                    bool success = TestForPerfectMatch(new List<List<string>>() { garbageFiltered, agressiveFiltered, spaceInvariant }, out var iterationresult1);
+                    if (success)
+                    {
+                        result = iterationresult1.ToArray();
                         return true;
                     }
-                    if (ocrSuccess)
+
+                    Log.Debug("No Perfect Match");
+
+                    if (confidence > 0.85)
                     {
-                        var p1 = PossibleNames.FirstNames();
-                        var p2 = PossibleNames.SecondNames();
-                        var p3 = PossibleNames.ThirdNames();
-
-                        try
-                        {
-
-                            var s1 = p1.Contains(refined[0]); // todo nullexception possible here
-                            var s2 = p2.Contains(refined[1]);
-                            var s3 = p3.Contains(refined[2]);
-
-                            Console.WriteLine();
-                            Console.WriteLine("DEBUG INFORMATION");
-                            Log.Debug("Word 1 - Success {0} - Word {1}", s1, refined[0]);
-                            Log.Debug("Word 2 - Success {0} - Word {1}", s2, refined[1]);
-                            Log.Debug("Word 3 - Success {0} - Word {1}", s3, refined[2]);
-                        }
-                        catch { } //temp very here
-                        throw new Exception("OCR is very confident, but name seems not viable. Is a name possibility not within the possibility collection? Was the name refined in a wrong way?");
+                        Log.Warning("OCR was very confident, yet there was no name match. This can happen if Fall Guys added new name possiblities. Manual review recommended.");
                     }
-                    
-                    Log.Debug("Parsing attempt failed.");
-                    if (j == 3)
-                    {
-                        Log.Information("Screenshot saved.");
-                        bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg);
-                    }
+
+
+                    bmps[i, j] = bmp;
+                    this.ToFuzzyAnyalyze.Add(spaceInvariant);
+                    this.ToFuzzyAnyalyze.Add(garbageFiltered);
+                    this.ToFuzzyAnyalyze.Add(agressiveFiltered);
                 }
-
-
             }
+
+            Log.Information("No attempt led to a perfect match. The engine will try to fit the patterns approximately.");
+            
+            Console.WriteLine("Fuzzy Engine Started with the following texts avilable:");
+            ToFuzzyAnyalyze.RemoveAll(entry => entry.Count() < 3);
+            ToFuzzyAnyalyze = ToFuzzyAnyalyze.Distinct(new SequenceEqualsComparer()).ToList();
+            ToFuzzyAnyalyze.ForEach(f => Console.WriteLine(string.Join(" ", f)));
+
+
+            var magicSuccess = GoFuzzyMatching(out var fuzzyResult); //todo: reinsten out var und so ghetto...
+            if (magicSuccess)
+            {
+                result = fuzzyResult.ToArray();
+                return true;
+            }
+
+
             result = new string[] { };
             return false;
+        }
+
+        private bool GoFuzzyMatching(out List<string> result)
+        {
+            foreach (var i in ToFuzzyAnyalyze.ToList())
+            {
+                if (i.Count > 3)
+                {
+                    var t = DetectMostLikelyPermutation(i);
+                    ToFuzzyAnyalyze.Remove(i);
+                    ToFuzzyAnyalyze.Add(t);
+                }
+                if (i.Count < 3)
+                {
+                    ToFuzzyAnyalyze.Remove(i);
+                }
+            }
+
+            foreach (var i in ToFuzzyAnyalyze)
+            {
+                DoFuzzyComparison(i);
+            }
+
+            if (!FinalWords.ToList().All(entry => entry.Item2 != 0))
+            {
+            Log.Warning("Fuzzy matching failed.");
+                result = null;
+                return false;
+            }
+
+
+
+            result = FinalWords.Select(f => f.Item1).ToList();
+            Log.Information("Fuzzy matching succeeded. The result is: {0}", FinalWords.Select(f => $"{f.Item1} ({f.Item2}%)").Aggregate((x, y) => $"{x} | {y}"));
+
+            return true;
+        }
+
+        private void DoFuzzyComparison(List<string> words)
+        {
+            var nameOptions = new string[][] { PossibleNames.FirstNames(false), PossibleNames.SecondNames(false), PossibleNames.ThirdNames(false) };
+
+            for (int i = 0; i < 3; i++)
+            {
+                var r = Process.ExtractOne(words[i], nameOptions[i], cutoff: 50);
+                if (r != null)
+                {
+                    if (this.FinalWords[i].Item2 < r.Score)
+                    {
+                        Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", i, words[i], r.Value, r.Score);
+                        FinalWords[i].Item1 = r.Value;
+                        FinalWords[i].Item2 = r.Score;
+                    }
+                } else
+                {
+                    Log.Debug("{0} could not be matched", words[i]);
+                }
+
+            }
+        }
+
+        private List<string> DetectMostLikelyPermutation(List<string> words)
+        {
+            Dictionary<int, int> scoreBoard = new Dictionary<int, int>();
+            var subcollecitons = this.GetSubCollections(words);
+
+            for (int i = 0; i < subcollecitons.Count; i++)
+            {
+
+                var result1 = Process.ExtractOne(subcollecitons[i][0], PossibleNames.FirstNames(false));
+                var result2 = Process.ExtractOne(subcollecitons[i][1], PossibleNames.SecondNames(false));
+                var result3 = Process.ExtractOne(subcollecitons[i][2], PossibleNames.ThirdNames(false));
+                scoreBoard.Add(i, result1.Score + result2.Score + result3.Score);
+            }
+
+            var maxValue = scoreBoard.Values.Max();
+            var maxIndex = scoreBoard.First(s => s.Value == maxValue).Key;
+            var result = words.Skip(maxIndex).Take(3).ToList();
+            Log.Debug("Best Fitting Triple of {0} is {1}", words, result);
+            return result;
+        }
+
+        private bool TestForPerfectMatch(List<List<string>> input, out List<string> result)
+        {
+
+            List<List<string>> wordsOfLength3 = new List<List<string>>();
+
+            // todo: hier subcolleciton logic machen.
+            foreach (var entry in input)
+            {
+                if (entry.Count == 3)
+                {
+                    wordsOfLength3.Add(entry);
+                }
+                if (entry.Count > 3)
+                {
+                    var subs = GetSubCollections(entry);
+                    wordsOfLength3.AddRange(subs);
+                }
+            }
+
+            foreach (var entry in wordsOfLength3)
+            {
+
+                bool isViable = ValidateTripe(entry);
+                if (isViable)
+                {
+                    Log.Information("Viable Text Found: '{0}'", entry);
+                    result = entry;
+                    return true;
+                }
+
+            }
+
+
+
+            result = null;
+            return false;
+
         }
 
 
@@ -120,7 +271,7 @@ namespace Backend
 
 
             var screenshotArea = this.GetScreenshotArea();
-           
+
             var sizeToCapture = new Size((int)screenshotArea.Width + sizeVariationX, (int)screenshotArea.Height + sizeVariationY);
 
 
@@ -139,7 +290,7 @@ namespace Backend
                                 sizeToCapture,
                                 CopyPixelOperation.SourceCopy);
 
-            return bmpScreenshot;         
+            return bmpScreenshot;
         }
 
         private WindowPosition GetScreenshotArea()
@@ -205,7 +356,7 @@ namespace Backend
                 result.Top = (int)relativeStartY + effectiveWindowTop;
 
                 result.Right = (int)(effectiveWindowWidth * xEndPercentage + effectiveWindowLeft);
-                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop );
+                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop);
             }
             return result;
         }
@@ -216,24 +367,31 @@ namespace Backend
             return Path.Combine(DataStorageStuff.AppDir, "Screenshots", $"{dateString}_{attempt}_{style}.jpg");
         }
 
-        private bool DoOcr(Bitmap b, out string text)
+        private void DoOcr(Bitmap b, out string textRaw, out float confidence)
         {
             using (var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
             {
 
                 using (Page page = engine.Process(b, PageSegMode.SingleBlock)) // todo: single line?
                 {
-                    text = page.GetText();
-                    var confidence = page.GetMeanConfidence();
-                    Log.Debug("With confidence {confidence}, the following text was parsed: '{text}'", confidence, string.IsNullOrWhiteSpace(text) ? "[No Text]" : text );
-                    return confidence > CONFIDENCE_LIMIT;
+                    textRaw = page.GetText();
+                    confidence = page.GetMeanConfidence();
+                    Log.Information("With confidence {confidence}, the following text was parsed: '{text}'", confidence, string.IsNullOrWhiteSpace(textRaw) ? "[No Text]" : textRaw.Trim());
                 }
             }
         }
 
-        private List<string> Refine(string input)
+        private List<string> FilterArtifacts(string input)
         {
-            string pattern = @"([A-Z][a-z]{2,}|VIP|MVP|IceCream)";
+            var result = input.Split(' ').Select(s => s.Trim()).Where(s => s.Length > 2).ToList();
+            Log.Debug("Soft artifact filter delivered text to: {0}", result);
+            return result;
+        }
+
+        private List<string> AggressiveArtifactFilter(string input)
+        {
+            string pattern = @"[A-Za-z]{3,}";
+
             Regex r = new Regex(pattern);
             var matches = r.Matches(input);
 
@@ -243,54 +401,64 @@ namespace Backend
                 words.Add(m.Value);
             }
 
-            Log.Debug("Text was refined to '{0}'", string.Join(" ", words));
+            Log.Debug("Aggressive artifact filter delivered {0}", words);
 
             return words;
         }
 
-        private bool Validate(ref List<string> words)
+        private List<string> DetectMissingSpaces(string input)
         {
-            if (words.Count < 3)
+            //string pattern = @"([A-Z][a-z]{2,}|VIP|MVP|IceCream)";  // das macht nun eig case invariatn
+            string pattern = @"([A-Z][a-z]{2,})";
+
+            Regex r = new Regex(pattern);
+            var matches = r.Matches(input);
+
+            List<string> words = new List<string>();
+            foreach (Match m in matches)
             {
-                return false;
-            }
-            if (words.Count == 3)
-            {
-                return ValidateTripe(words.ToArray());
+                words.Add(m.Value);
             }
 
-            for (int i = 0; i < words.Count - 3; i++)
-            {
-                var subcollection = words.Skip(i).Take(3);
-                var isGood = ValidateTripe(subcollection.ToArray());
-                if (isGood)
-                {
-                    Log.Information("Viable Subcollection detected");
-                    words = subcollection.ToList();
-                    return true;
-                }
-            }
-            return false;
+            Log.Debug("Word-Extractor delivered {0}", words);
 
+            return words;
         }
 
-        private bool ValidateTripe(string[] words)
+
+        private bool ValidateTripe(List<string> words)
         {
-            if (words.Length!=3)
+            if (words.Count != 3)
             {
                 throw new Exception("words length is not 3.");
             }
-            var p1 = PossibleNames.FirstNames();
-            var p2 = PossibleNames.SecondNames();
-            var p3 = PossibleNames.ThirdNames();
+
+            var p1 = PossibleNames.FirstNames(true);
+            var p2 = PossibleNames.SecondNames(true);
+            var p3 = PossibleNames.ThirdNames(true);
 
             // todo: würde heir bereits alles toupper haben wollen, damit das schonmal raus ist.
 
-            return p1.Contains(words[0]) && p2.Contains(words[1]) && p3.Contains(words[2]);
+            var w1 = words[0].ToLower();
+            var w2 = words[1].ToLower();
+            var w3 = words[2].ToLower();
+
+            return p1.Contains(w1) && p2.Contains(w2) && p3.Contains(w3);
+        }
+
+        private List<List<string>> GetSubCollections(List<string> words)
+        {
+            List<List<string>> result = new List<List<string>>();
+            for (int i = 0; i <= words.Count - 3; i++)
+            {
+                var subcollection = words.Skip(i).Take(3);
+                result.Add(subcollection.ToList());
+            }
+            return result;
         }
 
 
-        public void ToMonochrome(Bitmap Bmp)
+        public void ToMonochrome(Bitmap Bmp, int whiteBoundary, bool inverted)
         {
             int rgb;
             Color c;
@@ -300,33 +468,26 @@ namespace Backend
                 {
                     c = Bmp.GetPixel(x, y);
                     rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
-                    if (rgb > 200)
+                    if (rgb > whiteBoundary)
                     {
-                        Bmp.SetPixel(x, y, Color.White);
+                        if (inverted)
+                        {
+                            Bmp.SetPixel(x, y, Color.Black);
+                        } else
+                        {
+                            Bmp.SetPixel(x, y, Color.White);
+                        }
                     }
                     else
                     {
-                        Bmp.SetPixel(x, y, Color.Black);
-                    }
-                }
-        }
-        public void ToMonochromeInverted(Bitmap Bmp)
-        {
-            int rgb;
-            Color c;
-
-            for (int y = 0; y < Bmp.Height; y++)
-                for (int x = 0; x < Bmp.Width; x++)
-                {
-                    c = Bmp.GetPixel(x, y);
-                    rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
-                    if (rgb > 200)
-                    {
-                        Bmp.SetPixel(x, y, Color.Black);
-                    }
-                    else
-                    {
-                        Bmp.SetPixel(x, y, Color.White);
+                        if (inverted)
+                        {
+                            Bmp.SetPixel(x, y, Color.White);
+                        }
+                        else
+                        {
+                            Bmp.SetPixel(x, y, Color.Black);
+                        }
                     }
                 }
         }
@@ -358,6 +519,19 @@ namespace Backend
                     rgb = 255 - rgb;
                     Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
                 }
+        }
+    }
+
+    internal class SequenceEqualsComparer : IEqualityComparer<List<string>>
+    {
+        public bool Equals(List<string> x, List<string> y)
+        {
+            return x.SequenceEqual(y);
+        }
+
+        public int GetHashCode(List<string> obj)
+        {
+           return obj.Aggregate(0, (x, y) => x = x + y.GetHashCode());
         }
     }
 }

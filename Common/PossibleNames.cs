@@ -27,39 +27,73 @@ namespace Backend
 
 
         private static string[] firsts;
+        private static string[] firstsLower;
         private static string[] seconds;
+        private static string[] secondsLower;
         private static string[] thirds;
+        private static string[] thirdsLower;
 
 
+        private static string[] GetAsLowerCase(string[] words)
+        {
+            return words.ToList().Select(s => s.ToLower()).ToArray();
+        }
 
-        public static string[] FirstNames()
+        public static string[] FirstNames(bool asLowerCase)
         {
             if (firsts == null)
             {
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities1.txt");
                 firsts = File.ReadAllLines(file);
+                firstsLower = GetAsLowerCase(firsts);
+
             }
-            return firsts;
+            if (asLowerCase)
+            {
+                return firstsLower;
+            }
+            else
+            {
+                return firsts;
+            }
         }
 
-        public static string[] SecondNames()
+        public static string[] SecondNames(bool asLowerCase)
         {
             if (seconds == null)
             {
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities2.txt");
                 seconds = File.ReadAllLines(file);
+                secondsLower = GetAsLowerCase(seconds);
+
             }
-            return seconds;
+            if (asLowerCase)
+            {
+                return secondsLower;
+            }
+            else
+            {
+                return seconds;
+            }
         }
 
-        public static string[] ThirdNames()
+        public static string[] ThirdNames(bool asLowerCase)
         {
             if (thirds == null)
             {
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities3.txt");
                 thirds = File.ReadAllLines(file);
+                thirdsLower = GetAsLowerCase(thirds);
+
             }
-            return thirds;
+            if (asLowerCase)
+            {
+                return thirdsLower;
+            }
+            else
+            {
+                return thirds;
+            }
         }
     }
 }

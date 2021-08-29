@@ -33,9 +33,9 @@ namespace FallGuysNameFinder
 
             var vm = new AddPatternViewModel();
             vm.Pattern = p;
-            vm.FirstNames = PossibleNames.FirstNames().ToList().OrderBy(s => s).ToList();
-            vm.SecondNames = PossibleNames.SecondNames().ToList().OrderBy(s => s).ToList();
-            vm.ThirdNames = PossibleNames.ThirdNames().ToList().OrderBy(s => s).ToList();
+            vm.FirstNames = PossibleNames.FirstNames(false).ToList().OrderBy(s => s).ToList();
+            vm.SecondNames = PossibleNames.SecondNames(false).ToList().OrderBy(s => s).ToList();
+            vm.ThirdNames = PossibleNames.ThirdNames(false).ToList().OrderBy(s => s).ToList();
             vm.FirstNames.Insert(0, "*");
             vm.SecondNames.Insert(0, "*");
             vm.ThirdNames.Insert(0, "*");
