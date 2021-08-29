@@ -45,9 +45,9 @@ h4 {
     font-weight: bold;
     color: #aa0000;
 }
-.warn {
+.hint {
     font-weight: bold;
-    color: #0000aa;
+    color: #0066aa;
 }
 
 .picarray {

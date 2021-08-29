@@ -16,13 +16,13 @@
 
     <h1>Possible Name Occurences</h1>
     <div class="content">
-        <p>I kindly refer you to the following list. We figured that the following three third names are missing, though:</p>
+        <p>I kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>. We figured that the following three third names are missing, though:</p>
         <ul>
             <li>Artist</li>
             <li>Peanut</li>
             <li>Lionheart</li>
         </ul>
-        <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">See here</a>
+        
     </div>
 
 
@@ -49,7 +49,7 @@
         <p>There is the option to add a <code>*</code> as a wildcard or placeholder. Whatever will be rolled on that position, it will match.</p>
         <h4>Examples</h4>
         <ul class="code">
-            <li>* Gaming Gamer></li>
+            <li>* Gaming Gamer</li>
             <li>Good * Yeeter</li>
             <li>* * Hotdog</li>
         </ul>
@@ -64,7 +64,7 @@
             <li>Good Yeeted Yeetus</li>
         </ul>
         <p><span class="warn">Attention: </span> Patterns must match exactly. Watch your spelling!</p>
-        <p><span class="hint">Attention: </span> Yet there is no option to define flexible patterns, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come later.</p>
+        <p><span class="hint">Note: </span> Yet there is no option to define flexible patterns, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come later.</p>
     </div>
 
     <h1>Setting up Fall Guys</h1>
@@ -77,7 +77,7 @@
             <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
 
         </ol>
-        <p><span class="warn"">Important: </span>Observe the program's behaviour for a while before you leave it running afk, to ensure your settings work well.</p>
+        <p><span class="warn" ">Important: </span>Observe the program's behaviour for a while before you leave it running afk, to ensure your settings work well.</p>
     </div>
 
     <div class="picarray">
@@ -128,6 +128,8 @@
     <h1>Options</h1>
 
     <h2>Stop on Alliteration</h2>
+    <img src="options.png" align="right" />
+
     <div class="content">
         <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
         <h4>Examples:</h4>
@@ -145,17 +147,18 @@
             <li>Bouncy Yeeted Yeeter</li>
             <li>Nify Dancing Dancer</li>
         </ul>
-        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter example. Gaming and Gamer don't share the same first four letters. You would have to add this combination manually (see below).</p>
+        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter examples. Gaming and Gamer don't share the same first four letters. Infallible and fall neither. You would have to add this combination manually (see below).</p>
         <ul class="code">
             <li>Cold Gaming Gamer</li>
+            <li>Infallible Fallen Apple</li>
         </ul>
     </div>
 
     <h2>Stop on error</h2>
     <div class="content">
-        <p>Sometimes, things may go wrong. Imagine you got your desired name, but the software doesn't recognize it. With this option, the program will halt. However, realistically, chances are super low that the error occurs on just the single perfect name. If you want to run the program over night, it would be uncool if it stops after just a few minutes. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
-        <p><b>Recommendation: </b>Test the software while you sit in front of your computer. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most cases. Enable the option if you are actively on your computer, disable it if you run it overnight.</p>
-        <p>Note that after 10 consecutive parsing fails, the engine stops regardless of your setting.</p>
+        <p>Sometimes, things may go wrong. Imagine you get your desired name, but the software doesn't recognize it. With this option, the program will halt, without it it will continue. Realistically, chances are super low that the error occurs on just that single perfect name. I spent a lot of effort to detect even unclear names on bad nameplates. The disadvantage of the option is, that if you want to run the program over night. It would be uncool if it stops after just a few minutes but you expected it to test thousands of names. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
+        <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
+        <p>Note that after 10 consecutive major errors, the engine stops regardless of your setting. For example, when your profile page is not open or Fall Guys crashed or so.</p>
     </div>
 
 
