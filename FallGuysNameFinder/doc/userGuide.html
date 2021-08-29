@@ -7,40 +7,24 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Options</h1>
+    <h1>Quick Start Guide</h1>
+    <ul>
+        <li>Set a nameplate with a small icon, no scribbles in the background and high contrast.</li>
+        <li>Add patterns like <code>* Golden Hotdog</code></li>
+        <li>Partial wildcards don't work: <del class="code">L* S*ing Ham*</del></li>
+    </ul>
 
-    <h2>Stop on Alliteration</h2>
+    <h1>Possible Name Occurences</h1>
     <div class="content">
-
-
-        <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
-        <h4>Examples:</h4>
-        <ul class="code">
-            <li>Chic Chasing Crown</li>
-            <li>Gifted Gaming Goliath</li>
+        <p>I kindly refer you to the following list. We figured that the following three third names are missing, though:</p>
+        <ul>
+            <li>Artist</li>
+            <li>Peanut</li>
+            <li>Lionheart</li>
         </ul>
+        <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">See here</a>
     </div>
 
-    <h2>Stop on double-word</h2>
-    <div class="content">
-        <p>The software will stop rerolling your name, whenever two of three words start with the same 4 letters.</p>
-        <h4>Examples:</h4>
-        <ul class="code">
-            <li>Bouncy Yeeted Yeeter</li>
-            <li>Nify Dancing Dancer</li>
-        </ul>
-        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter example. Gaming and Gamer don't share the same first four letters. You would have to add this combination manually (see below).</p>
-        <ul class="code">
-            <li>Cold Gaming Gamer</li>
-        </ul>
-    </div>
-
-    <h2>Stop on error</h2>
-    <div class="content">
-        <p>Sometimes, things may go wrong. Imagine you got your desired name, but the software doesn't recognize it. With this option, the program will halt. However, realistically, chances are super low that the error occurs on just the single perfect name. If you want to run the program over night, it would be uncool if it stops after just a few minutes. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
-        <p><b>Recommendation: </b>Test the software while you sit in front of your computer. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most cases. Enable the option if you are actively on your computer, disable it if you run it overnight.</p>
-        <p>Note that after 10 consecutive parsing fails, the engine stops regardless of your setting.</p>
-    </div>
 
     <h1>Patterns</h1>
     <h2>Adding, Editing, Removing</h2>
@@ -79,7 +63,8 @@
             <li>Good Yeeted Yeeter</li>
             <li>Good Yeeted Yeetus</li>
         </ul>
-        <p>There is also no regex support or such, since it is just not necessary. Only few names have similarities like Yeetus and Yeeter.</p>
+        <p><span class="warn">Attention: </span> Patterns must match exactly. Watch your spelling!</p>
+        <p><span class="hint">Attention: </span> Yet there is no option to define flexible patterns, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come later.</p>
     </div>
 
     <h1>Setting up Fall Guys</h1>
@@ -90,24 +75,26 @@
             <li>Nameplate must <b>not have scribbles or drawings</b> in its backgorund. It should be as unicolor as possible.</li>
             <li>The <b>left-side graphic</b> of the nameplate should be as far away from your name as possible. If it's too large, parts of it may get captured in the screenshot. This usually gets filtered, but may not be optimal.</li>
             <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
-            <li>Observe the program's behaviour for a while before you leave it running afk, to ensure your nameplate works well.</li>
+
         </ol>
+        <p><span class="warn"">Important: </span>Observe the program's behaviour for a while before you leave it running afk, to ensure your settings work well.</p>
     </div>
 
     <div class="picarray">
         <figure>
+            <img src="gootPlate1.png" />
+            <figcaption>Recommended Plate<br />Unicolor background.<br />Only few flame tips interfere.<br />Sufficient contrast.</figcaption>
+        </figure>
+        <figure>
             <img src="badPlate1.png" />
             <figcaption>Bad Plate<br />Dino is too big.<br />Circles in background.</figcaption>
         </figure>
-        <figure>
-            <img src="gootPlate1.png" />
-            <figcaption>Better Plate<br />Unicolor background.<br />Only few flame tips interfere.<br />Sufficient contrast.</figcaption>
-        </figure>
+
 
 
         <figure>
             <img src="badPlate2.png" />
-            <figcaption>Bad Plate<br />The contrast is too low.<br />Note the buggy monochrome transfomration.</figcaption>
+            <figcaption>Bad Plate<br />The contrast is too low.<br />Note the failed monochrome transformation.</figcaption>
         </figure>
         <figure>
             <img src="badPlate2.png" />
@@ -115,10 +102,11 @@
         </figure>
     </div>
 
-    <h2>Resolution, Window</h2>
+    <h2>Resolution and Windowed Mode</h2>
     <div class="content">
-        <p>The tool has been tested for 16:9 aspect ratios. It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be intersting so you can observe the console.</p>
-        <p><span class="warn">Warning: </span> If you set your resolution lower, precision goes lower, too!</p>
+        <p>The higher the resolution, the better it will work. 1080p and larger is recommended. The engine is very robust and will also work on 720p, but it is not recommended.</p>
+        <p>The tool has been tested for 16:9 aspect ratios with the exception of 1920x1200 also being supported (cause I have that :D ). It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be interesting to observe the console.</p>
+        <p><span class="warn">Warning: </span> The lower the resolution, the less accuracy! The effect is well noticable at resolutions lower than 1920x1080!</p>
     </div>
 
 
@@ -130,13 +118,44 @@
 
     <h1>Console</h1>
     <div class="content">
-        <p>If you like, you can show the console. This gives you information about what the software is doing. Just move it to your secondary monitor, if available.</p>
+        <p>If you like, you can show the console. This gives you information about what the software is doing. This helps a lot in the beginning to detect if it runs smoothly with your settings or if it is struggling. Just move it to your secondary monitor, if available. You can also run Fall Guys in windowed mode, if you only have one monitor.</p>
+        <p><span class="warn">Attention:</span> Don't mark text on the console. This halts the program. If you are stuck, just click into the console and press a few times <code>ENTER</code></p>
     </div>
 
 
-    <h1>Possible Name Occurences</h1>
+
+
+    <h1>Options</h1>
+
+    <h2>Stop on Alliteration</h2>
     <div class="content">
-        <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">See here</a>
+        <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
+        <h4>Examples:</h4>
+        <ul class="code">
+            <li>Chic Chasing Crown</li>
+            <li>Gifted Gaming Goliath</li>
+        </ul>
+    </div>
+
+    <h2>Stop on double-word</h2>
+    <div class="content">
+        <p>The software will stop rerolling your name, whenever two of three words start with the same 4 letters.</p>
+        <h4>Examples:</h4>
+        <ul class="code">
+            <li>Bouncy Yeeted Yeeter</li>
+            <li>Nify Dancing Dancer</li>
+        </ul>
+        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter example. Gaming and Gamer don't share the same first four letters. You would have to add this combination manually (see below).</p>
+        <ul class="code">
+            <li>Cold Gaming Gamer</li>
+        </ul>
+    </div>
+
+    <h2>Stop on error</h2>
+    <div class="content">
+        <p>Sometimes, things may go wrong. Imagine you got your desired name, but the software doesn't recognize it. With this option, the program will halt. However, realistically, chances are super low that the error occurs on just the single perfect name. If you want to run the program over night, it would be uncool if it stops after just a few minutes. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
+        <p><b>Recommendation: </b>Test the software while you sit in front of your computer. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most cases. Enable the option if you are actively on your computer, disable it if you run it overnight.</p>
+        <p>Note that after 10 consecutive parsing fails, the engine stops regardless of your setting.</p>
     </div>
 
 

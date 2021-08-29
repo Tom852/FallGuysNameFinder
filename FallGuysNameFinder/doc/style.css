@@ -17,6 +17,10 @@ ol, ul {
     margin-left: 30px;
 }
 
+h1 {
+    color: midnightblue;
+}
+
 h1:not(:first-of-type) {
     margin-top: 2em;
 }
@@ -24,6 +28,7 @@ h1:not(:first-of-type) {
 h2 {
     margin-top: 2em;
     font-size: 16pt;
+    color: darkblue;
 }
 
 h1 + h2 {
@@ -39,6 +44,10 @@ h4 {
 .warn {
     font-weight: bold;
     color: #aa0000;
+}
+.warn {
+    font-weight: bold;
+    color: #0000aa;
 }
 
 .picarray {

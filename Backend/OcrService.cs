@@ -82,7 +82,7 @@ namespace Backend
                         var p2 = PossibleNames.SecondNames();
                         var p3 = PossibleNames.ThirdNames();
 
-                        var s1 = p1.Contains(refined[0]);
+                        var s1 = p1.Contains(refined[0]); // todo nullexception possible here
                         var s2 = p2.Contains(refined[1]);
                         var s3 = p3.Contains(refined[2]);
 
