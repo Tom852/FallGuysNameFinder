@@ -67,7 +67,7 @@ namespace FallGuysNameFinder
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                AddPattern(w.Pattern);
+                AddPattern(w.Vm.Pattern);
             };
         }
 
@@ -123,7 +123,7 @@ namespace FallGuysNameFinder
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                EditPattern(index, w.Pattern);
+                EditPattern(index, w.Vm.Pattern);
             };
             w.OnRemoveClick += (d1, d2) =>
             {

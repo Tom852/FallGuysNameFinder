@@ -2,6 +2,7 @@
 using Common.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,24 @@ namespace FallGuysNameFinder
         public event EventHandler OnCancelClick;
         public event EventHandler OnRemoveClick;
 
-        public Pattern Pattern { get; set; }
+        public AddPatternViewModel Vm { get; set; }
 
         public AddPatternWindow(Pattern p)
         {
-            this.Pattern = p;
-            this.DataContext = Pattern;
+
+            var vm = new AddPatternViewModel();
+            vm.Pattern = p;
+            vm.FirstNames = PossibleNames.FirstNames().ToList().OrderBy(s => s).ToList();
+            vm.SecondNames = PossibleNames.SecondNames().ToList().OrderBy(s => s).ToList();
+            vm.ThirdNames = PossibleNames.ThirdNames().ToList().OrderBy(s => s).ToList();
+            vm.FirstNames.Insert(0, "*");
+            vm.SecondNames.Insert(0, "*");
+            vm.ThirdNames.Insert(0, "*");
+
+            this.Vm = vm;
+            this.DataContext = Vm;
             InitializeComponent();
+
         }
 
         public AddPatternWindow()
@@ -41,8 +53,21 @@ namespace FallGuysNameFinder
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            OnOkClick?.Invoke(this, e);
-            this.Close();
+            var isValid1 = this.Vm.FirstNames.Contains(this.Vm.Pattern.First);
+            var isValid2 = this.Vm.SecondNames.Contains(this.Vm.Pattern.Second);
+            var isValid3 = this.Vm.ThirdNames.Contains(this.Vm.Pattern.Third);
+
+            if (!isValid1 || !isValid2 || !isValid3)
+            {
+                MessageBox.Show("At least one name is not valid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                OnOkClick?.Invoke(this, e);
+                this.Close();
+            }
+
+
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
