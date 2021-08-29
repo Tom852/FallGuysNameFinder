@@ -41,9 +41,7 @@ namespace Common
 
         public static WindowPosition GetPositionShit()
         {
-            if (!IsFgRunning())
-            {
-            }
+
             var hwnd = GetFallGuysWindowHandle();
 
             GetWindowRect(hwnd, out RECT rect);

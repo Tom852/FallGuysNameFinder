@@ -76,10 +76,5 @@ namespace FallGuysNameFinder
             this.Close();
         }
 
-        private void Remove_Click(object sender, RoutedEventArgs e)
-        {
-            OnRemoveClick?.Invoke(this, e);
-            this.Close();
-        }
     }
 }

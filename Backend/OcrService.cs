@@ -113,71 +113,10 @@ namespace Backend
         private Bitmap TakeScerenshot(int startVariationX = 0, int startVariationY = 0, int sizeVariationX = 0, int sizeVariationY = 0)
         {
 
-            var windowPosition = FgWindowAccess.GetPositionShit();
 
-            decimal ratio = windowPosition.Width / (decimal)windowPosition.Height;
-
-
-            int absoluteStartX = 0;
-            int absoluteStartY = 0;
-            double sizeX;
-            double sizeY;
-
-            if (Math.Abs((ratio - ratio16by9)) < 0.001m)
-            {
-                // Full Screen 16:9 Aspect Ratio
-                double relativeStartX = windowPosition.Width * xStartPercentage;
-                double relativeStartY = windowPosition.Height * yStartPercentrage;
-                absoluteStartX = (int)relativeStartX + windowPosition.Left;
-                absoluteStartY = (int)relativeStartY + windowPosition.Top;
-
-                sizeX = windowPosition.Width * (xEndPercentage - xStartPercentage);
-                sizeY = windowPosition.Height * (yEndPercentage - yStartPercentrage);
-
-                Log.Debug("Detected Full Screen 16:9");
-            }
-            else if (ratio == 1.6m)
-            {
-                //Full Screen 16:10 (because i have that xD)
-                if (windowPosition.Height != 1200) {
-                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 Full Screen. Try running FG in windowed mode with 16:9.");
-                }
-                Log.Debug("Detected Full Screen 1920x1200");
-
-
-                double relativeStartX = windowPosition.Width * xStartPercentage;
-                double relativeStartY = 1080 * yStartPercentrage;
-                absoluteStartX = (int)relativeStartX + windowPosition.Left;
-                absoluteStartY = (int)relativeStartY + windowPosition.Top + 60;
-
-                sizeX = windowPosition.Width * (xEndPercentage - xStartPercentage);
-                sizeY = 1080 * (yEndPercentage - yStartPercentrage);
-            }
-            else
-            {
-                var effectiveWindowWidth = windowPosition.Width - 2 * 8;
-                var effectiveWindowHeight = windowPosition.Height - 31 - 8;
-
-                decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
-
-                if (!((ratioWhenWindowed - ratio16by9) < 0.001m)) {
-                    throw new Exception("Unknown aspect ratio or programmatic error. Try to run 16:9 fullscreen. That usually works. 16:9 windowed should work too.");
-                }
-
-                Log.Debug("Detected Windowed Fall Guys. Effective Width: {0}; Hieght: {1}", effectiveWindowWidth, effectiveWindowHeight);
-
-                // Windowed case: Adds 30px top, and 8 all other sides.
-                double relativeStartX = effectiveWindowWidth * xStartPercentage;
-                double relativeStartY = effectiveWindowHeight * yStartPercentrage;
-                absoluteStartX = (int)relativeStartX + windowPosition.Left + 8;
-                absoluteStartY = (int)relativeStartY + windowPosition.Top + 32;
-
-                sizeX = effectiveWindowWidth * (xEndPercentage - xStartPercentage);
-                sizeY = effectiveWindowHeight * (yEndPercentage - yStartPercentrage);
-            }
-            
+            var screenshotArea = this.GetScreenshotArea();
            
-            var sizeToCapture = new Size((int)sizeX + sizeVariationX, (int)sizeY + sizeVariationY);
+            var sizeToCapture = new Size((int)screenshotArea.Width + sizeVariationX, (int)screenshotArea.Height + sizeVariationY);
 
 
 
@@ -188,14 +127,80 @@ namespace Backend
             var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
 
 
-            gfxScreenshot.CopyFromScreen((int)absoluteStartX + startVariationX,
-                                         (int)absoluteStartY + startVariationY,
+            gfxScreenshot.CopyFromScreen((int)screenshotArea.Left + startVariationX,
+                                         (int)screenshotArea.Top + startVariationY,
                                 0,
                                 0,
                                 sizeToCapture,
                                 CopyPixelOperation.SourceCopy);
 
             return bmpScreenshot;         
+        }
+
+        private WindowPosition GetScreenshotArea()
+        {
+            var windowPosition = FgWindowAccess.GetPositionShit();
+
+            decimal ratio = windowPosition.Width / (decimal)windowPosition.Height;
+
+
+            WindowPosition result = new WindowPosition(0, 0, 0, 0);
+
+            if (Math.Abs((ratio - ratio16by9)) < 0.001m)
+            {
+                // Full Screen 16:9 Aspect Ratio
+                double relativeStartX = windowPosition.Width * xStartPercentage;
+                double relativeStartY = windowPosition.Height * yStartPercentrage;
+                result.Left = (int)relativeStartX + windowPosition.Left;
+                result.Top = (int)relativeStartY + windowPosition.Top;
+
+                result.Right = (int)(windowPosition.Width * xEndPercentage);
+                result.Bottom = (int)(windowPosition.Height * yEndPercentage);
+
+                Log.Debug("Detected Full Screen 16:9");
+            }
+            else if (ratio == 1.6m)
+            {
+                //Full Screen 16:10 (because i have that xD)
+                if (windowPosition.Height != 1200)
+                {
+                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 Full Screen. Try running FG in windowed mode with 16:9.");
+                }
+                Log.Debug("Detected Full Screen 1920x1200");
+
+
+                double relativeStartX = windowPosition.Width * xStartPercentage;
+                double relativeStartY = 1080 * yStartPercentrage;
+                result.Left = (int)relativeStartX + windowPosition.Left;
+                result.Right = (int)relativeStartY + windowPosition.Top + 60;
+
+                result.Right = (int)(windowPosition.Width * xEndPercentage);
+                result.Bottom = (int)(1080 * yEndPercentage);
+            }
+            else
+            {
+                var effectiveWindowWidth = windowPosition.Width - 2 * 8;
+                var effectiveWindowHeight = windowPosition.Height - 31 - 8;
+
+                decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
+
+                if (!((ratioWhenWindowed - ratio16by9) < 0.001m))
+                {
+                    throw new Exception("Unknown aspect ratio or programmatic error. Try to run 16:9 fullscreen. That usually works. 16:9 windowed should work too.");
+                }
+
+                Log.Debug("Detected Windowed Fall Guys. Effective Width: {0}; Hieght: {1}", effectiveWindowWidth, effectiveWindowHeight);
+
+                // Windowed case: Adds 30px top, and 8 all other sides.
+                double relativeStartX = effectiveWindowWidth * xStartPercentage;
+                double relativeStartY = effectiveWindowHeight * yStartPercentrage;
+                result.Left = (int)relativeStartX + windowPosition.Left + 8;
+                result.Right = (int)relativeStartY + windowPosition.Top + 32;
+
+                result.Right = (int)(effectiveWindowWidth * xEndPercentage);
+                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage);
+            }
+            return result;
         }
 
         private string GetScreenshotFile(int attempt, int style)
