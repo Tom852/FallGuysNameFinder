@@ -82,15 +82,20 @@ namespace Backend
                         var p2 = PossibleNames.SecondNames();
                         var p3 = PossibleNames.ThirdNames();
 
-                        var s1 = p1.Contains(refined[0]); // todo nullexception possible here
-                        var s2 = p2.Contains(refined[1]);
-                        var s3 = p3.Contains(refined[2]);
+                        try
+                        {
 
-                        Console.WriteLine();
-                        Console.WriteLine("DEBUG INFORMATION");
-                        Log.Debug("Word 1 - Success {0} - Word {1}", s1, refined[0]);
-                        Log.Debug("Word 2 - Success {0} - Word {1}", s2, refined[1]);
-                        Log.Debug("Word 3 - Success {0} - Word {1}", s3, refined[2]);
+                            var s1 = p1.Contains(refined[0]); // todo nullexception possible here
+                            var s2 = p2.Contains(refined[1]);
+                            var s3 = p3.Contains(refined[2]);
+
+                            Console.WriteLine();
+                            Console.WriteLine("DEBUG INFORMATION");
+                            Log.Debug("Word 1 - Success {0} - Word {1}", s1, refined[0]);
+                            Log.Debug("Word 2 - Success {0} - Word {1}", s2, refined[1]);
+                            Log.Debug("Word 3 - Success {0} - Word {1}", s3, refined[2]);
+                        }
+                        catch { } //temp very here
                         throw new Exception("OCR is very confident, but name seems not viable. Is a name possibility not within the possibility collection? Was the name refined in a wrong way?");
                     }
                     
@@ -154,8 +159,8 @@ namespace Backend
                 result.Left = (int)relativeStartX + windowPosition.Left;
                 result.Top = (int)relativeStartY + windowPosition.Top;
 
-                result.Right = (int)(windowPosition.Width * xEndPercentage);
-                result.Bottom = (int)(windowPosition.Height * yEndPercentage);
+                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
+                result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
 
                 Log.Debug("Detected Full Screen 16:9");
             }
@@ -172,15 +177,17 @@ namespace Backend
                 double relativeStartX = windowPosition.Width * xStartPercentage;
                 double relativeStartY = 1080 * yStartPercentrage;
                 result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Right = (int)relativeStartY + windowPosition.Top + 60;
+                result.Top = (int)relativeStartY + windowPosition.Top + 60;
 
-                result.Right = (int)(windowPosition.Width * xEndPercentage);
-                result.Bottom = (int)(1080 * yEndPercentage);
+                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
+                result.Bottom = (int)(1080 * yEndPercentage) + 60 + windowPosition.Top;
             }
             else
             {
                 var effectiveWindowWidth = windowPosition.Width - 2 * 8;
                 var effectiveWindowHeight = windowPosition.Height - 31 - 8;
+                var effectiveWindowLeft = windowPosition.Left + 8;
+                var effectiveWindowTop = windowPosition.Top + 31;
 
                 decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
 
@@ -194,11 +201,11 @@ namespace Backend
                 // Windowed case: Adds 30px top, and 8 all other sides.
                 double relativeStartX = effectiveWindowWidth * xStartPercentage;
                 double relativeStartY = effectiveWindowHeight * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left + 8;
-                result.Right = (int)relativeStartY + windowPosition.Top + 32;
+                result.Left = (int)relativeStartX + effectiveWindowLeft;
+                result.Top = (int)relativeStartY + effectiveWindowTop;
 
-                result.Right = (int)(effectiveWindowWidth * xEndPercentage);
-                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage);
+                result.Right = (int)(effectiveWindowWidth * xEndPercentage + effectiveWindowLeft);
+                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop );
             }
             return result;
         }
