@@ -16,7 +16,7 @@ namespace Backend
         const int FailInRowLimit = 10;
 
         public History History { get; private set; }
-        private BackendController OcrService { get; set; }
+        private ParsingController ParsingController { get; set; }
         private MatchingService ComparisonService { get; set; }
         private Options Options { get; set; }
 
@@ -44,9 +44,9 @@ namespace Backend
 
             History = new History();
 
-            OcrService = new BackendController();
+            ParsingController = new ParsingController();
             ComparisonService = new MatchingService(dataStorageStuff);
-            this.Options = dataStorageStuff.GetOptions();
+            Options = dataStorageStuff.GetOptions();
             isInit = true;
         }
 
@@ -96,9 +96,10 @@ namespace Backend
                         break;
                     }
 
-                    bool success = OcrService.ReadFromScreen(out var name);
+                    bool success = ParsingController.ReadFromScreen();
                     if (success)
                     {
+                        var name = ParsingController.Result;
                         failsInRow = 0;
                         this.History.Add(name);
 
