@@ -34,7 +34,7 @@ namespace Backend
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
-                .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
+                .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
                 .CreateLogger();
 
 
@@ -168,6 +168,7 @@ namespace Backend
                 Log.Warning("All 5 previous names were equal. Assuming a window in front. The engine will now press SPACE to get rid of a possible overlay message.");
                 PressSpace();
             }
+
         }
 
         private static void PressP()

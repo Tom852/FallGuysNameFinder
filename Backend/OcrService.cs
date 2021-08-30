@@ -60,7 +60,7 @@ namespace Backend
             {
                 for (int j = 0; j < amountOfColorModificaitons; j++)
                 {
-                    Log.Information("OCR Attempt {0}-{1}", i, j);
+                    Log.Debug("OCR Attempt {0}-{1}", i, j);
 
                     var bmp = TakeScerenshot(variations[i, 0], variations[i, 1], variations[i, 2], variations[i, 3]);
 
