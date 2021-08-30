@@ -18,7 +18,6 @@ namespace Common.Model
         public string Third { get; set; }
 
         public Name(string first, string second, string third) => (First, Second, Third) = (first, second, third);
-        public Name(StringTriple triple) => (First, Second, Third) = (triple.First, triple.Second, triple.Third);
 
         public Name(IEnumerable<string> words)
             : this(words.ToArray())

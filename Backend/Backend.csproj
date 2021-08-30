@@ -79,6 +79,10 @@
   <ItemGroup>
     <Compile Include="ColorModificator.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="Model\FuzzyMatcherResult.cs" />
+    <Compile Include="Model\OcrResult.cs" />
+    <Compile Include="Model\StringTriple.cs" />
+    <Compile Include="Model\WordProcessorResult.cs" />
     <Compile Include="OcrCoreService.cs" />
     <Compile Include="FuzzyMatcher.cs" />
     <Compile Include="ParsingController.cs" />
@@ -224,5 +228,6 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

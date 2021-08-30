@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Common;
 using FuzzySharp;
 using Common.Model;
+using Backend.Model;
 
 namespace Backend
 {

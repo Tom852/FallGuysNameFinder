@@ -1,4 +1,5 @@
-﻿using Common.Model;
+﻿using Backend.Model;
+using Common.Model;
 using Serilog;
 using System.Linq;
 
@@ -59,7 +60,7 @@ namespace Backend
             if (result)
             {
                 Log.Information("Viable Name Detected: {0}", LastMatch);
-                LastMatch = new Name(s);
+                LastMatch = new Name(s.First, s.Second, s.Third);
             }
 
             return result;

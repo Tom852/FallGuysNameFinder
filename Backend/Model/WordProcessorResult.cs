@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace Common.Model
+namespace Backend.Model
 {
     public class WordProcessorResult
     {
@@ -67,9 +67,9 @@ namespace Common.Model
             List<StringTriple> result = new List<StringTriple>();
             for (int i = 0; i <= Count - 3; i++)
             {
-                for (int j = i+1; j <= Count -2; j++)
+                for (int j = i + 1; j <= Count - 2; j++)
                 {
-                    for (int k = j + 1; k <= Count -1; k++)
+                    for (int k = j + 1; k <= Count - 1; k++)
                     {
                         result.Add(new StringTriple(Words[i], Words[j], Words[k]));
 
