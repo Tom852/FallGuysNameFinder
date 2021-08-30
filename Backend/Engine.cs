@@ -155,7 +155,7 @@ namespace Backend
         {
             if (this.History.WereLastNamesAllEqual(8))
             {
-                Log.Warning("Still no improvement. Something is broken. Engine will Stop.");
+                Log.Error("Still no improvement. Something is broken. Engine will Stop.");
                 Stop();
             }
             else if (this.History.WereLastNamesAllEqual(6))
