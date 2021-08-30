@@ -1,12 +1,17 @@
 ﻿Fall Guys Name Finder
-Version: Preview 0.2
+Version: Preview 0.4
 
 Owner: Thomas Kistler, thomaskistler@bluewin.ch, Steam Friend Code 75610105
+Support: https://www.paypal.me/tomk453
 
 Repository: https://github.com/Tom852/FallGuysNameFinder
 
+External Libraries:
 Icon by Icons8: https://icons8.com (https://icons8.de/license)
 OCR by Tesseract: https://github.com/tesseract-ocr (Apache License 2.0)
 Font: Titan One Regular (SIL Open Font License)
+FuzzySharp: https://github.com/JakeBayer/FuzzySharpauto (MIT License)
+AutoCompleteComboBox: https://github.com/vain0x/DotNetKit.Wpf.AutoCompleteComboBox (MIT License)
+Newtonsoft.Json: https://www.newtonsoft.com/json (MIT Licse)
+InputSimulator: https://archive.codeplex.com/?p=inputsimulator
 
-Support: https://www.paypal.me/tomk453

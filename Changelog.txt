@@ -17,3 +17,4 @@ v 0.4
 - Add statistics element
 - Detect if name does not change 5 times in a row and take counter measures for error messages
 - Increase name parsability when overlay window removes contrast from nameplate.
+- Massive refactoring
