@@ -19,79 +19,43 @@ namespace Backend
 {
     public class OcrService
     {
+        public ScreenshotService screenshotService { get; } = new ScreenshotService();
+        public ColorModificator colorModificator { get; } = new ColorModificator();
 
-        const float CONFIDENCE_LIMIT = 0.85f;
-        const int MONOCHROME_WHITE_BOUNDARY = 250;
-        const int MONOCHROME_BRIGHT_BOUNDARY = 200;
-        const int MONOCHROME_BACKGROUND_BOUNDARY = 150;
+        const float CONFIDENCE_SURE_LIMIT = 0.90f;
+        const float CONFIDENCE_DUMP_LIMIT = 0.85f;
 
-        const double xStartPercentage = 0.60;
-        const double yStartPercentrage = 0.29;
-        const double xEndPercentage = 0.745;
-        const double yEndPercentage = 0.335;
 
-        const decimal ratio16by9 = (decimal)16 / 9;
 
-        int[,] variations = new int[,] {
-            { 0,0,0,0, },
-            { -10, -10, 20, 20,  },
-            { 5, 5, 10, 10,  },
-            { 10, 10, -20, -20,  },
-            { 10, 0, -20, 0,  },
-            { 20, 0, -40, 0,  },
-            { -10, 0, 20, 0,  },
-            { -20, -20, 40, 40,  },
-            { -40, -40, 80, 80, },
-        };
+
+
 
         List<List<string>> ToFuzzyAnyalyze = new List<List<string>>();
         (string, int)[] FinalWords = new (string, int)[3];
 
-        const int amountOfColorModificaitons = 7;
-        public bool ReadFromScreen(out string[] result)
+        private void InitializeService()
         {
             ToFuzzyAnyalyze = new List<List<string>>();
-            FinalWords = new (string, int)[3];
+            FinalWords = new (string, int)[3]; //todo wrapyper
+        }
 
-            Bitmap[,] bmps = new Bitmap[variations.GetLength(0), amountOfColorModificaitons];
+        public bool ReadFromScreen(out string[] result)
+        {
+            
+
             List<string> ocrRawTexts = new List<string>();
 
-            for (int i = 0; i < variations.GetLength(0); i++)
+            for (int i = 0; i < screenshotService.AmountOfPositionVariations; i++)
             {
-                for (int j = 0; j < amountOfColorModificaitons; j++)
+                var bmp = screenshotService.TakeScreenshot(i);
+                var colorModifications = colorModificator.GetAll(bmp);
+
+                for (int j = 0; j < colorModifications.Count; j++)
                 {
                     Log.Debug("OCR Attempt {0}-{1}", i, j);
 
-                    var bmp = TakeScerenshot(variations[i, 0], variations[i, 1], variations[i, 2], variations[i, 3]);
-
-                    switch (j)
-                    {
-                        case 0:
-                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true);
-                            break;
-                        case 1:
-                            ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true);
-                            break;
-                        case 2:
-                            ToMonochrome(bmp, MONOCHROME_BACKGROUND_BOUNDARY, true);
-                            break;
-                        case 3:
-                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false);
-                            break;
-                        case 4:
-                            ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false);
-                            break;
-                        case 5:
-                            ToGrayScale(bmp);
-                            break;
-                        case 6:
-                            break;
-                    }
-                    bmp.Save(GetScreenshotFile(i, j), ImageFormat.Jpeg); // temporary :)
-
-
                     DoOcr(bmp, out var textRaw, out var confidence);
-                    if (confidence < 0.4)
+                    if (confidence < CONFIDENCE_DUMP_LIMIT)
                     {
                         Log.Debug("Confidence too low. Dumping result.");
                         continue;
@@ -116,13 +80,12 @@ namespace Backend
 
                     Log.Debug("No Perfect Match");
 
-                    if (confidence > 0.85)
+                    if (confidence > CONFIDENCE_SURE_LIMIT)
                     {
                         Log.Warning("OCR was very confident, yet there was no name match. This can happen if Fall Guys added new name possiblities. Manual review recommended.");
                     }
 
 
-                    bmps[i, j] = bmp;
                     this.ToFuzzyAnyalyze.Add(spaceInvariant);
                     this.ToFuzzyAnyalyze.Add(garbageFiltered);
                     this.ToFuzzyAnyalyze.Add(agressiveFiltered);
@@ -270,106 +233,6 @@ namespace Backend
 
 
 
-        private Bitmap TakeScerenshot(int startVariationX = 0, int startVariationY = 0, int sizeVariationX = 0, int sizeVariationY = 0)
-        {
-
-
-            var screenshotArea = this.GetScreenshotArea();
-
-            var sizeToCapture = new Size((int)screenshotArea.Width + sizeVariationX, (int)screenshotArea.Height + sizeVariationY);
-
-
-
-            var bmpScreenshot = new Bitmap(sizeToCapture.Width,
-                               sizeToCapture.Height,
-                               PixelFormat.Format32bppArgb);
-
-            var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
-
-
-            gfxScreenshot.CopyFromScreen((int)screenshotArea.Left + startVariationX,
-                                         (int)screenshotArea.Top + startVariationY,
-                                0,
-                                0,
-                                sizeToCapture,
-                                CopyPixelOperation.SourceCopy);
-
-            return bmpScreenshot;
-        }
-
-        private WindowPosition GetScreenshotArea()
-        {
-            var windowPosition = FgWindowAccess.GetPositionShit();
-
-            decimal ratio = windowPosition.Width / (decimal)windowPosition.Height;
-
-
-            WindowPosition result = new WindowPosition(0, 0, 0, 0);
-
-            if (Math.Abs((ratio - ratio16by9)) < 0.001m)
-            {
-                // Full Screen 16:9 Aspect Ratio
-                double relativeStartX = windowPosition.Width * xStartPercentage;
-                double relativeStartY = windowPosition.Height * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Top = (int)relativeStartY + windowPosition.Top;
-
-                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
-                result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
-
-                Log.Debug("Detected Full Screen 16:9");
-            }
-            else if (ratio == 1.6m)
-            {
-                //Full Screen 16:10 (because i have that xD)
-                if (windowPosition.Height != 1200)
-                {
-                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 Full Screen. Try running FG in windowed mode with 16:9.");
-                }
-                Log.Debug("Detected Full Screen 1920x1200");
-
-
-                double relativeStartX = windowPosition.Width * xStartPercentage;
-                double relativeStartY = 1080 * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Top = (int)relativeStartY + windowPosition.Top + 60;
-
-                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
-                result.Bottom = (int)(1080 * yEndPercentage) + 60 + windowPosition.Top;
-            }
-            else
-            {
-                var effectiveWindowWidth = windowPosition.Width - 2 * 8;
-                var effectiveWindowHeight = windowPosition.Height - 31 - 8;
-                var effectiveWindowLeft = windowPosition.Left + 8;
-                var effectiveWindowTop = windowPosition.Top + 31;
-
-                decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
-
-                if (!((ratioWhenWindowed - ratio16by9) < 0.001m))
-                {
-                    throw new Exception("Unknown aspect ratio or programmatic error. Try to run 16:9 fullscreen. That usually works. 16:9 windowed should work too.");
-                }
-
-                Log.Debug("Detected Windowed Fall Guys. Effective Width: {0}; Hieght: {1}", effectiveWindowWidth, effectiveWindowHeight);
-
-                // Windowed case: Adds 30px top, and 8 all other sides.
-                double relativeStartX = effectiveWindowWidth * xStartPercentage;
-                double relativeStartY = effectiveWindowHeight * yStartPercentrage;
-                result.Left = (int)relativeStartX + effectiveWindowLeft;
-                result.Top = (int)relativeStartY + effectiveWindowTop;
-
-                result.Right = (int)(effectiveWindowWidth * xEndPercentage + effectiveWindowLeft);
-                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop);
-            }
-            return result;
-        }
-
-        private string GetScreenshotFile(int attempt, int style)
-        {
-            var dateString = DateTime.Now.ToString("y-MM-dd_HH-mm-ss");
-            return Path.Combine(DataStorageStuff.AppDir, "Screenshots", $"{dateString}_{attempt}_{style}.jpg");
-        }
 
         private void DoOcr(Bitmap b, out string textRaw, out float confidence)
         {
@@ -461,81 +324,14 @@ namespace Backend
             return result;
         }
 
-
-        public void ToMonochrome(Bitmap Bmp, int whiteBoundary, bool inverted)
+        private string GetScreenshotFileName(int attempt, int style)
         {
-            int rgb;
-            Color c;
-
-            for (int y = 0; y < Bmp.Height; y++)
-                for (int x = 0; x < Bmp.Width; x++)
-                {
-                    c = Bmp.GetPixel(x, y);
-                    rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
-                    if (rgb > whiteBoundary)
-                    {
-                        if (inverted)
-                        {
-                            Bmp.SetPixel(x, y, Color.Black);
-                        } else
-                        {
-                            Bmp.SetPixel(x, y, Color.White);
-                        }
-                    }
-                    else
-                    {
-                        if (inverted)
-                        {
-                            Bmp.SetPixel(x, y, Color.White);
-                        }
-                        else
-                        {
-                            Bmp.SetPixel(x, y, Color.Black);
-                        }
-                    }
-                }
-        }
-
-        public void ToGrayScale(Bitmap Bmp)
-        {
-            int rgb;
-            Color c;
-
-            for (int y = 0; y < Bmp.Height; y++)
-                for (int x = 0; x < Bmp.Width; x++)
-                {
-                    c = Bmp.GetPixel(x, y);
-                    rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
-                    Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
-                }
-        }
-
-        public void ToGrayScaleInverted(Bitmap Bmp)
-        {
-            int rgb;
-            Color c;
-
-            for (int y = 0; y < Bmp.Height; y++)
-                for (int x = 0; x < Bmp.Width; x++)
-                {
-                    c = Bmp.GetPixel(x, y);
-                    rgb = (int)Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
-                    rgb = 255 - rgb;
-                    Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
-                }
+            var dateString = DateTime.Now.ToString("y-MM-dd_HH-mm-ss");
+            return Path.Combine(DataStorageStuff.AppDir, "Screenshots", $"{dateString}_{attempt}_{style}.jpg");
         }
     }
 
-    internal class SequenceEqualsComparer : IEqualityComparer<List<string>>
-    {
-        public bool Equals(List<string> x, List<string> y)
-        {
-            return x.SequenceEqual(y);
-        }
+    
 
-        public int GetHashCode(List<string> obj)
-        {
-           return obj.Aggregate(0, (x, y) => x = x + y.GetHashCode());
-        }
-    }
+
 }

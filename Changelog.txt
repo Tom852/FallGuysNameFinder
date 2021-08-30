@@ -1,15 +1,16 @@
 v 0.2
 =====
 - UI design
-- Add patterns by dropdown list
 - Added About
 - Added Help
-- Added Fall Guys and Engine Status Tracker
+- Added Fall Guys and Engine Status Tracker in UI
 
 v 0.3
 =====
-- Instead just one raw-text refinement, use three: soft artifact remover, hard artifact remover, word detector.
+- Instead just one raw-text refinement, use three: soft artifact remover, hard artifact remover, word detector
 - Use approximate matching on fail
+- Add support for windowed mode
+- Add patterns by dropdown list
 
 v 0.4
 =====
