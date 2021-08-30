@@ -16,7 +16,7 @@ namespace Backend
         const int FailInRowLimit = 10;
 
         public History History { get; private set; }
-        private OcrService OcrService { get; set; }
+        private BackendController OcrService { get; set; }
         private MatchingService ComparisonService { get; set; }
         private Options Options { get; set; }
 
@@ -44,7 +44,7 @@ namespace Backend
 
             History = new History();
 
-            OcrService = new OcrService();
+            OcrService = new BackendController();
             ComparisonService = new MatchingService(dataStorageStuff);
             this.Options = dataStorageStuff.GetOptions();
             isInit = true;

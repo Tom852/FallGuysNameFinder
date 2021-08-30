@@ -87,11 +87,11 @@ namespace Backend
 
         private bool TestForDoubleName(Name toTest)
         {
-            var option1 = new string(toTest.First.Take(4).ToArray());
-            var option2 = new string(toTest.Second.Take(4).ToArray());
+            var option1 = new string(toTest.First.ToLower().Take(4).ToArray());
+            var option2 = new string(toTest.Second.ToLower().Take(4).ToArray());
 
-            var option1Fits = toTest.Second.StartsWith(option1) || toTest.Third.StartsWith(option1);
-            var option2Fits = toTest.Third.StartsWith(option2);
+            var option1Fits = toTest.Second.ToLower().StartsWith(option1) || toTest.Third.ToLower().StartsWith(option1);
+            var option2Fits = toTest.Third.ToLower().StartsWith(option2);
             return option1Fits || option2Fits;
         }
 
