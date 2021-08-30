@@ -1,19 +1,8 @@
 ﻿using Backend;
 using Common.Model;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FallGuysNameFinder
 {
@@ -23,13 +12,13 @@ namespace FallGuysNameFinder
     public partial class AddPatternWindow : Window
     {
         public event EventHandler OnOkClick;
+
         public event EventHandler OnCancelClick;
 
         public AddPatternViewModel Vm { get; set; }
 
         public AddPatternWindow(Pattern p)
         {
-
             var vm = new AddPatternViewModel();
             vm.Pattern = p;
             vm.FirstNames = PossibleNames.FirstNames(false).ToList().OrderBy(s => s).ToList();
@@ -42,7 +31,6 @@ namespace FallGuysNameFinder
             this.Vm = vm;
             this.DataContext = Vm;
             InitializeComponent();
-
         }
 
         public AddPatternWindow()
@@ -65,8 +53,6 @@ namespace FallGuysNameFinder
                 OnOkClick?.Invoke(this, e);
                 this.Close();
             }
-
-
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -74,6 +60,5 @@ namespace FallGuysNameFinder
             OnCancelClick?.Invoke(this, e);
             this.Close();
         }
-
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Common.Model
 {
@@ -23,6 +17,7 @@ namespace Common.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnAlliteration)));
             }
         }
+
         public bool StopOnDoubleWord
         {
             get => stopOnDoubleWord;
@@ -32,6 +27,7 @@ namespace Common.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnDoubleWord)));
             }
         }
+
         public bool StopOnError
         {
             get => stopOnError;

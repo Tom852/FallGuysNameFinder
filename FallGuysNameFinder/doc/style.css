@@ -1,5 +1,4 @@
-﻿body
-{
+﻿body {
     background: #aabbee;
     font-family: sans-serif;
 }
@@ -8,11 +7,11 @@ ol, ul {
     margin: 2px;
 }
 
-
 .code, code {
     font-family: monospace;
     font-size: 12pt;
 }
+
 .content {
     margin-left: 30px;
 }
@@ -21,9 +20,9 @@ h1 {
     color: midnightblue;
 }
 
-h1:not(:first-of-type) {
-    margin-top: 2em;
-}
+    h1:not(:first-of-type) {
+        margin-top: 2em;
+    }
 
 h2 {
     margin-top: 2em;
@@ -45,6 +44,7 @@ h4 {
     font-weight: bold;
     color: #aa0000;
 }
+
 .hint {
     font-weight: bold;
     color: #0066aa;

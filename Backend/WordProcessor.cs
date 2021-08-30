@@ -5,8 +5,6 @@ using System.Text.RegularExpressions;
 
 namespace Backend
 {
-
-
     public class WordProcessor
     {
         public WordProcessorResult SoftArtifactFilter(string input)

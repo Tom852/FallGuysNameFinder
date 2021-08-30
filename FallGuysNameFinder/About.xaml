@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="About" Height="400" Width="400"
         Background="{StaticResource GradientBackground}"
-        Icon="Icon1.ico" >
+        Icon="Icon1.ico">
 
-        <TextBlock Name="Text" TextWrapping="Wrap"/>
-
+        <TextBlock Name="Text" TextWrapping="Wrap" />
 </Window>

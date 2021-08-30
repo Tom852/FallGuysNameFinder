@@ -1,14 +1,4 @@
-﻿using Common;
-using Common.Model;
-using Serilog;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows.Forms;
-
-namespace Backend
+﻿namespace Backend
 {
     public class StatisticsService
     {

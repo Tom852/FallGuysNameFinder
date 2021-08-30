@@ -1,10 +1,6 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Backend.Model
 {
@@ -38,6 +34,7 @@ namespace Backend.Model
         }
 
         public static bool operator ==(StringTriple left, StringTriple right) => left.Equals(right);
+
         public static bool operator !=(StringTriple left, StringTriple right) => !left.Equals(right);
 
         public override bool Equals(object obj)

@@ -4,7 +4,6 @@ using Serilog;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,8 +11,7 @@ namespace Backend
 {
     public class Engine
     {
-
-        const int FailInRowLimit = 10;
+        private const int FailInRowLimit = 10;
 
         public History History { get; private set; }
         private ParsingController ParsingController { get; set; }
@@ -27,7 +25,9 @@ namespace Backend
 
         public event EventHandler OnStop;
 
-        public static void Main() { } // todo: transofmr to lib.
+        public static void Main()
+        {
+        } // todo: transofmr to lib.
 
         public void Initialize()
         {
@@ -36,7 +36,6 @@ namespace Backend
                 .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
                 .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
                 .CreateLogger();
-
 
             Log.Information("Initializing Backend Engine...");
 
@@ -67,7 +66,6 @@ namespace Backend
             }
 
             Thread.Sleep(3000);
-
 
             //BringToFront(); // could make an option here but propbably not necessary?
 
@@ -114,7 +112,6 @@ namespace Backend
                     }
                     else
                     {
-
                         Log.Error("Optical Character Recognition failed.");
                         if (this.Options.StopOnError)
                         {
@@ -131,7 +128,6 @@ namespace Backend
                     }
 
                     HandleServerErrorMessage();
-
                 }
                 catch (Exception e)
                 {
@@ -167,7 +163,6 @@ namespace Backend
                 Log.Warning("All 5 previous names were equal. Assuming a window in front. The engine will now press SPACE to get rid of a possible overlay message.");
                 PressSpace();
             }
-
         }
 
         private static void PressP()
@@ -175,6 +170,7 @@ namespace Backend
             Log.Debug("Pressing P");
             SendKeys.SendWait("{P}");
         }
+
         private static void PressSpace()
         {
             Log.Debug("Pressing SPACE");
@@ -182,11 +178,8 @@ namespace Backend
             Thread.Sleep(500);
         }
 
-
         [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private void BringToFront()
         {
@@ -199,7 +192,6 @@ namespace Backend
             {
                 Log.Warning("Fall Guys is not running and cannot be brought to Foreground.");
             }
-
         }
     }
 }

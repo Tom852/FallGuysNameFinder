@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using Tesseract;
+﻿using Common.Model;
 using Serilog;
-using System.Text.RegularExpressions;
-using Common.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend
 {
-
     // todo: sicherstellen, dass alles immer lowercase mässig abgehandlet wird.
     // ev schon beim name oder so.
     public class MatchingService
     {
-        const string Wildcard = "*";
+        private const string Wildcard = "*";
 
         public MatchingService()
         {
@@ -35,10 +25,8 @@ namespace Backend
         public List<Pattern> Patterns { get; }
         public Options Options { get; }
 
-
         public bool Test(Name nameToTest)
         {
-
             if (Options.StopOnAlliteration && TestForAlliteration(nameToTest))
             {
                 Log.Information("Alliteration detected");
@@ -73,7 +61,6 @@ namespace Backend
             return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
         }
 
-
         private bool Matches(string pattern, string name)
         {
             return pattern == Wildcard || pattern.ToLower().Trim() == name.ToLower().Trim();
@@ -94,6 +81,5 @@ namespace Backend
             var option2Fits = toTest.Third.ToLower().StartsWith(option2);
             return option1Fits || option2Fits;
         }
-
     }
 }

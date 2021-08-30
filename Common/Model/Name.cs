@@ -1,10 +1,6 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Model
 {
@@ -41,6 +37,7 @@ namespace Common.Model
         }
 
         public static bool operator ==(Name left, Name right) => left.Equals(right);
+
         public static bool operator !=(Name left, Name right) => !left.Equals(right);
 
         public override bool Equals(object obj)

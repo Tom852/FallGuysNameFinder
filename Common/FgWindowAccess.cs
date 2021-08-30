@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
 
 namespace Common
 {
@@ -41,19 +36,18 @@ namespace Common
 
         public static WindowPosition GetPositionShit()
         {
-
             var hwnd = GetFallGuysWindowHandle();
 
             GetWindowRect(hwnd, out RECT rect);
 
             return new WindowPosition(rect.Left, rect.Right, rect.Top, rect.Bottom);
-
         }
 
         private static int GetFallGuysProcessHandle()
         {
             var processFallguys = Process.GetProcessesByName(FgProcessName);
-            if (processFallguys.Length != 1) {
+            if (processFallguys.Length != 1)
+            {
                 return -1;
             }
             return processFallguys[0].Id;
@@ -69,15 +63,14 @@ namespace Common
             return processFallguys[0].MainWindowHandle;
         }
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT

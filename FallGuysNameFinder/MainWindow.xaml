@@ -7,19 +7,15 @@
         mc:Ignorable="d"
         Title="Fall Guys Name Finder" Height="500" Width="850"
         Background="{StaticResource GradientBackground}"
-        Icon="Icon1.ico"
-        >
-
-
+        Icon="Icon1.ico">
 
     <DockPanel Margin="10px">
-        <Label Content="Fall Guys Names Finder" FontFamily="{StaticResource FGFont}"  FontSize="24pt" FontWeight="Bold" DockPanel.Dock="Top" Margin="30" HorizontalAlignment="Center"/>
+        <Label Content="Fall Guys Names Finder" FontFamily="{StaticResource FGFont}"  FontSize="24pt" FontWeight="Bold" DockPanel.Dock="Top" Margin="30" HorizontalAlignment="Center" />
         <DockPanel DockPanel.Dock="Bottom">
-            <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="StartStop" Content="{Binding StartStopButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Right" Click="StartStop_Click"/>
-            <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click"/>
-            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="User Guide" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="Help_Click"/>
-            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="About_Click"/>
-
+            <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="StartStop" Content="{Binding StartStopButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Right" Click="StartStop_Click" />
+            <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click" />
+            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="User Guide" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="Help_Click" />
+            <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="About_Click" />
 
             <ProgressBar Name="ProgressBar" IsIndeterminate="True" Height="20" Margin="30, 5" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVis}}">
                 <ProgressBar.Foreground>
@@ -28,33 +24,27 @@
                         <GradientStop Color="#778899" Offset="0.5" />
                         <GradientStop Color="#FFDDEEFF" Offset="1" />
                     </LinearGradientBrush>
-
                 </ProgressBar.Foreground>
-
             </ProgressBar>
-
         </DockPanel>
 
         <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-            <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
+            <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}" />
             <CheckBox Name="StopOnAlliteration" Content="Stop on alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Alliteration = All three words start with the same letter"
                   IsChecked = "{Binding Options.StopOnAlliteration}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
-                  Click="OnOptionsClick"/>
+                  Click="OnOptionsClick" />
             <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Double Word = Two out of three words start with the same 4 letters."
                   IsChecked="{Binding Options.StopOnDoubleWord}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
-                  Click="OnOptionsClick"/>
+                  Click="OnOptionsClick" />
             <CheckBox Name="StopOnError" Content="Stop on error" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="If the text recognition fails, should the software just continue or stop?"
                   IsChecked="{Binding Options.StopOnError}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
-                  Click="OnOptionsClick"/>
-
-
-
+                  Click="OnOptionsClick" />
 
             <Grid Margin="0, 40, 0, 20">
                 <Grid.ColumnDefinitions>
@@ -63,37 +53,37 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.ColumnSpan="2"
-                    Content="Status" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}"/>
+                    Content="Status" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}" />
 
                 <Label Grid.Row="1" Grid.Column="0"
-                           Content="Engine:"/>
+                           Content="Engine:" />
                 <Image Grid.Row="1" Grid.Column="1"
                        Source="{Binding EngineStatusIcon,
                             Converter={StaticResource IconConverter},
                             Mode=OneWay}"
-                           Width="16" Height="16"/>
+                           Width="16" Height="16" />
                 <Label Grid.Row="1" Grid.Column="2"
-                       Content="{Binding EngineStatusDescription}"/>
+                       Content="{Binding EngineStatusDescription}" />
 
                 <Label Grid.Row="2" Grid.Column="0"
-                       Content="Game:"/>
+                       Content="Game:" />
                 <Image Grid.Row="2" Grid.Column="1"
                        Source="{Binding FgStatusIcon,
                             Converter={StaticResource IconConverter},
                             Mode=OneWay}"
-                           Width="16" Height="16"/>
+                           Width="16" Height="16" />
                 <Label Grid.Row="2" Grid.Column="2"
-                       Content="{Binding FgStatusDescription}"/>
+                       Content="{Binding FgStatusDescription}" />
             </Grid>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-            <Label Content="Patterns" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}"/>
+            <Label Content="Patterns" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}" />
 
             <DataGrid Name ="dGrid" Margin="0,10" ItemsSource="{Binding Patterns}" PreviewKeyDown="DataGrid_PreviewKeyDown"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
@@ -110,22 +100,17 @@
                   MouseDoubleClick="DataGrid_MouseDoubleClick"
                   SelectionMode="Single" SelectionUnit="FullRow">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="First" Binding="{Binding First}" Width="1*"/>
-                    <DataGridTextColumn Header="Second" Binding="{Binding Second}" Width="1*"/>
-                    <DataGridTextColumn Header="Third" Binding="{Binding Third}" Width="1*"/>
+                    <DataGridTextColumn Header="First" Binding="{Binding First}" Width="1*" />
+                    <DataGridTextColumn Header="Second" Binding="{Binding Second}" Width="1*" />
+                    <DataGridTextColumn Header="Third" Binding="{Binding Third}" Width="1*" />
                 </DataGrid.Columns>
             </DataGrid>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Style="{DynamicResource MyButton}" Name="AddPatternButton" Content="Add" Margin="10" Width="100" HorizontalAlignment="Center"  Click="AddPattern_Click" IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"/>
-                <Button Style="{DynamicResource MyButton}" Name="EditPatternButton" Content="Edit" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPattern_Click" IsEnabled="{Binding SelectedItems.Count, ElementName=dGrid}"/>
-                <Button Style="{DynamicResource MyButton}" Name="RemovePatternButton" Content="Remove" Margin="10" Width="100" HorizontalAlignment="Center"  Click="RemovePattern_Click" IsEnabled="{Binding SelectedItems.Count, ElementName=dGrid}"/>
+                <Button Style="{DynamicResource MyButton}" Name="AddPatternButton" Content="Add" Margin="10" Width="100" HorizontalAlignment="Center"  Click="AddPattern_Click" IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}" />
+                <Button Style="{DynamicResource MyButton}" Name="EditPatternButton" Content="Edit" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPattern_Click" IsEnabled="{Binding SelectedItems.Count, ElementName=dGrid}" />
+                <Button Style="{DynamicResource MyButton}" Name="RemovePatternButton" Content="Remove" Margin="10" Width="100" HorizontalAlignment="Center"  Click="RemovePattern_Click" IsEnabled="{Binding SelectedItems.Count, ElementName=dGrid}" />
             </StackPanel>
         </StackPanel>
-
-
-
-
-
     </DockPanel>
 </Window>

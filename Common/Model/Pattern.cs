@@ -1,10 +1,5 @@
-﻿using Serilog;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Model
 {
@@ -25,6 +20,7 @@ namespace Common.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(First)));
             }
         }
+
         public string Second
         {
             get => second;
@@ -34,6 +30,7 @@ namespace Common.Model
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Second)));
             }
         }
+
         public string Third
         {
             get => third;
@@ -48,6 +45,7 @@ namespace Common.Model
             : this(s.Split(' '))
         {
         }
+
         public Pattern(string[] splitted)
         {
             if (splitted.Length != 3)
@@ -58,7 +56,6 @@ namespace Common.Model
             First = splitted[0];
             Second = splitted[1];
             Third = splitted[2];
-
         }
 
         public static Pattern GetEmpty()

@@ -1,12 +1,6 @@
-﻿using Common.Model;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Serilog;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace Backend
@@ -25,14 +19,12 @@ namespace Backend
             }
         }
 
-
         private static string[] firsts;
         private static string[] firstsLower;
         private static string[] seconds;
         private static string[] secondsLower;
         private static string[] thirds;
         private static string[] thirdsLower;
-
 
         private static string[] GetAsLowerCase(string[] words)
         {
@@ -46,7 +38,6 @@ namespace Backend
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities1.txt");
                 firsts = File.ReadAllLines(file);
                 firstsLower = GetAsLowerCase(firsts);
-
             }
             if (asLowerCase)
             {
@@ -65,7 +56,6 @@ namespace Backend
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities2.txt");
                 seconds = File.ReadAllLines(file);
                 secondsLower = GetAsLowerCase(seconds);
-
             }
             if (asLowerCase)
             {
@@ -84,7 +74,6 @@ namespace Backend
                 var file = Path.Combine(PossibilitiesDirectory, "Possibilities3.txt");
                 thirds = File.ReadAllLines(file);
                 thirdsLower = GetAsLowerCase(thirds);
-
             }
             if (asLowerCase)
             {

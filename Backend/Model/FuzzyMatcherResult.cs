@@ -1,9 +1,5 @@
 ﻿using Common.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Backend.Model
 {
@@ -36,6 +32,7 @@ namespace Backend.Model
     public struct SingleFuzzyResult
     {
         public SingleFuzzyResult(string word, int score) => (Word, Score) = (word, score);
+
         public string Word { get; set; }
         public int Score { get; set; }
     }

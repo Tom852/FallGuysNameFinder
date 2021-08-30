@@ -1,21 +1,12 @@
-﻿using System;
+﻿using Backend.Model;
+using Common.Model;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using Tesseract;
-using Serilog;
-using ImageFormat = System.Drawing.Imaging.ImageFormat;
 using System.IO;
-using System.Text.RegularExpressions;
-using Common;
-using FuzzySharp;
-using Common.Model;
-using Backend.Model;
+using Tesseract;
+using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace Backend
 {
@@ -27,17 +18,12 @@ namespace Backend
         public Name Result { get; private set; }
         public List<WordProcessorResult> ToFuzzyAnyalyze { get; private set; } = new List<WordProcessorResult>();
 
-        private ScreenshotService screenshotService { get; } = new ScreenshotService();
-        private ColorModificator colorModificator { get; } = new ColorModificator();
-        private FuzzyMatcher fuzzyMatcher { get; } = new FuzzyMatcher();
-        private OcrCoreService ocrCoreService { get; } = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
-        private WordProcessor wordProcessor { get; } = new WordProcessor();
-        private ViableNameDetector viableNameDetector { get; } = new ViableNameDetector();
-
-
-
-
-
+        private readonly ScreenshotService screenshotService = new ScreenshotService();
+        private readonly ColorModificator colorModificator = new ColorModificator();
+        private readonly FuzzyMatcher fuzzyMatcher = new FuzzyMatcher();
+        private readonly OcrCoreService ocrCoreService = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
+        private readonly WordProcessor wordProcessor = new WordProcessor();
+        private readonly ViableNameDetector viableNameDetector = new ViableNameDetector();
 
         public bool ReadFromScreen()
         {
@@ -56,7 +42,7 @@ namespace Backend
                     if (success)
                     {
                         return true;
-                    } 
+                    }
                 }
 
                 if (i == 0)
@@ -64,7 +50,6 @@ namespace Backend
                     bmp.Save(GetScreenshotFileName(0, 0), ImageFormat.Jpeg);
                 }
             }
-
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
 
@@ -79,10 +64,8 @@ namespace Backend
             return false;
         }
 
-
         public bool AnalyzeBmp(Bitmap bmp)
         {
-
             var ocrResult = ocrCoreService.DoOcr(bmp);
             if (ocrResult.Confidence < CONFIDENCE_DUMP_LIMIT)
             {

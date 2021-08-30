@@ -2,24 +2,11 @@
 using Common;
 using Common.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace FallGuysNameFinder
@@ -36,7 +23,6 @@ namespace FallGuysNameFinder
 
         public MainWindow()
         {
-
             var options = DataStorageStuff.GetOptions();
             var patterns = DataStorageStuff.ReadPatterns();
 
@@ -91,7 +77,6 @@ namespace FallGuysNameFinder
             this.PenetrantForeGroundChecker.Start();
         }
 
-
         private void AddPattern_Click(object sender, RoutedEventArgs e)
         {
             var w = new AddPatternWindow();
@@ -113,7 +98,6 @@ namespace FallGuysNameFinder
             if (dataGrid != null)
             {
                 ShowEditPatternMask(dataGrid);
-
             }
         }
 
@@ -129,7 +113,7 @@ namespace FallGuysNameFinder
         private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             DataGrid grid = sender as DataGrid;
-            var index = dGrid.SelectedIndex;
+            var index = grid.SelectedIndex;
 
             switch (e.Key)
             {
@@ -182,7 +166,6 @@ namespace FallGuysNameFinder
             else if (index == totalElements)
             {
                 dGrid.SelectedIndex = index - 1; //on 0, will be set to -1 which is none selected which is ok.
-
             }
         }
 
@@ -238,7 +221,6 @@ namespace FallGuysNameFinder
 
                 this.ViewModel.EngineStatus = EngineStatus.Running;
             }
-
         }
 
         private void Help_Click(object sender, RoutedEventArgs e)

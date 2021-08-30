@@ -1,38 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Backend
 {
     public class ColorModificator
     {
-        const int MONOCHROME_WHITE_BOUNDARY = 250;
-        const int MONOCHROME_BRIGHT_BOUNDARY = 200;
-        const int MONOCHROME_WHEN_IN_BG_BOUNDARY = 150;
-
+        private const int MONOCHROME_WHITE_BOUNDARY = 250;
+        private const int MONOCHROME_BRIGHT_BOUNDARY = 200;
+        private const int MONOCHROME_WHEN_IN_BG_BOUNDARY = 150;
 
         public List<Bitmap> GetAll(Bitmap bmp)
         {
+            List<Bitmap> result = new List<Bitmap>
+            {
+                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),
+                ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true),
+                ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, true),
 
-            List<Bitmap> result = new List<Bitmap>();
+                ToGrayScale(bmp, false),
 
-            result.Add(ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true));
-            result.Add(ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true));
-            result.Add(ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, true));
+                new Bitmap(bmp),
+                Invert(bmp),
 
-            result.Add(ToGrayScale(bmp, false));
-
-            result.Add(new Bitmap(bmp));
-            result.Add(Invert(bmp));
-
-            // I am not sure if the non-inverted images make sense. It seemed like if the inverted fails, this one does too...
-            result.Add(ToGrayScale(bmp, false));
-            result.Add(ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false));
-            result.Add(ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false));
-            result.Add(ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, false));
+                // I am not sure if the non-inverted images make sense. It seemed like if the inverted fails, this one does too...
+                ToGrayScale(bmp, false),
+                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false),
+                ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false),
+                ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, false)
+            };
 
             return result;
         }
@@ -113,6 +108,6 @@ namespace Backend
 
         private int GetAverageBrightness(Color c) => (c.B + c.G + c.B) / 3;
 
-       // (int) Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
+        // (int) Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
     }
 }

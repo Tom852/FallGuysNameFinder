@@ -1,5 +1,4 @@
 ﻿using Backend.Model;
-using Common;
 using FuzzySharp;
 using FuzzySharp.Extractor;
 using Serilog;
@@ -11,18 +10,15 @@ namespace Backend
 {
     public class FuzzyMatcher
     {
-        const int CUTOFF_LIMIT = 50;
+        private const int CUTOFF_LIMIT = 50;
 
         public FuzzyMatcherResult Result { get; private set; }
 
         public bool Match(List<WordProcessorResult> inputs)
         {
-
-
             List<StringTriple> workItems = PrepareToWorkCollection(inputs);
 
             ConsolerPrintState(workItems); // bit for debugging, could remove.
-
 
             foreach (var item in workItems)
             {
@@ -111,7 +107,6 @@ namespace Backend
         private List<StringTriple> PrepareToWorkCollection(List<WordProcessorResult> inputs)
         {
             List<StringTriple> toWork = new List<StringTriple>();
-
 
             foreach (var wpr in inputs)
             {

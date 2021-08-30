@@ -1,14 +1,9 @@
-﻿using Backend;
-using Common;
+﻿using Common;
 using Common.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FallGuysNameFinder
 {
@@ -20,9 +15,7 @@ namespace FallGuysNameFinder
         private FgStatus fgStatus = FgStatus.NotRunning;
         private EngineStatus engineStatus = EngineStatus.Stopped;
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         public ObservableCollection<Pattern> Patterns
         {
@@ -32,6 +25,7 @@ namespace FallGuysNameFinder
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Patterns)));
             }
         }
+
         public Options Options
         {
             get => options; set
@@ -40,7 +34,6 @@ namespace FallGuysNameFinder
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Options)));
             }
         }
-
 
         public FgStatus FgStatus
         {
@@ -60,19 +53,20 @@ namespace FallGuysNameFinder
         {
             get
             {
-
                 switch (fgStatus)
                 {
                     case FgStatus.Foreground:
                         return SystemIcons.Information;
+
                     case FgStatus.RunningButNoFocus:
                         return SystemIcons.Warning;
+
                     case FgStatus.NotRunning:
                         return SystemIcons.Error;
+
                     default:
                         throw new Exception("Unkonwon FGStatus");
                 }
-
             }
         }
 
@@ -80,20 +74,21 @@ namespace FallGuysNameFinder
         {
             get
             {
-
                 switch (fgStatus)
                 {
                     case FgStatus.Foreground:
                         return "Foreground";
+
                     case FgStatus.RunningButNoFocus:
                         return "Background";
+
                     case FgStatus.NotRunning:
                         return "Not Found";
+
                     default:
                         throw new Exception("Unkonwon FGStatus");
                 }
             }
-
         }
 
         public bool IsConsoleShown
@@ -107,7 +102,6 @@ namespace FallGuysNameFinder
         }
 
         public bool IsRunning => engineStatus == EngineStatus.Running;
-
 
         public EngineStatus EngineStatus
         {
@@ -126,19 +120,20 @@ namespace FallGuysNameFinder
         {
             get
             {
-
                 switch (engineStatus)
                 {
                     case EngineStatus.Running:
                         return SystemIcons.Information;
+
                     case EngineStatus.Stopping:
                         return SystemIcons.Warning;
+
                     case EngineStatus.Stopped:
                         return SystemIcons.Error;
+
                     default:
                         throw new Exception("Unkonwon FGStatus");
                 }
-
             }
         }
 
@@ -150,10 +145,13 @@ namespace FallGuysNameFinder
                 {
                     case EngineStatus.Running:
                         return "Stop";
+
                     case EngineStatus.Stopping:
                         return "Stopping...";
+
                     case EngineStatus.Stopped:
                         return "Start";
+
                     default:
                         throw new Exception("Unkonwn Engine Status");
                 }
@@ -165,11 +163,6 @@ namespace FallGuysNameFinder
             get => engineStatus.ToString();
         }
 
-
-
-
         public string ShowConsoleButtonDesc => IsConsoleShown ? "Hide Console" : "Show Console";
-
-
     }
 }

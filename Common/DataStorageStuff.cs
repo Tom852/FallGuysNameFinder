@@ -1,23 +1,21 @@
 ﻿using Common.Model;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Serilog;
-using System.Threading.Tasks;
 
 namespace Backend
 {
     public static class DataStorageStuff
     {
-        const string RootFolderName = "FallGuysNameFinder";
-        const string ScreenshotFolderName = "Screenshots";
-        const string PatternFileName = "patterns.txt";
-        const string OptionFileName = "options.json";
-        const string StatsFileName = "stats.json";
-        const string LogFileName = "log.log";
+        private const string RootFolderName = "FallGuysNameFinder";
+        private const string ScreenshotFolderName = "Screenshots";
+        private const string PatternFileName = "patterns.txt";
+        private const string OptionFileName = "options.json";
+        private const string StatsFileName = "stats.json";
+        private const string LogFileName = "log.log";
 
         public static string AppDir { get; private set; }
         public static string ScreenshotDir { get; private set; }
@@ -25,7 +23,6 @@ namespace Backend
         public static string OptionsFile { get; private set; }
         public static string LogFile { get; private set; }
         public static string StatsFile { get; private set; }
-
 
         static DataStorageStuff()
         {
@@ -100,7 +97,6 @@ namespace Backend
 
         public static void AddPattern(string line) => File.AppendAllLines(PatternsFile, new List<string>() { line });
 
-
         public static void AddPattern(Pattern p) => AddPattern(p.ToString());
 
         public static void EditPattern(int index, string line)
@@ -112,10 +108,8 @@ namespace Backend
 
         public static void EditPattern(int index, Pattern pattern) => EditPattern(index, pattern.ToString());
 
-
         public static Options GetOptions()
         {
-
             using (StreamReader sr = new StreamReader(OptionsFile))
             using (JsonReader reader = new JsonTextReader(sr))
             {
@@ -137,7 +131,6 @@ namespace Backend
 
         public static Statistics GetStats()
         {
-
             using (StreamReader sr = new StreamReader(StatsFile))
             using (JsonReader reader = new JsonTextReader(sr))
             {

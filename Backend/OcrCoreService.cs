@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using Tesseract;
+﻿using Backend.Model;
 using Serilog;
-using ImageFormat = System.Drawing.Imaging.ImageFormat;
-using System.IO;
-using System.Text.RegularExpressions;
-using Common;
-using FuzzySharp;
-using Backend.Model;
+using System.Drawing;
+using Tesseract;
 
 namespace Backend
 {
@@ -39,8 +26,4 @@ namespace Backend
             }
         }
     }
-
-
-
-
 }
