@@ -9,8 +9,15 @@ namespace Backend
     {
         public Name LastMatch { get; set; }
 
+        private void ClearOutputVariables()
+        {
+            LastMatch = default;
+        }
+
         public bool TestForViableName(params WordProcessorResult[] inputs)
         {
+            ClearOutputVariables();
+
             foreach (var input in inputs)
             {
                 var match = TestSingle(input);
@@ -20,7 +27,6 @@ namespace Backend
                 }
             }
 
-            LastMatch = default;
             return false;
         }
 
@@ -59,8 +65,8 @@ namespace Backend
 
             if (result)
             {
-                Log.Information("Viable Name Detected: {0}", LastMatch);
                 LastMatch = new Name(s.First, s.Second, s.Third);
+                Log.Information("Viable Name Detected: {0}", LastMatch);
             }
 
             return result;

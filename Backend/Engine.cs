@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Model;
 using Serilog;
+using Serilog.Events;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -31,10 +32,23 @@ namespace Backend
 
         public void Initialize()
         {
+            Options = DataStorageStuff.GetOptions();
+
+            LogEventLevel loglevel;
+
+            if (Options.Verbose)
+            {
+                loglevel = Serilog.Events.LogEventLevel.Debug;
+            }
+            else
+            {
+                loglevel = Serilog.Events.LogEventLevel.Information;
+            }
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
-                .MinimumLevel.Is(Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Is(loglevel)
                 .CreateLogger();
 
             Log.Information("Initializing Backend Engine...");
@@ -43,7 +57,6 @@ namespace Backend
 
             ParsingController = new ParsingController();
             ComparisonService = new MatchingService();
-            Options = DataStorageStuff.GetOptions();
             isInit = true;
         }
 

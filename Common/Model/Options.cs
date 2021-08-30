@@ -7,6 +7,7 @@ namespace Common.Model
         private bool stopOnAlliteration;
         private bool stopOnDoubleWord;
         private bool stopOnError;
+        private bool verbose = true;
 
         public bool StopOnAlliteration
         {
@@ -35,6 +36,16 @@ namespace Common.Model
             {
                 stopOnError = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnError)));
+            }
+        }
+
+        public bool Verbose
+        {
+            get => verbose;
+            set
+            {
+                verbose = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Verbose)));
             }
         }
 

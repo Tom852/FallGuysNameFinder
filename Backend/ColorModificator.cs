@@ -13,8 +13,8 @@ namespace Backend
         {
             List<Bitmap> result = new List<Bitmap>
             {
-                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true),
+                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, true),
 
                 ToGrayScale(bmp, false),
@@ -24,8 +24,8 @@ namespace Backend
 
                 // I am not sure if the non-inverted images make sense. It seemed like if the inverted fails, this one does too...
                 ToGrayScale(bmp, false),
-                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false),
                 ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false),
+                ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false),
                 ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, false)
             };
 

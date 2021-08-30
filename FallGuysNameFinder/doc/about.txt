@@ -1,7 +1,7 @@
 ﻿Fall Guys Name Finder
 Version: Preview 0.2
 
-Owner: Thomas Kistler, thomaskistler@bluewin.ch
+Owner: Thomas Kistler, thomaskistler@bluewin.ch, Steam Friend Code 75610105
 
 Repository: https://github.com/Tom852/FallGuysNameFinder
 

@@ -25,10 +25,16 @@ namespace Backend
         private readonly WordProcessor wordProcessor = new WordProcessor();
         private readonly ViableNameDetector viableNameDetector = new ViableNameDetector();
 
-        public bool ReadFromScreen()
+
+        private void ClearOutputVariables()
         {
             Result = default;
             ToFuzzyAnyalyze = new List<WordProcessorResult>();
+        }
+
+        public bool ReadFromScreen()
+        {
+            ClearOutputVariables();
 
             for (int i = 0; i < screenshotService.AmountOfPositionVariations; i++)
             {

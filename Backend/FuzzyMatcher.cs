@@ -1,6 +1,8 @@
 ﻿using Backend.Model;
 using FuzzySharp;
 using FuzzySharp.Extractor;
+using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Scorer.StrategySensitive;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,16 @@ namespace Backend
     {
         private const int CUTOFF_LIMIT = 50;
 
-        public FuzzyMatcherResult Result { get; private set; }
+        public FuzzyMatcherResult Result { get; private set; } 
+
+        private void ClearOutputVariables()
+        {
+            Result = new FuzzyMatcherResult();
+        }
 
         public bool Match(List<WordProcessorResult> inputs)
         {
+            ClearOutputVariables();
             List<StringTriple> workItems = PrepareToWorkCollection(inputs);
 
             ConsolerPrintState(workItems); // bit for debugging, could remove.
@@ -48,41 +56,33 @@ namespace Backend
 
         private void DoFuzzyComparison(StringTriple tripe)
         {
-            var result1 = DoFuzzyComparison(tripe.First, PossibleNames.FirstNames(false));
-            if (result1.Score > this.Result.First.Score)
+            ExtractedResult<string> fuzzyResult;
+            fuzzyResult = DoFuzzyComparison(tripe.First, PossibleNames.FirstNames(false));
+            if (fuzzyResult != null && fuzzyResult.Score > this.Result.First.Score)
             {
-                Log.Debug("New best-match for Position 1.");
-                Result.First = new SingleFuzzyResult(result1.Value, result1.Score);
+                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 1, tripe.First, fuzzyResult.Value, fuzzyResult.Score);
+                Result.First = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
             }
 
-            var result2 = DoFuzzyComparison(tripe.Second, PossibleNames.SecondNames(false));
-            if (result2.Score > this.Result.Second.Score)
+            fuzzyResult = DoFuzzyComparison(tripe.Second, PossibleNames.SecondNames(false));
+            if (fuzzyResult != null && fuzzyResult.Score > this.Result.Second.Score)
             {
-                Log.Debug("New best-match for Position 2.");
-                Result.Second = new SingleFuzzyResult(result2.Value, result2.Score);
+                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 2, tripe.Second, fuzzyResult.Value, fuzzyResult.Score);
+                Result.Second = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
             }
 
-            var result3 = DoFuzzyComparison(tripe.Third, PossibleNames.ThirdNames(false));
-            if (result3.Score > this.Result.Third.Score)
+            fuzzyResult = DoFuzzyComparison(tripe.Third, PossibleNames.ThirdNames(false));
+            if (fuzzyResult != null && fuzzyResult.Score > this.Result.Third.Score)
             {
-                Log.Debug("New best-match for Position 3.");
-                Result.Third = new SingleFuzzyResult(result3.Value, result3.Score);
+                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 3, tripe.Third, fuzzyResult.Value, fuzzyResult.Score);
+                Result.Third = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
             }
         }
 
         private ExtractedResult<string> DoFuzzyComparison(string word, string[] nameOptions)
         {
-            var r = Process.ExtractOne(word, nameOptions, s => s, cutoff: CUTOFF_LIMIT);
+            return Process.ExtractOne(word, nameOptions, s => s, cutoff: CUTOFF_LIMIT);
 
-            if (r != null)
-            {
-                Log.Debug("Fuzzy Matching Sucess: Input {0} - Matching {1} - Score {2}", word, r.Value, r.Score);
-            }
-            else
-            {
-                Log.Debug("{0} could not be matched", word);
-            }
-            return r;
         }
 
         private StringTriple DetectMostLikelyPermutation(WordProcessorResult wpr)

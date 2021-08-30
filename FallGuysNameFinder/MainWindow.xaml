@@ -45,6 +45,11 @@
                   IsChecked="{Binding Options.StopOnError}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick" />
+            <CheckBox Name="VerboseConsole" Content="Verbose Console" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                  ToolTip="If checked, the console will print numerous additional outputs."
+                  IsChecked="{Binding Options.Verbose}"
+                  IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
+                  Click="OnOptionsClick" />
 
             <Grid Margin="0, 40, 0, 20">
                 <Grid.ColumnDefinitions>
