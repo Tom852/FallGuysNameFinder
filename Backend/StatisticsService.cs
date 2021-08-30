@@ -14,10 +14,9 @@ namespace Backend
     {
         public void Account(History history)
         {
-            var dss = new DataStorageStuff();
-            var stats = dss.GetStats();
+            var stats = DataStorageStuff.GetStats();
             stats.Account(history.GetWithoutSameElementsInRow());
-            dss.SaveStats(stats);
+            DataStorageStuff.SaveStats(stats);
         }
     }
 }

@@ -40,13 +40,11 @@ namespace Backend
 
             Log.Information("Initializing Backend Engine...");
 
-            var dataStorageStuff = new DataStorageStuff();
-
             History = new History();
 
             ParsingController = new ParsingController();
-            ComparisonService = new MatchingService(dataStorageStuff);
-            Options = dataStorageStuff.GetOptions();
+            ComparisonService = new MatchingService();
+            Options = DataStorageStuff.GetOptions();
             isInit = true;
         }
 

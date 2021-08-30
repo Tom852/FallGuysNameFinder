@@ -30,15 +30,15 @@ namespace FallGuysNameFinder
     public partial class MainWindow : Window
     {
         public ViewModel ViewModel { get; set; } = new ViewModel();
-        public DataStorageStuff DataStuff { get; }
+
         public Engine BackendEngine { get; set; }
         public DispatcherTimer PenetrantForeGroundChecker { get; set; }
 
         public MainWindow()
         {
-            DataStuff = new DataStorageStuff();
-            var options = DataStuff.GetOptions();
-            var patterns = DataStuff.ReadPatterns();
+
+            var options = DataStorageStuff.GetOptions();
+            var patterns = DataStorageStuff.ReadPatterns();
 
             ViewModel.Options = options;
             ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
@@ -156,26 +156,22 @@ namespace FallGuysNameFinder
             {
                 EditPattern(index, w.Vm.Pattern);
             };
-            w.OnRemoveClick += (d1, d2) =>
-            {
-                RemovePattern(index);
-            };
         }
 
         private void OnOptionsClick(object sender, RoutedEventArgs e)
         {
-            this.DataStuff.SaveOptions(this.ViewModel.Options);
+            DataStorageStuff.SaveOptions(this.ViewModel.Options);
         }
 
         private void AddPattern(Pattern p)
         {
-            DataStuff.AddPattern(p);
+            DataStorageStuff.AddPattern(p);
             this.ViewModel.Patterns.Add(p);
         }
 
         private void RemovePattern(int index)
         {
-            DataStuff.RemovePattern(index);
+            DataStorageStuff.RemovePattern(index);
             this.ViewModel.Patterns.RemoveAt(index);
 
             var totalElements = this.ViewModel.Patterns.Count;
@@ -192,7 +188,7 @@ namespace FallGuysNameFinder
 
         private void EditPattern(int index, Pattern p)
         {
-            DataStuff.EditPattern(index, p);
+            DataStorageStuff.EditPattern(index, p);
             this.ViewModel.Patterns.RemoveAt(index);
             this.ViewModel.Patterns.Insert(index, p);
         }
@@ -220,8 +216,8 @@ namespace FallGuysNameFinder
             }
             else
             {
-                this.ViewModel.Options = DataStuff.GetOptions();
-                this.ViewModel.Patterns = new ObservableCollection<Pattern>(DataStuff.ReadPatterns());
+                this.ViewModel.Options = DataStorageStuff.GetOptions();
+                this.ViewModel.Patterns = new ObservableCollection<Pattern>(DataStorageStuff.ReadPatterns());
 
                 // hmm, not sure if people want that.
                 //if (!this.ViewModel.IsConsoleShown)

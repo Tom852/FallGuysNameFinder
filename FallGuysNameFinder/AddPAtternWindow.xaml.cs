@@ -24,7 +24,6 @@ namespace FallGuysNameFinder
     {
         public event EventHandler OnOkClick;
         public event EventHandler OnCancelClick;
-        public event EventHandler OnRemoveClick;
 
         public AddPatternViewModel Vm { get; set; }
 

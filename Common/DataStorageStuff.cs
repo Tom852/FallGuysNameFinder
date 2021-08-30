@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    public class DataStorageStuff
+    public static class DataStorageStuff
     {
         const string RootFolderName = "FallGuysNameFinder";
         const string ScreenshotFolderName = "Screenshots";
@@ -72,7 +72,7 @@ namespace Backend
             }
         }
 
-        public List<Pattern> ReadPatterns()
+        public static List<Pattern> ReadPatterns()
         {
             var lines = File.ReadAllLines(PatternsFile);
             List<Pattern> result = new List<Pattern>();
@@ -91,29 +91,29 @@ namespace Backend
             return result;
         }
 
-        public void RemovePattern(int index)
+        public static void RemovePattern(int index)
         {
             var allLines = File.ReadAllLines(PatternsFile).ToList();
             allLines.RemoveAt(index);
             File.WriteAllLines(PatternsFile, allLines);
         }
 
-        public void AddPattern(string line) => File.AppendAllLines(PatternsFile, new List<string>() { line });
+        public static void AddPattern(string line) => File.AppendAllLines(PatternsFile, new List<string>() { line });
 
 
-        public void AddPattern(Pattern p) => AddPattern(p.ToString());
+        public static void AddPattern(Pattern p) => AddPattern(p.ToString());
 
-        public void EditPattern(int index, string line)
+        public static void EditPattern(int index, string line)
         {
             var allLines = File.ReadAllLines(PatternsFile);
             allLines[index] = line;
             File.WriteAllLines(PatternsFile, allLines);
         }
 
-        public void EditPattern(int index, Pattern pattern) => EditPattern(index, pattern.ToString());
+        public static void EditPattern(int index, Pattern pattern) => EditPattern(index, pattern.ToString());
 
 
-        public Options GetOptions()
+        public static Options GetOptions()
         {
 
             using (StreamReader sr = new StreamReader(OptionsFile))
@@ -125,7 +125,7 @@ namespace Backend
             }
         }
 
-        public void SaveOptions(Options o)
+        public static void SaveOptions(Options o)
         {
             using (StreamWriter sw = new StreamWriter(OptionsFile))
             using (JsonWriter writer = new JsonTextWriter(sw))
@@ -135,7 +135,7 @@ namespace Backend
             }
         }
 
-        public Statistics GetStats()
+        public static Statistics GetStats()
         {
 
             using (StreamReader sr = new StreamReader(StatsFile))
@@ -147,7 +147,7 @@ namespace Backend
             }
         }
 
-        public void SaveStats(Statistics s)
+        public static void SaveStats(Statistics s)
         {
             using (StreamWriter sw = new StreamWriter(StatsFile))
             using (JsonWriter writer = new JsonTextWriter(sw))

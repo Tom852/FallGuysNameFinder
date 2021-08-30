@@ -21,10 +21,10 @@ namespace Backend
     {
         const string Wildcard = "*";
 
-        public MatchingService(DataStorageStuff storageAccess)
+        public MatchingService()
         {
-            this.Patterns = storageAccess.ReadPatterns();
-            this.Options = storageAccess.GetOptions();
+            this.Patterns = DataStorageStuff.ReadPatterns();
+            this.Options = DataStorageStuff.GetOptions();
         }
 
         public MatchingService(List<Pattern> patterns)
