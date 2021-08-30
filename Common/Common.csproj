@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EngineStatus.cs" />
+    <Compile Include="Extensions\DictionaryExtension.cs" />
     <Compile Include="FgStatus.cs" />
     <Compile Include="ConsoleAllocator.cs" />
+    <Compile Include="Model\Statistics.cs" />
     <Compile Include="PossibleNames.cs" />
     <Compile Include="DataStorageStuff.cs" />
     <Compile Include="FgWindowAccess.cs" />

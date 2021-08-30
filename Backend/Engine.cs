@@ -15,6 +15,7 @@ namespace Backend
 
         const int FailInRowLimit = 10;
 
+        public History History { get; private set; }
         private OcrService OcrService { get; set; }
         private WordsComparisonService ComparisonService { get; set; }
         private Options Options { get; set; }
@@ -32,7 +33,7 @@ namespace Backend
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.File(DataStorageStuff.LogNamesFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
+                .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
                 .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
                 .CreateLogger();
 
@@ -40,6 +41,8 @@ namespace Backend
             Log.Information("Initializing Backend Engine...");
 
             var dataStorageStuff = new DataStorageStuff();
+
+            History = new History();
 
             OcrService = new OcrService();
             ComparisonService = new WordsComparisonService(dataStorageStuff);
@@ -97,6 +100,7 @@ namespace Backend
                     if (success)
                     {
                         failsInRow = 0;
+                        this.History.Add(text);
 
                         var match = ComparisonService.Test(text);
                         if (match)
@@ -138,6 +142,8 @@ namespace Backend
                     }
                 }
             }
+
+            new StatisticsService().Encount(this.History);
 
             OnStop?.Invoke(this, new EventArgs());
             Log.Information("Engine stopped after {iterations} iterations", iterations);

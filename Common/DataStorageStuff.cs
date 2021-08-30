@@ -16,12 +16,15 @@ namespace Backend
         const string ScreenshotFolderName = "Screenshots";
         const string PatternFileName = "patterns.txt";
         const string OptionFileName = "options.json";
+        const string StatsFileName = "stats.json";
+        const string LogFileName = "log.log";
 
         public static string AppDir { get; private set; }
         public static string ScreenshotDir { get; private set; }
         public static string PatternsFile { get; private set; }
         public static string OptionsFile { get; private set; }
-        public static string LogNamesFile { get; private set; }
+        public static string LogFile { get; private set; }
+        public static string StatsFile { get; private set; }
 
 
         static DataStorageStuff()
@@ -31,7 +34,8 @@ namespace Backend
             ScreenshotDir = Path.Combine(env, RootFolderName, ScreenshotFolderName);
             PatternsFile = Path.Combine(env, RootFolderName, PatternFileName);
             OptionsFile = Path.Combine(env, RootFolderName, OptionFileName);
-            LogNamesFile = Path.Combine(env, RootFolderName, "Log.log");
+            LogFile = Path.Combine(env, RootFolderName, LogFileName);
+            StatsFile = Path.Combine(env, RootFolderName, StatsFileName);
 
             if (!Directory.Exists(AppDir))
             {
@@ -45,6 +49,16 @@ namespace Backend
             {
                 var stream = File.Create(PatternsFile);
                 stream.Close();
+            }
+            if (!File.Exists(StatsFile))
+            {
+                using (var stream = File.Create(StatsFile))
+                using (StreamWriter sw = new StreamWriter(stream))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(writer, new Statistics());
+                }
             }
             if (!File.Exists(OptionsFile))
             {
@@ -118,6 +132,29 @@ namespace Backend
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(writer, o);
+            }
+        }
+
+        public Statistics GetStats()
+        {
+
+            using (StreamReader sr = new StreamReader(StatsFile))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                var result = (Statistics)serializer.Deserialize(reader, typeof(Statistics));
+                return result ?? throw new IOException("Could not parse Stats");
+            }
+        }
+
+        public void SaveStats(Statistics s)
+        {
+            using (StreamWriter sw = new StreamWriter(StatsFile))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Formatting = Formatting.Indented;
+                serializer.Serialize(writer, s);
             }
         }
     }
