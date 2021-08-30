@@ -25,27 +25,19 @@ namespace Backend
         private OcrCoreService ocrCoreService { get; } = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
         private WordProcessor wordProcessor { get; } = new WordProcessor();
         private ViableNameDetector viableNameDetector { get; } = new ViableNameDetector();
-
+        private FuzzyMatcher fuzzyMatcher { get; } = new FuzzyMatcher();
 
         const float CONFIDENCE_SURE_LIMIT = 0.90f;
-        const float CONFIDENCE_DUMP_LIMIT = 0.85f;
+        const float CONFIDENCE_DUMP_LIMIT = 0.30f;
+
+        public List<WordProcessorResult> ToFuzzyAnyalyze { get; private set; }
 
 
-        List<WordProcessorResult> ToFuzzyAnyalyze = new List<WordProcessorResult>();
-        (string, int)[] FinalWords = new (string, int)[3];
-
-        private void InitializeService()
-        {
-            ToFuzzyAnyalyze = new List<WordProcessorResult>();
-            FinalWords = new (string, int)[3]; //todo wrapyper
-        }
 
         public bool ReadFromScreen(out Name result)
         {
-            InitializeService();
 
-
-            List<string> ocrRawTexts = new List<string>();
+            ToFuzzyAnyalyze = new List<WordProcessorResult>();
 
             for (int i = 0; i < screenshotService.AmountOfPositionVariations; i++)
             {
@@ -62,6 +54,9 @@ namespace Backend
                         Log.Debug("Confidence too low. Dumping result.");
                         continue;
                     }
+
+                    // We can think about skipping results with less than 3 words already here... right now they are kept but skiopped later and never used :O
+                    // But it may make sense if you get two perfect words and only the third is lost.
 
                     if (!ocrResult.HasText)
                     {
@@ -94,107 +89,17 @@ namespace Backend
                 }
             }
 
-            Log.Information("No attempt led to a perfect match. The engine will try to fit the patterns approximately.");
-            
-            Console.WriteLine("Fuzzy Engine Started with the following texts avilable:");
-            ToFuzzyAnyalyze.RemoveAll(entry => entry.Count() < 3);
-            ToFuzzyAnyalyze = ToFuzzyAnyalyze.Distinct(new SequenceEqualsComparer()).ToList();
-            ToFuzzyAnyalyze.ForEach(f => Console.WriteLine(string.Join(" ", f)));
+            Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
 
-
-            var magicSuccess = GoFuzzyMatching(out var fuzzyResult); //todo: reinsten out var und so ghetto...
-            if (magicSuccess)
+            var fuzzySuccess = fuzzyMatcher.Match(ToFuzzyAnyalyze);
+            if (fuzzySuccess)
             {
-                result = fuzzyResult.ToArray();
+                result = new Name(fuzzyMatcher.Result.First.Word, fuzzyMatcher.Result.Second.Word, fuzzyMatcher.Result.Third.Word);
                 return true;
             }
 
-
-            result = new string[] { };
             return false;
         }
-
-        private bool GoFuzzyMatching(out List<string> result)
-        {
-            foreach (var i in ToFuzzyAnyalyze.ToList())
-            {
-                if (i.Count > 3)
-                {
-                    var t = DetectMostLikelyPermutation(i);
-                    ToFuzzyAnyalyze.Remove(i);
-                    ToFuzzyAnyalyze.Add(t);
-                }
-                if (i.Count < 3)
-                {
-                    ToFuzzyAnyalyze.Remove(i);
-                }
-            }
-
-            foreach (var i in ToFuzzyAnyalyze)
-            {
-                DoFuzzyComparison(i);
-            }
-
-            if (!FinalWords.ToList().All(entry => entry.Item2 != 0))
-            {
-            Log.Warning("Fuzzy matching failed.");
-                result = null;
-                return false;
-            }
-
-
-
-            result = FinalWords.Select(f => f.Item1).ToList();
-            Log.Information("Fuzzy matching succeeded. The result is: {0}", FinalWords.Select(f => $"{f.Item1} ({f.Item2}%)").Aggregate((x, y) => $"{x} | {y}"));
-
-            return true;
-        }
-
-        private void DoFuzzyComparison(List<string> words)
-        {
-            var nameOptions = new string[][] { PossibleNames.FirstNames(false), PossibleNames.SecondNames(false), PossibleNames.ThirdNames(false) };
-
-            for (int i = 0; i < 3; i++)
-            {
-                var r = Process.ExtractOne(words[i], nameOptions[i], cutoff: 50);
-                if (r != null)
-                {
-                    if (this.FinalWords[i].Item2 < r.Score)
-                    {
-                        Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", i, words[i], r.Value, r.Score);
-                        FinalWords[i].Item1 = r.Value;
-                        FinalWords[i].Item2 = r.Score;
-                    }
-                } else
-                {
-                    Log.Debug("{0} could not be matched", words[i]);
-                }
-
-            }
-        }
-
-        private List<string> DetectMostLikelyPermutation(List<string> words)
-        {
-            Dictionary<int, int> scoreBoard = new Dictionary<int, int>();
-            var subcollecitons = this.GetSubCollections(words);
-
-            for (int i = 0; i < subcollecitons.Count; i++)
-            {
-
-                var result1 = Process.ExtractOne(subcollecitons[i][0], PossibleNames.FirstNames(false));
-                var result2 = Process.ExtractOne(subcollecitons[i][1], PossibleNames.SecondNames(false));
-                var result3 = Process.ExtractOne(subcollecitons[i][2], PossibleNames.ThirdNames(false));
-                scoreBoard.Add(i, result1.Score + result2.Score + result3.Score);
-            }
-
-            var maxValue = scoreBoard.Values.Max();
-            var maxIndex = scoreBoard.First(s => s.Value == maxValue).Key;
-            var result = words.Skip(maxIndex).Take(3).ToList();
-            Log.Debug("Best Fitting Triple of {0} is {1}", words, result);
-            return result;
-        }
-
-
 
 
         private string GetScreenshotFileName(int attempt, int style)

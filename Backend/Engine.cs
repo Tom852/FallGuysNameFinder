@@ -96,13 +96,13 @@ namespace Backend
                         break;
                     }
 
-                    bool success = OcrService.ReadFromScreen(out var text);
+                    bool success = OcrService.ReadFromScreen(out var name);
                     if (success)
                     {
                         failsInRow = 0;
-                        this.History.Add(text);
+                        this.History.Add(name);
 
-                        var match = ComparisonService.Test(text);
+                        var match = ComparisonService.Test(name);
                         if (match)
                         {
                             Log.Information("YEEEEEEEETAAASTIC!! WE GOT IT!!!");

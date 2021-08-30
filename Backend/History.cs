@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Backend
             );
         }
 
-        public void Add(string[] node)
+        public void Add(Name node)
         {
             this.PreviousNames.Add(node);
         }

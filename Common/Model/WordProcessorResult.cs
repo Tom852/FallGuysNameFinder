@@ -28,6 +28,15 @@ namespace Common.Model
         public int Count => Words.Count;
 
 
+        public StringTriple GetAsTriple()
+        {
+            if (Count != 3)
+            {
+                throw new InvalidOperationException("Cant generate Triple if there are not exactly three words in the WordProcessorResult");
+            }
+            return new StringTriple(Words.ToArray());
+
+        }
 
         public List<WordProcessorResult> GetSubcollectionOfLengthThreeInRow()
         {
@@ -47,27 +56,32 @@ namespace Common.Model
         }
 
 
-        public List<WordProcessorResult> GetSubcollectionOfLengthThreeAnyPermutation()
+        public List<StringTriple> GetSubcollectionOfLengthThreeAnyOrderedCombination()
         {
             if (Count <= 3)
             {
-                return new List<WordProcessorResult>() { new WordProcessorResult(Words) };
+                return new List<StringTriple>() { new StringTriple(Words) };
             }
 
 
-            List<WordProcessorResult> result = new List<WordProcessorResult>();
+            List<StringTriple> result = new List<StringTriple>();
             for (int i = 0; i <= Count - 3; i++)
             {
                 for (int j = i+1; j <= Count -2; j++)
                 {
                     for (int k = j + 1; k <= Count -1; k++)
                     {
-                        result.Add(new WordProcessorResult(Words[i], Words[j], Words[k]));
+                        result.Add(new StringTriple(Words[i], Words[j], Words[k]));
 
                     }
                 }
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(" ", Words);
         }
     }
 }

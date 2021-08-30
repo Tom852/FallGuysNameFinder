@@ -5,6 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace Backend
 {
+
+    // We can think about skipping results with less than 3 words already here... right now they are kept but skiopped later and never used :O
+    // But it may make sense if you get two perfect words and only the third is lost.
+
     public class WordProcessor
     {
         public WordProcessorResult SoftArtifactFilter(string input)
