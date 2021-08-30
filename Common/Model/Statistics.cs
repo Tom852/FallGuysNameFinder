@@ -13,13 +13,13 @@ namespace Common.Model
         public Dictionary<string, int> SecondNames { get; set; } = new Dictionary<string, int>();
         public Dictionary<string, int> ThirdNames { get; set; } = new Dictionary<string, int>();
 
-        public void Account(List<string[]> previousNames)
+        public void Account(List<Name> previousNames)
         {
             foreach (var node in previousNames)
             {
-                FirstNames.AddOrIncrease(node[0]);
-                SecondNames.AddOrIncrease(node[1]);
-                ThirdNames.AddOrIncrease(node[2]);
+                FirstNames.AddOrIncrease(node.First);
+                SecondNames.AddOrIncrease(node.Second);
+                ThirdNames.AddOrIncrease(node.Third);
             }
         }
     }

@@ -40,5 +40,25 @@ namespace Common.Model
         {
             return $"{First} {Second} {Third}";
         }
+
+        public static bool operator ==(Name left, Name right) => left.Equals(right);
+        public static bool operator !=(Name left, Name right) => !left.Equals(right);
+
+        public override bool Equals(object obj)
+        {
+            return obj is Name name &&
+                   First == name.First &&
+                   Second == name.Second &&
+                   Third == name.Third;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 2144946132;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(First);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Second);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Third);
+            return hashCode;
+        }
     }
 }

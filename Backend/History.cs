@@ -9,7 +9,7 @@ namespace Backend
 {
     public class History
     {
-        private List<string[]> PreviousNames { get; set; } = new List<string[]>(); //todo: use name class instead string[], parsed name that can contain more than 4.
+        private List<Name> PreviousNames { get; set; } = new List<Name>();
 
         public bool WereLastNamesAllEqual(int i)
         {
@@ -20,9 +20,7 @@ namespace Backend
 
             var lastElement = PreviousNames.Last();
 
-            return PreviousNames.GetRange(PreviousNames.Count - i, i).All(node =>
-                node[0] == lastElement[0] && node[1] == lastElement[1] && node[2] == lastElement[2]
-            );
+            return PreviousNames.GetRange(PreviousNames.Count - i, i).All(node => node == lastElement);
         }
 
         public void Add(Name node)
@@ -30,25 +28,25 @@ namespace Backend
             this.PreviousNames.Add(node);
         }
 
-        public List<string[]> GetWithoutSameElementsInRow()
+        public List<Name> GetWithoutSameElementsInRow()
         {
             if (PreviousNames.Count < 2)
             {
                 return PreviousNames;
             }
 
-            var node = PreviousNames[1];
+            var current = PreviousNames[1];
             var previous = PreviousNames.First();
-            List<string[]> result = new List<string[]>() { previous };
+            List<Name> result = new List<Name>() { previous };
 
             foreach (var item in PreviousNames.GetRange(1, PreviousNames.Count - 1))
             {
-                node = item;
-                if (node[0] != previous[0] || node[1] != previous[1] || node[2] != previous[2])
+                current = item;
+                if (current != previous)
                 {
-                    result.Add(node);
+                    result.Add(current);
                 }
-                previous = node;
+                previous = current;
             }
             return result;
         }

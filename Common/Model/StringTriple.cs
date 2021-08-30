@@ -37,12 +37,15 @@ namespace Common.Model
             return $"{First} {Second} {Third}";
         }
 
+        public static bool operator ==(StringTriple left, StringTriple right) => left.Equals(right);
+        public static bool operator !=(StringTriple left, StringTriple right) => !left.Equals(right);
+
         public override bool Equals(object obj)
         {
-            return obj is StringTriple triple &&
-                   First == triple.First &&
-                   Second == triple.Second &&
-                   Third == triple.Third;
+            return obj is StringTriple name &&
+                   First == name.First &&
+                   Second == name.Second &&
+                   Third == name.Third;
         }
 
         public override int GetHashCode()
