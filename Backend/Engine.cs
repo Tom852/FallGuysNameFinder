@@ -39,12 +39,6 @@ namespace Backend
 
             Log.Information("Initializing Backend Engine...");
 
-            Console.WriteLine();
-            Console.WriteLine("Note: Use a simple background with high contrast and no diggly-thingie butterflies on it.");
-            Console.WriteLine("Note: If the results are garbage, try another background.");
-            Console.WriteLine();
-
-
             var dataStorageStuff = new DataStorageStuff();
 
             OcrService = new OcrService();
@@ -71,21 +65,7 @@ namespace Backend
                 throw new Exception("not initialized!");
             }
 
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Ensure that the Fall Guys profil page is open and that it is in keyboard-focus at all times.");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine();
-            Console.WriteLine("You can move these windows to your secondary screens or keep them in background.");
-            Console.WriteLine();
-
-            Console.WriteLine("Starting Backend Engine in");
-
-            for (int i = 5; i >= 1; i--)
-            {
-                Console.WriteLine(i);
-                Thread.Sleep(1000);
-            }
-            Console.WriteLine();
+            Thread.Sleep(3000);
 
 
             //BringToFront(); // could make an option here but propbably not necessary?

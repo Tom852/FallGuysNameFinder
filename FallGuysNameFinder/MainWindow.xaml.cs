@@ -47,6 +47,37 @@ namespace FallGuysNameFinder
             InitializeComponent();
 
             SetupFallguysProcessChecker();
+
+            InitializeConsole();
+        }
+
+        private void InitializeConsole()
+        {
+            ConsoleAllocator.ShowConsoleWindow();
+            Console.WriteLine("Engine output will go here.");
+            Console.WriteLine("Observe it in the beginning to ensure everything works properly.");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("Tips for bettter results:");
+            Console.WriteLine("- Clean unicolor nameplate background");
+            Console.WriteLine("- Small icon in nameplate");
+            Console.WriteLine("- Dark namepalte for high contrast");
+            Console.WriteLine("- One-worded nickname, that is not similar to a user-name");
+            Console.WriteLine("- High resolution");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Recommended Namplate: System Error, Dragonfire, Vaporwave");
+            Console.WriteLine("Recommended Nickname: Parkour!, Goalie, Spelunker");
+            Console.WriteLine("Recommended Resolution: 1920x1080 or higher");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
+            Console.WriteLine("You can move this windows to your secondary screens or keep it in background or close it with the 'Hide Console' button.");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("If you X the console, the whole software stops.");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
+            ConsoleAllocator.HideConsoleWindow();
         }
 
         private void SetupFallguysProcessChecker()

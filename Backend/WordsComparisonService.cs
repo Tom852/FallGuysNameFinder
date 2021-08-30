@@ -14,6 +14,9 @@ using Common.Model;
 
 namespace Backend
 {
+
+    // todo: sicherstellen, dass alles immer lowercase mässig abgehandlet wird.
+    // ev schon beim name oder so.
     public class WordsComparisonService
     {
         const string Wildcard = "*";
