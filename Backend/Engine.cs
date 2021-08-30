@@ -17,7 +17,7 @@ namespace Backend
 
         public History History { get; private set; }
         private OcrService OcrService { get; set; }
-        private WordsComparisonService ComparisonService { get; set; }
+        private MatchingService ComparisonService { get; set; }
         private Options Options { get; set; }
 
         private bool isInit = false;
@@ -45,7 +45,7 @@ namespace Backend
             History = new History();
 
             OcrService = new OcrService();
-            ComparisonService = new WordsComparisonService(dataStorageStuff);
+            ComparisonService = new MatchingService(dataStorageStuff);
             this.Options = dataStorageStuff.GetOptions();
             isInit = true;
         }

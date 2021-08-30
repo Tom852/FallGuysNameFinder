@@ -14,45 +14,49 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Common;
 using FuzzySharp;
+using Common.Model;
 
 namespace Backend
 {
     public class OcrService
     {
-        public ScreenshotService ScreenshotService { get; } = new ScreenshotService();
-        public ColorModificator ColorModificator { get; } = new ColorModificator();
-        public OcrCoreService OcrCoreService { get; } = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
+        private ScreenshotService screenshotService { get; } = new ScreenshotService();
+        private ColorModificator colorModificator { get; } = new ColorModificator();
+        private OcrCoreService ocrCoreService { get; } = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
+        private WordProcessor wordProcessor { get; } = new WordProcessor();
+        private ViableNameDetector viableNameDetector { get; } = new ViableNameDetector();
+
 
         const float CONFIDENCE_SURE_LIMIT = 0.90f;
         const float CONFIDENCE_DUMP_LIMIT = 0.85f;
 
 
-        List<List<string>> ToFuzzyAnyalyze = new List<List<string>>();
+        List<WordProcessorResult> ToFuzzyAnyalyze = new List<WordProcessorResult>();
         (string, int)[] FinalWords = new (string, int)[3];
 
         private void InitializeService()
         {
-            ToFuzzyAnyalyze = new List<List<string>>();
+            ToFuzzyAnyalyze = new List<WordProcessorResult>();
             FinalWords = new (string, int)[3]; //todo wrapyper
         }
 
-        public bool ReadFromScreen(out string[] result)
+        public bool ReadFromScreen(out Name result)
         {
             InitializeService();
 
 
             List<string> ocrRawTexts = new List<string>();
 
-            for (int i = 0; i < ScreenshotService.AmountOfPositionVariations; i++)
+            for (int i = 0; i < screenshotService.AmountOfPositionVariations; i++)
             {
-                var bmp = ScreenshotService.TakeScreenshot(i);
-                var colorModifications = ColorModificator.GetAll(bmp);
+                var bmp = screenshotService.TakeScreenshot(i);
+                var colorModifications = colorModificator.GetAll(bmp);
 
                 for (int j = 0; j < colorModifications.Count; j++)
                 {
                     Log.Debug("OCR Attempt {0}-{1}", i, j);
 
-                    var ocrResult = OcrCoreService.DoOcr(bmp);
+                    var ocrResult = ocrCoreService.DoOcr(bmp);
                     if (ocrResult.Confidence < CONFIDENCE_DUMP_LIMIT)
                     {
                         Log.Debug("Confidence too low. Dumping result.");
@@ -65,18 +69,18 @@ namespace Backend
                         continue;
                     }
 
-                    var garbageFiltered = FilterArtifacts(ocrResult.Text);
-                    var agressiveFiltered = AggressiveArtifactFilter(ocrResult.Text);
-                    var spaceInvariant = DetectMissingSpaces(ocrResult.Text);
+                    var garbageFiltered = wordProcessor.SoftArtifactFilter(ocrResult.Text);
+                    var agressiveFiltered = wordProcessor.AggressiveArtifactFilter(ocrResult.Text);
+                    var spaceInvariant = wordProcessor.WordExtractor(ocrResult.Text);
 
-                    bool success = TestForPerfectMatch(new List<List<string>>() { garbageFiltered, agressiveFiltered, spaceInvariant }, out var iterationresult1);
+                    bool success = viableNameDetector.TestForViableName(garbageFiltered, agressiveFiltered, spaceInvariant);
                     if (success)
                     {
-                        result = iterationresult1.ToArray();
+                        result = viableNameDetector.LastMatch;
                         return true;
                     }
 
-                    Log.Debug("No Perfect Match");
+                    Log.Debug("No viable name found.");
 
                     if (ocrResult.Confidence > CONFIDENCE_SURE_LIMIT)
                     {
@@ -190,121 +194,8 @@ namespace Backend
             return result;
         }
 
-        private bool TestForPerfectMatch(List<List<string>> input, out List<string> result)
-        {
-
-            List<List<string>> wordsOfLength3 = new List<List<string>>();
-
-            // todo: hier subcolleciton logic machen.
-            foreach (var entry in input)
-            {
-                if (entry.Count == 3)
-                {
-                    wordsOfLength3.Add(entry);
-                }
-                if (entry.Count > 3)
-                {
-                    var subs = GetSubCollections(entry);
-                    wordsOfLength3.AddRange(subs);
-                }
-            }
-
-            foreach (var entry in wordsOfLength3)
-            {
-
-                bool isViable = ValidateTripe(entry);
-                if (isViable)
-                {
-                    Log.Information("Viable Text Found: '{0}'", entry);
-                    result = entry;
-                    return true;
-                }
-
-            }
 
 
-
-            result = null;
-            return false;
-
-        }
-
-
-        private List<string> FilterArtifacts(string input)
-        {
-            var result = input.Split(' ').Select(s => s.Trim()).Where(s => s.Length > 2).ToList();
-            Log.Debug("Soft artifact filter delivered text to: {0}", result);
-            return result;
-        }
-
-        private List<string> AggressiveArtifactFilter(string input)
-        {
-            string pattern = @"[A-Za-z]{3,}";
-
-            Regex r = new Regex(pattern);
-            var matches = r.Matches(input);
-
-            List<string> words = new List<string>();
-            foreach (Match m in matches)
-            {
-                words.Add(m.Value);
-            }
-
-            Log.Debug("Aggressive artifact filter delivered {0}", words);
-
-            return words;
-        }
-
-        private List<string> DetectMissingSpaces(string input)
-        {
-            //string pattern = @"([A-Z][a-z]{2,}|VIP|MVP|IceCream)";  // das macht nun eig case invariatn
-            string pattern = @"([A-Z][a-z]{2,})";
-
-            Regex r = new Regex(pattern);
-            var matches = r.Matches(input);
-
-            List<string> words = new List<string>();
-            foreach (Match m in matches)
-            {
-                words.Add(m.Value);
-            }
-
-            Log.Debug("Word-Extractor delivered {0}", words);
-
-            return words;
-        }
-
-
-        private bool ValidateTripe(List<string> words)
-        {
-            if (words.Count != 3)
-            {
-                throw new Exception("words length is not 3.");
-            }
-
-            var p1 = PossibleNames.FirstNames(true);
-            var p2 = PossibleNames.SecondNames(true);
-            var p3 = PossibleNames.ThirdNames(true);
-
-            // todo: würde heir bereits alles toupper haben wollen, damit das schonmal raus ist.
-
-            var w1 = words[0].ToLower();
-            var w2 = words[1].ToLower();
-            var w3 = words[2].ToLower();
-
-            return p1.Contains(w1) && p2.Contains(w2) && p3.Contains(w3);
-        }
-
-        private List<List<string>> GetSubCollections(List<string> words)
-        {
-            List<List<string>> result = new List<List<string>>();
-            for (int i = 0; i <= words.Count - 3; i++)
-            {
-                var subcollection = words.Skip(i).Take(3);
-                result.Add(subcollection.ToList());
-            }
-            return result;
-        }
 
         private string GetScreenshotFileName(int attempt, int style)
         {

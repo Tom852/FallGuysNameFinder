@@ -80,13 +80,15 @@
     <Compile Include="ColorModificator.cs" />
     <Compile Include="History.cs" />
     <Compile Include="OcrCoreService.cs" />
+    <Compile Include="OcrService.cs" />
     <Compile Include="ScreenshotService.cs" />
     <Compile Include="StatisticsService.cs" />
     <Compile Include="ParsedName.cs" />
-    <Compile Include="WordsComparisonService.cs" />
+    <Compile Include="MatchingService.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OcrService.cs" />
+    <Compile Include="ViableNameDetector.cs" />
+    <Compile Include="WordProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -17,17 +17,17 @@ namespace Backend
 
     // todo: sicherstellen, dass alles immer lowercase mässig abgehandlet wird.
     // ev schon beim name oder so.
-    public class WordsComparisonService
+    public class MatchingService
     {
         const string Wildcard = "*";
 
-        public WordsComparisonService(DataStorageStuff storageAccess)
+        public MatchingService(DataStorageStuff storageAccess)
         {
             this.Patterns = storageAccess.ReadPatterns();
             this.Options = storageAccess.GetOptions();
         }
 
-        public WordsComparisonService(List<Pattern> patterns)
+        public MatchingService(List<Pattern> patterns)
         {
             Patterns = patterns;
         }
