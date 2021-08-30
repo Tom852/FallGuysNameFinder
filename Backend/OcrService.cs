@@ -19,15 +19,12 @@ namespace Backend
 {
     public class OcrService
     {
-        public ScreenshotService screenshotService { get; } = new ScreenshotService();
-        public ColorModificator colorModificator { get; } = new ColorModificator();
+        public ScreenshotService ScreenshotService { get; } = new ScreenshotService();
+        public ColorModificator ColorModificator { get; } = new ColorModificator();
+        public OcrCoreService OcrCoreService { get; } = new OcrCoreService(new TesseractEngine(@"./tessdata", "eng", EngineMode.Default));
 
         const float CONFIDENCE_SURE_LIMIT = 0.90f;
         const float CONFIDENCE_DUMP_LIMIT = 0.85f;
-
-
-
-
 
 
         List<List<string>> ToFuzzyAnyalyze = new List<List<string>>();
@@ -41,35 +38,36 @@ namespace Backend
 
         public bool ReadFromScreen(out string[] result)
         {
-            
+            InitializeService();
+
 
             List<string> ocrRawTexts = new List<string>();
 
-            for (int i = 0; i < screenshotService.AmountOfPositionVariations; i++)
+            for (int i = 0; i < ScreenshotService.AmountOfPositionVariations; i++)
             {
-                var bmp = screenshotService.TakeScreenshot(i);
-                var colorModifications = colorModificator.GetAll(bmp);
+                var bmp = ScreenshotService.TakeScreenshot(i);
+                var colorModifications = ColorModificator.GetAll(bmp);
 
                 for (int j = 0; j < colorModifications.Count; j++)
                 {
                     Log.Debug("OCR Attempt {0}-{1}", i, j);
 
-                    DoOcr(bmp, out var textRaw, out var confidence);
-                    if (confidence < CONFIDENCE_DUMP_LIMIT)
+                    var ocrResult = OcrCoreService.DoOcr(bmp);
+                    if (ocrResult.Confidence < CONFIDENCE_DUMP_LIMIT)
                     {
                         Log.Debug("Confidence too low. Dumping result.");
                         continue;
                     }
 
-                    if (textRaw.Trim() == string.Empty)
+                    if (!ocrResult.HasText)
                     {
                         Log.Debug("No Text parsed. Dumping result.");
                         continue;
                     }
 
-                    var garbageFiltered = FilterArtifacts(textRaw);
-                    var agressiveFiltered = AggressiveArtifactFilter(textRaw);
-                    var spaceInvariant = DetectMissingSpaces(textRaw);
+                    var garbageFiltered = FilterArtifacts(ocrResult.Text);
+                    var agressiveFiltered = AggressiveArtifactFilter(ocrResult.Text);
+                    var spaceInvariant = DetectMissingSpaces(ocrResult.Text);
 
                     bool success = TestForPerfectMatch(new List<List<string>>() { garbageFiltered, agressiveFiltered, spaceInvariant }, out var iterationresult1);
                     if (success)
@@ -80,7 +78,7 @@ namespace Backend
 
                     Log.Debug("No Perfect Match");
 
-                    if (confidence > CONFIDENCE_SURE_LIMIT)
+                    if (ocrResult.Confidence > CONFIDENCE_SURE_LIMIT)
                     {
                         Log.Warning("OCR was very confident, yet there was no name match. This can happen if Fall Guys added new name possiblities. Manual review recommended.");
                     }
@@ -231,22 +229,6 @@ namespace Backend
 
         }
 
-
-
-
-        private void DoOcr(Bitmap b, out string textRaw, out float confidence)
-        {
-            using (var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
-            {
-
-                using (Page page = engine.Process(b, PageSegMode.SingleBlock)) // todo: single line?
-                {
-                    textRaw = page.GetText();
-                    confidence = page.GetMeanConfidence();
-                    Log.Information("With confidence {confidence}, the following text was parsed: '{text}'", confidence, string.IsNullOrWhiteSpace(textRaw) ? "[No Text]" : textRaw.Trim());
-                }
-            }
-        }
 
         private List<string> FilterArtifacts(string input)
         {

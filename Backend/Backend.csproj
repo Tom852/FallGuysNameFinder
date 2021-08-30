@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="ColorModificator.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="OcrCoreService.cs" />
     <Compile Include="ScreenshotService.cs" />
     <Compile Include="StatisticsService.cs" />
     <Compile Include="ParsedName.cs" />
