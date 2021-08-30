@@ -23,6 +23,7 @@ namespace Backend
         const float CONFIDENCE_LIMIT = 0.85f;
         const int MONOCHROME_WHITE_BOUNDARY = 250;
         const int MONOCHROME_BRIGHT_BOUNDARY = 200;
+        const int MONOCHROME_BACKGROUND_BOUNDARY = 150;
 
         const double xStartPercentage = 0.60;
         const double yStartPercentrage = 0.29;
@@ -72,9 +73,12 @@ namespace Backend
                             ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true);
                             break;
                         case 2:
-                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false);
+                            ToMonochrome(bmp, MONOCHROME_BACKGROUND_BOUNDARY, true);
                             break;
                         case 3:
+                            ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, false);
+                            break;
+                        case 4:
                             ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, false);
                             break;
                         case 5:

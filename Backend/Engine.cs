@@ -126,10 +126,12 @@ namespace Backend
                         failsInRow++;
                         if (failsInRow > FailInRowLimit)
                         {
-                            Log.Fatal("10 fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
+                            Log.Fatal($"{FailInRowLimit} fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
                             Stop();
                         }
                     }
+
+                    HandleServerErrorMessage();
 
                 }
                 catch (Exception e)
@@ -143,18 +145,43 @@ namespace Backend
                 }
             }
 
-            new StatisticsService().Encount(this.History);
+            new StatisticsService().Account(this.History);
 
             OnStop?.Invoke(this, new EventArgs());
             Log.Information("Engine stopped after {iterations} iterations", iterations);
         }
 
+        private void HandleServerErrorMessage()
+        {
+            if (this.History.WereLastNamesAllEqual(8))
+            {
+                Log.Warning("Still no improvement. Something is broken. Engine will Stop.");
+                Stop();
+            }
+            else if (this.History.WereLastNamesAllEqual(6))
+            {
+                Log.Warning("Yet no improvement. Pressing SPACE again for the case we lifted the Amazon Link Page or revealed support id...");
+                PressSpace();
+            }
+            else if (this.History.WereLastNamesAllEqual(5))
+            {
+                Log.Warning("All 5 previous names were equal. Assuming a window in front. The engine will now press SPACE to get rid of a possible overlay message.");
+                PressSpace();
+            }
+        }
 
         private static void PressP()
         {
-                    Log.Debug("Pressing P");
+            Log.Debug("Pressing P");
             SendKeys.SendWait("{P}");
         }
+        private static void PressSpace()
+        {
+            Log.Debug("Pressing SPACE");
+            SendKeys.SendWait(" ");
+            Thread.Sleep(500);
+        }
+
 
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);

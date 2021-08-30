@@ -12,6 +12,11 @@ namespace Backend
 
         public bool WereLastNamesAllEqual(int i)
         {
+            if (PreviousNames.Count < i)
+            {
+                return false;
+            }
+
             var lastElement = PreviousNames.Last();
 
             return PreviousNames.GetRange(PreviousNames.Count - i, i).All(node =>

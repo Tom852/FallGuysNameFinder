@@ -13,7 +13,7 @@ namespace Common.Model
         public Dictionary<string, int> SecondNames { get; set; } = new Dictionary<string, int>();
         public Dictionary<string, int> ThirdNames { get; set; } = new Dictionary<string, int>();
 
-        public void Encount(List<string[]> previousNames)
+        public void Account(List<string[]> previousNames)
         {
             foreach (var node in previousNames)
             {

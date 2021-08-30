@@ -12,11 +12,11 @@ namespace Backend
 {
     public class StatisticsService
     {
-        public void Encount(History history)
+        public void Account(History history)
         {
             var dss = new DataStorageStuff();
             var stats = dss.GetStats();
-            stats.Encount(history.PreviousNames);
+            stats.Account(history.PreviousNames);
             dss.SaveStats(stats);
         }
     }
