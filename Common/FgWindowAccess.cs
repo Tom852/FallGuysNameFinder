@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Common
 {
-    public class FgWindowAccess
+    public static class FgWindowAccess
     {
         public const string FgProcessName = "FallGuys_client_game";
 
@@ -43,6 +44,19 @@ namespace Common
             return new WindowPosition(rect.Left, rect.Right, rect.Top, rect.Bottom);
         }
 
+        public static void BringToFront()
+        {
+            try
+            {
+                var p = Process.GetProcessesByName("FallGuys_client_game");
+                SetForegroundWindow(p[0].MainWindowHandle);
+            }
+            catch
+            {
+                Log.Warning("Fall Guys is not running and cannot be brought to Foreground.");
+            }
+        }
+
         private static int GetFallGuysProcessHandle()
         {
             var processFallguys = Process.GetProcessesByName(FgProcessName);
@@ -62,6 +76,9 @@ namespace Common
             }
             return processFallguys[0].MainWindowHandle;
         }
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();

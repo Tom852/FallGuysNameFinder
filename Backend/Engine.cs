@@ -26,10 +26,6 @@ namespace Backend
 
         public event EventHandler OnStop;
 
-        public static void Main()
-        {
-        } // todo: transofmr to lib.
-
         public void Initialize()
         {
             Options = DataStorageStuff.GetOptions();
@@ -80,7 +76,8 @@ namespace Backend
 
             Thread.Sleep(3000);
 
-            //BringToFront(); // could make an option here but propbably not necessary?
+
+            //FgWindowAccess.BringToFront(); // could make an option here to initially foreground the window. but is it necessary?
 
             int iterations = 0;
             int failsInRow = 0;
@@ -189,22 +186,6 @@ namespace Backend
             Log.Debug("Pressing SPACE");
             SendKeys.SendWait(" ");
             Thread.Sleep(500);
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        private void BringToFront()
-        {
-            try
-            {
-                var p = Process.GetProcessesByName("FallGuys_client_game");
-                SetForegroundWindow(p[0].MainWindowHandle);
-            }
-            catch
-            {
-                Log.Warning("Fall Guys is not running and cannot be brought to Foreground.");
-            }
         }
     }
 }

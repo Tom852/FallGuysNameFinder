@@ -225,26 +225,25 @@ namespace FallGuysNameFinder
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            var dir = System.IO.Path.GetDirectoryName(path);
-            var file = System.IO.Path.Combine(dir, "doc", "userGuide.html");
-            System.Diagnostics.Process.Start(file);
+            OpenDocPage("userGuide.html");
         }
 
+
+
         private void About_Click(object sender, RoutedEventArgs e)
+        {
+            OpenDocPage("about.html");
+
+        }
+
+        private static void OpenDocPage(string htmlFile)
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             var dir = System.IO.Path.GetDirectoryName(path);
-            var file = System.IO.Path.Combine(dir, "doc", "about.txt");
-            var txt = System.IO.File.ReadAllText(file);
-
-            var window = new About();
-            window.Text.Text = txt;
-            window.Show();
+            var file = System.IO.Path.Combine(dir, "doc", htmlFile);
+            System.Diagnostics.Process.Start(file);
         }
     }
 }

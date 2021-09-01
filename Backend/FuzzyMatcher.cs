@@ -1,4 +1,5 @@
 ﻿using Backend.Model;
+using Common.Util;
 using FuzzySharp;
 using FuzzySharp.Extractor;
 using FuzzySharp.SimilarityRatio;
@@ -7,6 +8,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Backend
 {
@@ -14,11 +16,11 @@ namespace Backend
     {
         private const int CUTOFF_LIMIT = 50;
 
-        public FuzzyMatcherResult Result { get; private set; } 
+        public FuzzyMatchingResult Result { get; private set; } 
 
         private void ClearOutputVariables()
         {
-            Result = new FuzzyMatcherResult();
+            Result = new FuzzyMatchingResult();
         }
 
         public bool Match(List<WordProcessorResult> inputs)
@@ -26,68 +28,80 @@ namespace Backend
             ClearOutputVariables();
             List<StringTriple> workItems = PrepareToWorkCollection(inputs);
 
-            ConsolerPrintState(workItems); // bit for debugging, could remove.
+            LogAvailableWorkItems(workItems); // bit for debugging, could remove.
 
             foreach (var item in workItems)
             {
                 DoFuzzyComparison(item);
             }
 
-            if (!Result.IsSuccess())
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Log.Debug(Result.GetReport());
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            if (!Result.HasAnyResult())
             {
-                Log.Warning("Fuzzy matching failed.");
+                Log.Warning("Fuzzy Matching delivered no result.");
                 return false;
+
+            }
+            if (!Result.HasClearResult())
+            {
+                // todo: there could be an option, stop on uncertainty or such. behaviour here could be revisited.
+                // note: turns out it is basically never clear, even not with factor 1.5
+                Log.Warning("Fuzzy matching has a result, but it is not very certain.");
             }
 
             Log.Information("Fuzzy matching succeeded. The result is: {0}", Result);
             return true;
         }
 
-        private void ConsolerPrintState(List<StringTriple> inputs)
+        private void LogAvailableWorkItems(List<StringTriple> inputs)
         {
-            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkBlue;
 
-            Console.WriteLine("The follwoing string Triples are availble");
-            inputs.ForEach(f => Console.WriteLine(f));
+            StringBuilder b = new StringBuilder();
+            b.AppendLine("The following string triples are availble");
+            inputs.ForEach(f => b.AppendLine(f.ToString()));
+
+            Log.Debug(b.ToString());
 
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private void DoFuzzyComparison(StringTriple tripe)
         {
-            ExtractedResult<string> fuzzyResult;
-            fuzzyResult = DoFuzzyComparison(tripe.First, PossibleNames.FirstNames(false));
-            if (fuzzyResult != null && fuzzyResult.Score > this.Result.First.Score)
+            var fuzzyMatches1 = DoFuzzyComparison(tripe.First, PossibleNames.FirstNames(false));
+            var fuzzyMatches2 = DoFuzzyComparison(tripe.Second, PossibleNames.SecondNames(false));
+            var fuzzyMatches3 = DoFuzzyComparison(tripe.Third, PossibleNames.ThirdNames(false));
+
+            foreach (var fuzzyMatch in fuzzyMatches1)
             {
-                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 1, tripe.First, fuzzyResult.Value, fuzzyResult.Score);
-                Result.First = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
+                Result.First.Add(fuzzyMatch.Value, fuzzyMatch.Score);
             }
 
-            fuzzyResult = DoFuzzyComparison(tripe.Second, PossibleNames.SecondNames(false));
-            if (fuzzyResult != null && fuzzyResult.Score > this.Result.Second.Score)
+            foreach (var fuzzyMatch in fuzzyMatches2)
             {
-                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 2, tripe.Second, fuzzyResult.Value, fuzzyResult.Score);
-                Result.Second = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
+                Result.Second.Add(fuzzyMatch.Value, fuzzyMatch.Score);
             }
 
-            fuzzyResult = DoFuzzyComparison(tripe.Third, PossibleNames.ThirdNames(false));
-            if (fuzzyResult != null && fuzzyResult.Score > this.Result.Third.Score)
+            foreach (var fuzzyMatch in fuzzyMatches3)
             {
-                Log.Debug("Fuzzy Matching Sucess: Position {0} - Input {1} - Matching {2} - Score {3}", 3, tripe.Third, fuzzyResult.Value, fuzzyResult.Score);
-                Result.Third = new SingleFuzzyResult(fuzzyResult.Value, fuzzyResult.Score);
+                Result.Third.Add(fuzzyMatch.Value, fuzzyMatch.Score);
             }
         }
 
-        private ExtractedResult<string> DoFuzzyComparison(string word, string[] nameOptions)
+        private IEnumerable<ExtractedResult<string>> DoFuzzyComparison(string word, string[] nameOptions)
         {
-            return Process.ExtractOne(word, nameOptions, s => s, cutoff: CUTOFF_LIMIT);
+            return Process.ExtractTop(word, nameOptions, s => s, cutoff: CUTOFF_LIMIT);
 
         }
 
         private StringTriple DetectMostLikelyPermutation(WordProcessorResult wpr)
         {
-            Dictionary<StringTriple, int> scoreBoard = new Dictionary<StringTriple, int>();
+            // Todo: Use ScoreBoard
+            Scoreboard<StringTriple> scoreboard = new Scoreboard<StringTriple>();
             var triples = wpr.GetSubcollectionOfLengthThreeAnyOrderedCombination();
 
             foreach (var triple in triples)
@@ -95,11 +109,11 @@ namespace Backend
                 var result1 = Process.ExtractOne(triple.First, PossibleNames.FirstNames(false), s => s);
                 var result2 = Process.ExtractOne(triple.Second, PossibleNames.SecondNames(false), s => s);
                 var result3 = Process.ExtractOne(triple.Third, PossibleNames.ThirdNames(false), s => s);
-                scoreBoard.Add(triple, result1.Score + result2.Score + result3.Score);
+                var totalScoreOfTriple = result1.Score + result2.Score + result3.Score;
+                scoreboard.Add(triple, totalScoreOfTriple);
             }
 
-            var maxValue = scoreBoard.Values.Max();
-            var result = scoreBoard.First(s => s.Value == maxValue).Key;
+            var result = scoreboard.GetWinner();
             Log.Debug("Best Fitting Triple of {0} is {1}", wpr.Words, result);
             return result;
         }

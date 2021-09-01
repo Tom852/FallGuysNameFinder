@@ -13,9 +13,9 @@ namespace Common.Model
         {
             foreach (var node in previousNames)
             {
-                FirstNames.AddOrIncrease(node.First);
-                SecondNames.AddOrIncrease(node.Second);
-                ThirdNames.AddOrIncrease(node.Third);
+                FirstNames.AddOrIncrease(node.First, 1);
+                SecondNames.AddOrIncrease(node.Second, 1);
+                ThirdNames.AddOrIncrease(node.Third, 1);
             }
         }
     }

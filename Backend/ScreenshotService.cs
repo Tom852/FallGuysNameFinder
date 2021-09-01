@@ -82,7 +82,7 @@ namespace Backend
                 //Full Screen 16:10 (because i have that xD)
                 if (windowPosition.Height != 1200)
                 {
-                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 Full Screen. Try running FG in windowed mode with 16:9.");
+                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 full screen. Try running FG in windowed mode with 16:9.");
                 }
                 Log.Debug("Detected Full Screen 1920x1200");
 
@@ -108,7 +108,7 @@ namespace Backend
                     throw new Exception("Unknown aspect ratio or programmatic error. Try to run 16:9 fullscreen. That usually works. 16:9 windowed should work too.");
                 }
 
-                Log.Debug("Detected Windowed Fall Guys. Effective Width: {0}; Hieght: {1}", effectiveWindowWidth, effectiveWindowHeight);
+                Log.Debug("Detected windowed Fall Guys. Effective width: {0}. Effective height: {1}", effectiveWindowWidth, effectiveWindowHeight);
 
                 // Windowed case: Adds 30px top, and 8 all other sides.
                 double relativeStartX = effectiveWindowWidth * xStartPercentage;

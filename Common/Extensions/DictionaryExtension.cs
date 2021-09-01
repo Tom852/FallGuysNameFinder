@@ -4,15 +4,16 @@ namespace Common.Extensions
 {
     public static class DictionaryExtension
     {
-        public static void AddOrIncrease(this Dictionary<string, int> d, string key)
+
+        public static void AddOrIncrease<T>(this Dictionary<T, int> d, T key, int value)
         {
             if (d.ContainsKey(key))
             {
-                d[key]++;
+                d[key] = d[key] + value;
             }
             else
             {
-                d.Add(key, 1);
+                d.Add(key, value);
             }
         }
     }

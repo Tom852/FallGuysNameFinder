@@ -62,7 +62,7 @@ namespace Backend
             var fuzzySuccess = fuzzyMatcher.Match(ToFuzzyAnyalyze);
             if (fuzzySuccess)
             {
-                Result = new Name(fuzzyMatcher.Result.First.Word, fuzzyMatcher.Result.Second.Word, fuzzyMatcher.Result.Third.Word);
+                Result = fuzzyMatcher.Result.GetResult();
                 return true;
             }
 
