@@ -17,7 +17,7 @@ namespace Backend
                 ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, true),
 
-                ToGrayScale(bmp, false),
+                ToGrayScale(bmp, true),
 
                 new Bitmap(bmp),
                 Invert(bmp),
@@ -107,7 +107,5 @@ namespace Backend
         }
 
         private int GetAverageBrightness(Color c) => (c.B + c.G + c.B) / 3;
-
-        // (int) Math.Round(.299 * c.R + .587 * c.G + .114 * c.B);
     }
 }

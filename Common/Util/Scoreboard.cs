@@ -32,7 +32,7 @@ namespace Common.Util
         {
             if (factor < 1)
             {
-                throw new ArgumentException("Facot should be larger than 1");
+                throw new ArgumentException("Factor should be larger than 1");
             }
             if (Scores.Count() < 2)
             {
@@ -53,7 +53,7 @@ namespace Common.Util
             StringBuilder builder = new StringBuilder();
             foreach (var entry in Scores.OrderByDescending(d => d.Value))
             {
-                builder.AppendLine($"{entry.Key}: {entry.Value} Pts");
+                builder.AppendLine($"{entry.Key}:\t{entry.Value} Pts");
             }
             return builder.ToString();
         }

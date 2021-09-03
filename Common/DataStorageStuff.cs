@@ -95,9 +95,7 @@ namespace Backend
             File.WriteAllLines(PatternsFile, allLines);
         }
 
-        public static void AddPattern(string line) => File.AppendAllLines(PatternsFile, new List<string>() { line });
-
-        public static void AddPattern(Pattern p) => AddPattern(p.ToString());
+        public static void AddPattern(Pattern p) => File.AppendAllLines(PatternsFile, new List<string>() { p.ToString() });
 
         public static void EditPattern(int index, string line)
         {

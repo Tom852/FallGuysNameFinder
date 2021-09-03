@@ -29,26 +29,24 @@ namespace Backend
         {
             if (Options.StopOnAlliteration && TestForAlliteration(nameToTest))
             {
-                Log.Information("Alliteration detected");
+                Log.Information("Alliteration recognized");
                 return true;
             }
 
             if (Options.StopOnDoubleWord && TestForDoubleName(nameToTest))
             {
-                Log.Information("Double-word detected");
+                Log.Information("Double-word recognized");
                 return true;
             }
 
             var patternMatch = TestForPatternMatch(nameToTest);
             if (patternMatch)
             {
-                Log.Information("Pattern matched");
+                Log.Information("Pattern match recognized");
+                return true;
             }
-            else
-            {
-                Log.Debug("No Pattern matched");
-            }
-            return patternMatch;
+
+            return false;
         }
 
         private bool TestForPatternMatch(Name toTest)
@@ -61,9 +59,9 @@ namespace Backend
             return Matches(pattern.First, toTest.First) && Matches(pattern.Second, toTest.Second) && Matches(pattern.Third, toTest.Third);
         }
 
-        private bool Matches(string pattern, string name)
+        private bool Matches(string pattern, string word)
         {
-            return pattern == Wildcard || pattern.ToLower().Trim() == name.ToLower().Trim();
+            return pattern == Wildcard || pattern.ToLower().Trim() == word.ToLower().Trim();
         }
 
         private bool TestForAlliteration(Name toTest)

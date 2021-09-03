@@ -62,7 +62,7 @@ namespace Backend
 
             decimal ratio = windowPosition.Width / (decimal)windowPosition.Height;
 
-            WindowPosition result = new WindowPosition(0, 0, 0, 0);
+            WindowPosition result = default;
 
             if (Math.Abs((ratio - ratio16by9)) < 0.001m)
             {
@@ -82,7 +82,7 @@ namespace Backend
                 //Full Screen 16:10 (because i have that xD)
                 if (windowPosition.Height != 1200)
                 {
-                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 full screen. Try running FG in windowed mode with 16:9.");
+                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 full screen. Try running FG in windowed mode with 16:9. If many people require this, e.g. for Steam Deck, send me an Email :P.");
                 }
                 Log.Debug("Detected Full Screen 1920x1200");
 

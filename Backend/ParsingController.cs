@@ -43,7 +43,7 @@ namespace Backend
 
                 for (int j = 0; j < colorModifications.Count; j++)
                 {
-                    Log.Debug("OCR Attempt {0}-{1}", i, j);
+                    Log.Information("OCR Attempt {0}-{1}", i, j);
                     bool success = AnalyzeBmp(colorModifications[j]);
                     if (success)
                     {
@@ -54,6 +54,8 @@ namespace Backend
                 if (i == 0)
                 {
                     bmp.Save(GetScreenshotFileName(0, 0), ImageFormat.Jpeg);
+                    Log.Debug("Screenshot archived.");
+
                 }
             }
 
@@ -96,20 +98,22 @@ namespace Backend
             if (success)
             {
                 Result = viableNameDetector.LastMatch;
+                Log.Debug("Viable name detected: {0}", Result);
                 return true;
             }
 
-            Log.Debug("No viable name found.");
+
 
             if (ocrResult.Confidence > CONFIDENCE_SURE_LIMIT)
             {
-                Log.Warning("OCR was very confident, yet there was no name match. This can happen if Fall Guys added new name possiblities. Manual review recommended.");
+                Log.Warning("OCR was very confident, yet there was no name match. This could happen if Mediatonic added new name possiblities. Manual review recommended.");
             }
 
             ToFuzzyAnyalyze.Add(spaceInvariant);
             ToFuzzyAnyalyze.Add(garbageFiltered);
             ToFuzzyAnyalyze.Add(agressiveFiltered);
 
+            Log.Debug("No viable name fits perfectly. Parsing result temporarily stored for further analysis.");
             return false;
         }
 

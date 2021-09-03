@@ -24,10 +24,10 @@ namespace Backend.Model
 
         public bool HasAnyResult()
         {
-            var ic1 = First.HasWinner();
-            var ic2 = First.HasWinner();
-            var ic3 = First.HasWinner();
-            return ic1 && ic2 && ic3;
+            var hw1 = First.HasWinner();
+            var hw2 = First.HasWinner();
+            var hw3 = First.HasWinner();
+            return hw1 && hw2 && hw3;
         }
 
         public Name GetResult()
@@ -41,7 +41,14 @@ namespace Backend.Model
 
         public override string ToString()
         {
-            return GetResult().ToString();
+            try
+            {
+                return GetResult().ToString();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         public string GetReport()

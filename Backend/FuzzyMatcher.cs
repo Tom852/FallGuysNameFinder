@@ -28,23 +28,25 @@ namespace Backend
             ClearOutputVariables();
             List<StringTriple> workItems = PrepareToWorkCollection(inputs);
 
-            LogAvailableWorkItems(workItems); // bit for debugging, could remove.
+            if (!workItems.Any())
+            {
+                Log.Warning("Fuzzy matcher has nothing to work with.");
+                return false;
+            }
+
+            LogAvailableWorkItems(workItems);
 
             foreach (var item in workItems)
             {
                 DoFuzzyComparison(item);
             }
 
-
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Log.Debug(Result.GetReport());
-            Console.ForegroundColor = ConsoleColor.Gray;
 
             if (!Result.HasAnyResult())
             {
                 Log.Warning("Fuzzy Matching delivered no result.");
                 return false;
-
             }
             if (!Result.HasClearResult())
             {
@@ -100,7 +102,6 @@ namespace Backend
 
         private StringTriple DetectMostLikelyPermutation(WordProcessorResult wpr)
         {
-            // Todo: Use ScoreBoard
             Scoreboard<StringTriple> scoreboard = new Scoreboard<StringTriple>();
             var triples = wpr.GetSubcollectionOfLengthThreeAnyOrderedCombination();
 

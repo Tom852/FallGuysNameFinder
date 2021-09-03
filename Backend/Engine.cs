@@ -17,6 +17,7 @@ namespace Backend
         public History History { get; private set; }
         private ParsingController ParsingController { get; set; }
         private MatchingService ComparisonService { get; set; }
+        private StatisticsService StatisticsService { get; set; }
         private Options Options { get; set; }
 
         private bool isInit = false;
@@ -53,6 +54,7 @@ namespace Backend
 
             ParsingController = new ParsingController();
             ComparisonService = new MatchingService();
+            StatisticsService = new StatisticsService();
             isInit = true;
         }
 
@@ -89,9 +91,11 @@ namespace Backend
                     if (!FgWindowAccess.IsFgInForeGround())
                     {
                         Log.Information("Fall Guys is not in foreground. Iteration skipped.");
+                        iterations--;
                         Thread.Sleep(4000);
                         continue;
                     }
+
 
                     PressP();
 
@@ -117,7 +121,7 @@ namespace Backend
                         }
                         else
                         {
-                            Log.Debug("Pattern did not match, rerolling...");
+                            Log.Information("No match.");
                         }
                     }
                     else
@@ -137,7 +141,10 @@ namespace Backend
                         }
                     }
 
-                    HandleServerErrorMessage();
+                    if (!stopRequested)
+                    {
+                        HandleServerErrorMessage();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -150,7 +157,7 @@ namespace Backend
                 }
             }
 
-            new StatisticsService().Account(this.History);
+            StatisticsService.Account(this.History);
 
             OnStop?.Invoke(this, new EventArgs());
             Log.Information("Engine stopped after {iterations} iterations", iterations);

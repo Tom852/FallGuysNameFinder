@@ -16,7 +16,7 @@ namespace Backend
 
         public OcrResult DoOcr(Bitmap b)
         {
-            using (Page page = engine.Process(b, PageSegMode.SingleBlock)) // todo: single line?
+            using (Page page = engine.Process(b, PageSegMode.SingleBlock))
             {
                 var textRaw = page.GetText().Trim();
                 var confidence = page.GetMeanConfidence();

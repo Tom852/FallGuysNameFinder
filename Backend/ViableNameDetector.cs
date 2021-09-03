@@ -20,8 +20,8 @@ namespace Backend
 
             foreach (var input in inputs)
             {
-                var match = TestSingle(input);
-                if (match)
+                var fits = TestSingle(input);
+                if (fits)
                 {
                     return true;
                 }
@@ -66,7 +66,6 @@ namespace Backend
             if (result)
             {
                 LastMatch = new Name(s.First, s.Second, s.Third);
-                Log.Information("Viable Name Detected: {0}", LastMatch);
             }
 
             return result;
