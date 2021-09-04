@@ -80,6 +80,7 @@
     <Compile Include="ColorModificator.cs" />
     <Compile Include="History.cs" />
     <Compile Include="Model\FuzzyMatchingResult.cs" />
+    <Compile Include="Model\MatchingResult.cs" />
     <Compile Include="Model\OcrResult.cs" />
     <Compile Include="Model\StringTriple.cs" />
     <Compile Include="Model\WordProcessorResult.cs" />

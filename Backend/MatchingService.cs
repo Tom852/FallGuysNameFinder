@@ -1,4 +1,5 @@
-﻿using Common.Model;
+﻿using Backend.Model;
+using Common.Model;
 using Serilog;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,28 +26,25 @@ namespace Backend
         public List<Pattern> Patterns { get; }
         public Options Options { get; }
 
-        public bool Test(Name nameToTest)
+        public MatchingResult Test(Name nameToTest)
         {
             if (Options.StopOnAlliteration && TestForAlliteration(nameToTest))
             {
-                Log.Information("Alliteration recognized");
-                return true;
+                return MatchingResult.Alliteration;
             }
 
             if (Options.StopOnDoubleWord && TestForDoubleName(nameToTest))
             {
-                Log.Information("Double-word recognized");
-                return true;
+                return MatchingResult.DoubleWord;
+
             }
 
-            var patternMatch = TestForPatternMatch(nameToTest);
-            if (patternMatch)
+            if (TestForPatternMatch(nameToTest))
             {
-                Log.Information("Pattern match recognized");
-                return true;
+                return MatchingResult.Pattern;
             }
 
-            return false;
+            return MatchingResult.NoMatch;
         }
 
         private bool TestForPatternMatch(Name toTest)

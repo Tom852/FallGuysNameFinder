@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Backend.Model;
+using Common;
 using Common.Model;
 using Serilog;
 using Serilog.Events;
@@ -114,9 +115,31 @@ namespace Backend
                         this.History.Add(name);
 
                         var match = ComparisonService.Test(name);
-                        if (match)
+                        if (match.IsMatching())
                         {
-                            Log.Information("YEEEEEEEETAAASTIC!! WE GOT IT!!!");
+                            switch (match)
+                            {
+                                case MatchingResult.Alliteration:
+                                    Log.Information("Alliteration detected");
+                                    break;
+                                case MatchingResult.DoubleWord:
+                                    Log.Information("Double-word detected");
+                                    break;
+                                case MatchingResult.Pattern:
+                                    Log.Information("Pattern match detected");
+                                    break;
+                                case MatchingResult.Pool:
+                                    Log.Information("Pool match detected");
+                                    break;
+                                case MatchingResult.NoMatch :
+                                    throw new InvalidOperationException("this shoudl not happen");
+                                default:
+                                    Log.Information("Unknwon match detected");
+                                    break;
+                            }
+
+                            PrintFunnySuccessLog();
+                            PressEscapeAtEnd();
                             Stop();
                         }
                         else
@@ -163,6 +186,21 @@ namespace Backend
             Log.Information("Engine stopped after {iterations} iterations", iterations);
         }
 
+        private void PrintFunnySuccessLog()
+        {
+            string[] successmessages = new string[]
+            {
+                 "YEEEEEEEETAAASTIC!! WE GOT IT!!!",
+                 "Unlike on my Tinder, we got a match here!",
+                 "It's a Match!",
+                 "Don't forget your matches when you want to make a fire. Speaking of matches, we got one here.",
+            };
+            // hmm, is this really funny?
+
+            var i = new Random().Next(successmessages.Length);
+            Log.Information(successmessages[i]);
+        }
+
         private void HandleServerErrorMessage()
         {
             if (this.History.WereLastNamesAllEqual(8))
@@ -193,6 +231,14 @@ namespace Backend
             Log.Debug("Pressing SPACE");
             SendKeys.SendWait(" ");
             Thread.Sleep(500);
+        }
+
+        private static void PressEscapeAtEnd()
+        {
+            Log.Information("Your name is not yet stored at Mediatonic servers. This will happen, after we go back to the main menu. Since in case you are afk, your session will timeout and an error will result once you come back. Thus the engine will now press ESC to return to the main menu.");
+            Thread.Sleep(200);
+            Log.Debug("Pressing ESC");
+            SendKeys.SendWait("{ESC}");
         }
     }
 }
