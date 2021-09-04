@@ -30,6 +30,7 @@ namespace FallGuysNameFinder
 
             this.Vm = vm;
             this.DataContext = Vm;
+
             InitializeComponent();
         }
 

@@ -1,9 +1,13 @@
 ﻿using Backend;
+using Backend.Model;
 using Common;
 using Common.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,8 +22,11 @@ namespace FallGuysNameFinder
     {
         public ViewModel ViewModel { get; set; } = new ViewModel();
 
-        public Engine BackendEngine { get; set; }
-        public DispatcherTimer PenetrantForeGroundChecker { get; set; }
+        private Engine BackendEngine { get; set; }
+        private DispatcherTimer PenetrantForeGroundChecker { get; set; }
+
+        private ProbabilityService probabilitySerivce { get; set; }
+
 
         public MainWindow()
         {
@@ -30,11 +37,15 @@ namespace FallGuysNameFinder
             ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
             DataContext = ViewModel;
 
+            probabilitySerivce = new ProbabilityService();
+            RecalculateProbability();
+
             InitializeComponent();
 
             SetupFallguysProcessChecker();
 
             InitializeConsole();
+
         }
 
         private void InitializeConsole()
@@ -86,6 +97,8 @@ namespace FallGuysNameFinder
                 AddPattern(w.Vm.Pattern);
             };
         }
+
+   
 
         private void EditPattern_Click(object sender, RoutedEventArgs e)
         {
@@ -145,12 +158,15 @@ namespace FallGuysNameFinder
         private void OnOptionsClick(object sender, RoutedEventArgs e)
         {
             DataStorageStuff.SaveOptions(this.ViewModel.Options);
+            RecalculateProbability();
         }
 
         private void AddPattern(Pattern p)
         {
             DataStorageStuff.AddPattern(p);
             this.ViewModel.Patterns.Add(p);
+            RecalculateProbability();
+
         }
 
         private void RemovePattern(int index)
@@ -167,6 +183,7 @@ namespace FallGuysNameFinder
             {
                 dGrid.SelectedIndex = index - 1; //on 0, will be set to -1 which is none selected which is ok.
             }
+            RecalculateProbability();
         }
 
         private void EditPattern(int index, Pattern p)
@@ -174,6 +191,7 @@ namespace FallGuysNameFinder
             DataStorageStuff.EditPattern(index, p);
             this.ViewModel.Patterns.RemoveAt(index);
             this.ViewModel.Patterns.Insert(index, p);
+            RecalculateProbability();
         }
 
         private void ShowConsole_Click(object sender, RoutedEventArgs e)
@@ -244,6 +262,28 @@ namespace FallGuysNameFinder
             var dir = System.IO.Path.GetDirectoryName(path);
             var file = System.IO.Path.Combine(dir, "doc", htmlFile);
             System.Diagnostics.Process.Start(file);
+        }
+
+        private CancellationTokenSource previousTokenSrc;
+        private async void RecalculateProbability()
+        {
+            this.ViewModel.TimeEstimate = "calculating";
+            this.ViewModel.ChanceToHit = "calculating";
+            try
+            {
+                previousTokenSrc?.Cancel();
+                previousTokenSrc?.Dispose();
+
+                previousTokenSrc = new CancellationTokenSource();
+
+                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Options, previousTokenSrc.Token);
+                this.ViewModel.TimeEstimate = result.GetTimeRequired();
+                this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
+            }
+            catch (OperationCanceledException)
+            {
+            }
+
         }
     }
 }

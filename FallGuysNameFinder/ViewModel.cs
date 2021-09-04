@@ -14,6 +14,8 @@ namespace FallGuysNameFinder
         private bool isConsoleShown;
         private FgStatus fgStatus = FgStatus.NotRunning;
         private EngineStatus engineStatus = EngineStatus.Stopped;
+        private string chanceToHit;
+        private string timeEstimate;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -164,5 +166,25 @@ namespace FallGuysNameFinder
         }
 
         public string ShowConsoleButtonDesc => IsConsoleShown ? "Hide Console" : "Show Console";
+
+        public string ChanceToHit
+        {
+            get => chanceToHit;
+            set
+            {
+                chanceToHit = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChanceToHit)));
+            }
+        }
+
+        public string TimeEstimate
+        {
+            get => timeEstimate;
+            set
+            {
+                timeEstimate = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TimeEstimate)));
+            }
+        }
     }
 }

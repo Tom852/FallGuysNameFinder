@@ -14,6 +14,7 @@ namespace Backend
         private const double yEndPercentage = 0.335;
 
         private const decimal ratio16by9 = (decimal)16 / 9;
+        private const decimal ratio32by9 = (decimal)32 / 9;
 
         private readonly int[,] variations = new int[,] {
             { 0,0,0,0, },
@@ -64,6 +65,8 @@ namespace Backend
 
             WindowPosition result = default;
 
+            // todo: someone should probably refactor this
+
             if (Math.Abs((ratio - ratio16by9)) < 0.001m)
             {
                 // Full Screen 16:9 Aspect Ratio
@@ -93,6 +96,10 @@ namespace Backend
 
                 result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
                 result.Bottom = (int)(1080 * yEndPercentage) + 60 + windowPosition.Top;
+            }
+            else if (Math.Abs((ratio - ratio32by9)) < 0.001m)
+            {
+                throw new Exception($"Ultrawide not yet supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement this. I don't have enough data :O. Please send me a fullscreen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
             }
             else
             {

@@ -1,4 +1,6 @@
-﻿namespace Backend
+﻿using System.Linq;
+
+namespace Backend
 {
     public class StatisticsService
     {

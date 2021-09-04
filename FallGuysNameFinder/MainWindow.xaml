@@ -61,6 +61,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.ColumnSpan="2"
@@ -85,6 +87,17 @@
                            Width="16" Height="16" />
                 <Label Grid.Row="2" Grid.Column="2"
                        Content="{Binding FgStatusDescription}" />
+
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                       Content="Chance to hit:" />
+                <Label Grid.Row="3" Grid.Column="2"
+                       Content="{Binding ChanceToHit}" />
+                <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                       ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
+                       Content="Time estimate:" />
+                <Label Grid.Row="4" Grid.Column="2"
+                       ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
+                       Content="{Binding TimeEstimate}" />
             </Grid>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">

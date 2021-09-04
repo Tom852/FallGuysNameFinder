@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="ColorModificator.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="Model\Probability.cs" />
+    <Compile Include="ProbabilityService.cs" />
     <Compile Include="Model\FuzzyMatchingResult.cs" />
     <Compile Include="Model\MatchingResult.cs" />
     <Compile Include="Model\OcrResult.cs" />

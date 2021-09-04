@@ -190,7 +190,7 @@ namespace Backend
         {
             string[] successmessages = new string[]
             {
-                 "YEEEEEEEETAAASTIC!! WE GOT IT!!!",
+                 "YEEEEEEEETAAASTIC!! We got it!",
                  "Unlike on my Tinder, we got a match here!",
                  "It's a Match!",
                  "Don't forget your matches when you want to make a fire. Speaking of matches, we got one here.",

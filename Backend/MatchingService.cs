@@ -18,9 +18,10 @@ namespace Backend
             this.Options = DataStorageStuff.GetOptions();
         }
 
-        public MatchingService(List<Pattern> patterns)
+        public MatchingService(List<Pattern> patterns, Options options)
         {
-            Patterns = patterns;
+            this.Patterns = patterns;
+            this.Options = options;
         }
 
         public List<Pattern> Patterns { get; }
