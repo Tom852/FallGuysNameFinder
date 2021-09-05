@@ -9,6 +9,7 @@ namespace Backend
         {
             var stats = DataStorageStuff.GetStats();
             stats.Account(history.GetWithoutSameElementsInRow());
+            stats.Sort();
             DataStorageStuff.SaveStats(stats);
         }
     }
