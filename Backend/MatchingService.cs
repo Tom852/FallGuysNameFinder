@@ -2,6 +2,7 @@
 using Common;
 using Common.Model;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,22 +12,25 @@ namespace Backend
     // ev schon beim name oder so.
     public class MatchingService
     {
-        private const string Wildcard = "*";
+        private const string Wildcard = Pattern.Wildcard;
 
         public MatchingService()
         {
             this.Patterns = DataStorageStuff.ReadPatterns();
             this.Options = DataStorageStuff.GetOptions();
+            this.Pool = DataStorageStuff.GetStoredPool();
         }
 
-        public MatchingService(List<Pattern> patterns, Options options)
+        public MatchingService(List<Pattern> patterns, Pool pool, Options options)
         {
             this.Patterns = patterns;
             this.Options = options;
+            this.Pool = pool;
         }
 
         public List<Pattern> Patterns { get; }
         public Options Options { get; }
+        public Pool Pool { get; }
 
         public MatchingResult Test(Name nameToTest)
         {
@@ -46,7 +50,17 @@ namespace Backend
                 return MatchingResult.Pattern;
             }
 
+            if (TestForPoolMatch(nameToTest))
+            {
+                return MatchingResult.Pool;
+            }
+
             return MatchingResult.NoMatch;
+        }
+
+        private bool TestForPoolMatch(Name nameToTest)
+        {
+            return Pool.First.Contains(nameToTest.First) && Pool.Second.Contains(nameToTest.Second) && Pool.Third.Contains(nameToTest.Third);
         }
 
         private bool TestForPatternMatch(Name toTest)
@@ -61,7 +75,7 @@ namespace Backend
 
         private bool Matches(string pattern, string word)
         {
-            return pattern == Wildcard || pattern.ToLower().Trim() == word.ToLower().Trim();
+            return pattern == Wildcard || pattern == word;
         }
 
         private bool TestForAlliteration(Name toTest)

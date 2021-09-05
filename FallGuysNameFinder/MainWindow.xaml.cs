@@ -284,7 +284,7 @@ namespace FallGuysNameFinder
 
                 previousTokenSrc = new CancellationTokenSource();
 
-                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Options, previousTokenSrc.Token);
+                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Pool, ViewModel.Options, previousTokenSrc.Token);
                 this.ViewModel.TimeEstimate = result.GetTimeRequired();
                 this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
             }

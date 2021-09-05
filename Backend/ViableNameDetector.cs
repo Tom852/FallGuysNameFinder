@@ -2,6 +2,7 @@
 using Common;
 using Common.Model;
 using Serilog;
+using System;
 using System.Linq;
 
 namespace Backend
@@ -58,18 +59,36 @@ namespace Backend
             var w2Lower = s.Second.ToLower();
             var w3Lower = s.Third.ToLower();
 
-            var p1 = PossibleNames.FirstNames(true);
-            var p2 = PossibleNames.SecondNames(true);
-            var p3 = PossibleNames.ThirdNames(true);
+            var possibilities1Lower = PossibleNames.FirstNames(true).ToList();
+            var possibilities2Lower = PossibleNames.SecondNames(true).ToList();
+            var possibilities3Lower = PossibleNames.ThirdNames(true).ToList();
 
-            var result = p1.Contains(w1Lower) && p2.Contains(w2Lower) && p3.Contains(w3Lower);
+            var isViable = possibilities1Lower.Contains(w1Lower) && possibilities2Lower.Contains(w2Lower) && possibilities3Lower.Contains(w3Lower);
 
-            if (result)
+            if (isViable)
             {
-                LastMatch = new Name(s.First, s.Second, s.Third);
+                var possibilities1CorrectCase = PossibleNames.FirstNames(false).ToList();
+                var possibilities2CorrectCase = PossibleNames.SecondNames(false).ToList();
+                var possibilities3CorrectCase = PossibleNames.ThirdNames(false).ToList();
+
+                var word1index = possibilities1Lower.IndexOf(w1Lower);
+                var word2index = possibilities1Lower.IndexOf(w2Lower);
+                var word3index = possibilities1Lower.IndexOf(w3Lower);
+
+                var w1Cleaned = possibilities1CorrectCase.ElementAt(word1index);
+                var w2Cleaned = possibilities2CorrectCase.ElementAt(word2index);
+                var w3Cleaned = possibilities3CorrectCase.ElementAt(word3index);
+
+                // todo: this belongs into a test... speaking of tests *caugh*
+                if (w1Cleaned.ToLower() != w1Lower || w2Cleaned.ToLower() != w2Lower || w3Cleaned.ToLower() != w3Lower)
+                {
+                    throw new Exception("case-cleaned words don't match original parsed names");
+                }
+
+                LastMatch = new Name(w1Cleaned, w2Cleaned, w3Cleaned);
             }
 
-            return result;
+            return isViable;
         }
     }
 }

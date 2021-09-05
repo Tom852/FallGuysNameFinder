@@ -13,7 +13,10 @@ namespace Common.Model
         public string Second { get; set; }
         public string Third { get; set; }
 
-        public Name(string first, string second, string third) => (First, Second, Third) = (first, second, third);
+        public Name(string first, string second, string third)
+            : this(new string[] { first, second ,third})
+        {
+        }
 
         public Name(IEnumerable<string> words)
             : this(words.ToArray())
@@ -26,9 +29,16 @@ namespace Common.Model
             {
                 throw new ArgumentException("Cannot construct name out of != 3 words");
             }
-            First = words[0];
-            Second = words[1];
-            Third = words[2];
+
+            var firstgood = PossibleNames.FirstNames(false).Contains(words[0]);
+            var secondgood = PossibleNames.SecondNames(false).Contains(words[1]);
+            var thirdgood = PossibleNames.ThirdNames(false).Contains(words[2]);
+            if (!firstgood || !secondgood || !thirdgood)
+            {
+                throw new ArgumentException($"{words[0]} {words[1]} {words[2]} is not a valid name");
+            }
+
+            (First, Second, Third) = (words[0], words[1], words[2]);
         }
 
         public override string ToString()

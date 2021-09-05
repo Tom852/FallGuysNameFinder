@@ -13,6 +13,7 @@ namespace Common
         private const string RootFolderName = "FallGuysNameFinder";
         private const string ScreenshotFolderName = "Screenshots";
         private const string PatternFileName = "patterns.txt";
+        private const string PoolFileName = "pool.json";
         private const string OptionFileName = "options.json";
         private const string StatsFileName = "stats.json";
         private const string LogFileName = "log.log";
@@ -23,6 +24,7 @@ namespace Common
         public static string OptionsFile { get; private set; }
         public static string LogFile { get; private set; }
         public static string StatsFile { get; private set; }
+        public static string PoolFile { get; private set; }
 
         static DataStorageStuff()
         {
@@ -30,6 +32,7 @@ namespace Common
             AppDir = Path.Combine(env, RootFolderName);
             ScreenshotDir = Path.Combine(env, RootFolderName, ScreenshotFolderName);
             PatternsFile = Path.Combine(env, RootFolderName, PatternFileName);
+            PoolFile = Path.Combine(env, RootFolderName, PoolFileName);
             OptionsFile = Path.Combine(env, RootFolderName, OptionFileName);
             LogFile = Path.Combine(env, RootFolderName, LogFileName);
             StatsFile = Path.Combine(env, RootFolderName, StatsFileName);
@@ -46,6 +49,16 @@ namespace Common
             {
                 var stream = File.Create(PatternsFile);
                 stream.Close();
+            }
+            if (!File.Exists(PoolFile))
+            {
+                using (var stream = File.Create(PoolFile))
+                using (StreamWriter sw = new StreamWriter(stream))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(writer, new Pool());
+                }
             }
             if (!File.Exists(StatsFile))
             {
@@ -146,6 +159,28 @@ namespace Common
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Formatting = Formatting.Indented;
                 serializer.Serialize(writer, s);
+            }
+        }
+
+        public static Pool GetStoredPool()
+        {
+            using (StreamReader sr = new StreamReader(PoolFile))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                var result = (Pool)serializer.Deserialize(reader, typeof(Pool));
+                return result ?? throw new IOException("Could not parse Pool");
+            }
+        }
+
+        public static void SavePool(Pool p)
+        {
+            using (StreamWriter sw = new StreamWriter(PoolFile))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Formatting = Formatting.Indented;
+                serializer.Serialize(writer, p);
             }
         }
     }
