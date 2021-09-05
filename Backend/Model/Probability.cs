@@ -43,6 +43,11 @@ namespace Backend.Model
 
         public string GetTimeRequired()
         {
+            if (Value == 0)
+            {
+                return "N/A";
+            }
+
             var attempts = 1d / Value;
             var timeRquired = TimeSpan.FromSeconds(attempts * timePerHit);
 

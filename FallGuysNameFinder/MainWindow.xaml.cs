@@ -30,22 +30,28 @@ namespace FallGuysNameFinder
 
         public MainWindow()
         {
-            var options = DataStorageStuff.GetOptions();
-            var patterns = DataStorageStuff.ReadPatterns();
+            try
+            {
+                var options = DataStorageStuff.GetOptions();
+                var patterns = DataStorageStuff.ReadPatterns();
 
-            ViewModel.Options = options;
-            ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
-            DataContext = ViewModel;
+                ViewModel.Options = options;
+                ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
+                DataContext = ViewModel;
 
-            probabilitySerivce = new ProbabilityService();
-            RecalculateProbability();
+                probabilitySerivce = new ProbabilityService();
+                RecalculateProbability();
 
-            InitializeComponent();
+                InitializeComponent();
 
-            SetupFallguysProcessChecker();
+                SetupFallguysProcessChecker();
 
-            InitializeConsole();
-
+                InitializeConsole();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void InitializeConsole()
@@ -133,9 +139,13 @@ namespace FallGuysNameFinder
                 case Key.Delete:
                 case Key.Back:
                     RemovePattern(index);
-                    e.Handled = true;
+                    break;
+                case Key.Enter:
+                    ShowEditPatternMask(grid);
                     break;
             }
+            e.Handled = true;
+
         }
 
         private void ShowEditPatternMask(DataGrid dataGrid)
@@ -166,7 +176,6 @@ namespace FallGuysNameFinder
             DataStorageStuff.AddPattern(p);
             this.ViewModel.Patterns.Add(p);
             RecalculateProbability();
-
         }
 
         private void RemovePattern(int index)
@@ -251,7 +260,6 @@ namespace FallGuysNameFinder
         private void About_Click(object sender, RoutedEventArgs e)
         {
             OpenDocPage("about.html");
-
         }
 
         private static void OpenDocPage(string htmlFile)
@@ -267,8 +275,8 @@ namespace FallGuysNameFinder
         private CancellationTokenSource previousTokenSrc;
         private async void RecalculateProbability()
         {
-            this.ViewModel.TimeEstimate = "calculating";
-            this.ViewModel.ChanceToHit = "calculating";
+            this.ViewModel.TimeEstimate = "calculating...";
+            this.ViewModel.ChanceToHit = "calculating...";
             try
             {
                 previousTokenSrc?.Cancel();
@@ -282,6 +290,10 @@ namespace FallGuysNameFinder
             }
             catch (OperationCanceledException)
             {
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

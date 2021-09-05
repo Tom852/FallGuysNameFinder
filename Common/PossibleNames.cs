@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Backend
+namespace Common
 {
     public static class PossibleNames
     {
