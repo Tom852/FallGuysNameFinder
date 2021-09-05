@@ -277,8 +277,8 @@ namespace FallGuysNameFinder
         private CancellationTokenSource previousTokenSrc;
         private async void RecalculateProbability()
         {
-            this.ViewModel.TimeEstimate = "calculating...";
-            this.ViewModel.ChanceToHit = "calculating...";
+            this.ViewModel.TimeEstimate = "...";
+            this.ViewModel.ChanceToHit = "...";
             try
             {
                 previousTokenSrc?.Cancel();
