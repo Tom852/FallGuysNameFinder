@@ -47,6 +47,7 @@
     <Compile Include="FgStatus.cs" />
     <Compile Include="ConsoleAllocator.cs" />
     <Compile Include="Model\Name.cs" />
+    <Compile Include="Model\Pool.cs" />
     <Compile Include="Model\Statistics.cs" />
     <Compile Include="PossibleNames.cs" />
     <Compile Include="DataStorageStuff.cs" />
