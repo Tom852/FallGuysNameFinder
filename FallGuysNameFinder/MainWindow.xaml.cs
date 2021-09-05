@@ -34,9 +34,11 @@ namespace FallGuysNameFinder
             {
                 var options = DataStorageStuff.GetOptions();
                 var patterns = DataStorageStuff.ReadPatterns();
+                var pool = DataStorageStuff.GetStoredPool();
 
                 ViewModel.Options = options;
                 ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
+                ViewModel.Pool = pool;
                 DataContext = ViewModel;
 
                 probabilitySerivce = new ProbabilityService();
