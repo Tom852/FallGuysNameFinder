@@ -22,12 +22,7 @@
 
     <h1>Possible Name Occurences</h1>
     <div class="content">
-        <p>I kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>. We figured that the following three third names are missing, though:</p>
-        <ul>
-            <li>Artist</li>
-            <li>Peanut</li>
-            <li>Lionheart</li>
-        </ul>
+        <p>I kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>.</p>
     </div>
 
     <h1>Patterns</h1>
@@ -68,7 +63,11 @@
             <li>Good Yeeted Yeetus</li>
         </ul>
         <p><span class="warn">Attention: </span> Patterns must match exactly. Watch your spelling!</p>
-        <p><span class="hint">Note: </span> Yet there is no option to define flexible patterns, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come later.</p>
+    </div>
+
+    <h1>Pools</h1>
+    <div class="content">
+        <p>Yet there is no option to define pool-matching, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come in v1.1 approx late September.</p>
     </div>
 
     <h1>Setting up Fall Guys</h1>
@@ -89,17 +88,17 @@
             <figcaption>Recommended Plate<br />Unicolor background.<br />Only few flame tips interfere.<br />Sufficient contrast.</figcaption>
         </figure>
         <figure>
+            <img src="gootPlate2.png" />
+            <figcaption>Recommended Plate<br />Thin image.<br />High contrast.<br />Binary background usually no problem.</figcaption>
+        </figure>
+        <figure>
             <img src="badPlate1.png" />
-            <figcaption>Bad Plate<br />Dino is too big.<br />Circles in background.</figcaption>
+            <figcaption>Bad Plate<br />Dino is too big.<br />Circles in background.<br />Low contrast.</figcaption>
         </figure>
 
         <figure>
             <img src="badPlate2.png" />
             <figcaption>Bad Plate<br />The contrast is too low.<br />Note the failed monochrome transformation.</figcaption>
-        </figure>
-        <figure>
-            <img src="badPlate2.png" />
-            <figcaption>Bad Plate:<br />Placeholder.</figcaption>
         </figure>
     </div>
 
@@ -108,10 +107,21 @@
     <ul>
         <li>Choose a simple nickname, one word only. Less words are better.</li>
         <li>Your nickname shall not be similar to an actual possible name.</li>
-        <li>Recommended Nickname: Parkour! (Far away from any possible name and only one word)</li>
+        <li>Recommended Nickname: Parkour! or Tryhard (Far away from any possible name and only one word)</li>
         <li>Bad Nickname: Rookie (Rookie is a possible name, the engine may get confused)</li>
         <li>Bad Nickname: Pro Slimb Climber (Three words, three potential confusion points)</li>
     </ul>
+
+    <div class="picarray">
+        <figure>
+            <img src="badNickname1.png" />
+            <figcaption>Terrible Setup.<br />Contrast too low.<br />The third word will often fail.<br /> Nickname is a name possibility.<br />Will often result in "Rocky Singing Rookie"</figcaption>
+        </figure>
+        <figure>
+            <img src="gootNickname1.png" />
+            <figcaption>Plate bad, nickname good.<br />Bright artifacts at right do interfere.<br />Snowflake may not be parsed everytime.<br />Since parkour is no name option,<br/>this will at least not result in "Special Bitter Parkour"</figcaption>
+        </figure>
+    </div>
 
     <h2>Resolution and Windowed Mode</h2>
     <div class="content">
@@ -154,7 +164,7 @@
             <li>Bouncy Yeeted Yeeter</li>
             <li>Nify Dancing Dancer</li>
         </ul>
-        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter examples. Gaming and Gamer don't share the same first four letters. Infallible and fall neither. You would have to add this combination manually (see below).</p>
+        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter examples. Gaming and Gamer don't share the same first four letters. Infallible and fall neither. You would have to add these combinations manually. On the other hand, <code>Charging Charmer</code> would match since the first four letters are equal. It's a bit of a compromise-option.</p>
         <ul class="code">
             <li>Cold Gaming Gamer</li>
             <li>Infallible Fallen Apple</li>
@@ -169,8 +179,14 @@
     </div>
 
     <h1>On success</h1>
+    <h2>Returning to the main menu</h2>
     <div class="content">
-        <p>Once a pattern matched, the engine will press <code>ESC</code> to return to the main menu. Ironically, you don't get your name the time you are rolling it, but when you leave the profile page. If you left the tool running afk overnight, and it found your name somewhen, you are actually in some idle-state without a server connection. The moment you press <code>ESC</code>, it tries to save your new name, but will fail in an error. In the end, you have the name you started with. That's why the tool presses <code>ESC</code> at the end. I hope this works, I am still investigating.</p>
+        <p>Once a pattern matched, the engine will press <code>ESC</code> to return to the main menu. This is necessary to store your new name. Weirdly, you don't get your name assigned at the time you roll it, but when you return to the main menu. If the time between rolling and going back to the main menu is too long, ther will be an idle-error. Thus, the engine goes back to the menu.</p>
+    </div>
+
+    <h2>Pro Tip: Keep your old name</h2>
+    <div class="content">
+        <p>As just learned above, your name gets stored once you return to the main menu. This means, if you never return to the menu, you keep your old name. If you only rolled garbage and your original name was better, you can Alt+F4 the game from the profile screen and you keep whatever name you originally had.</p>
     </div>
 </body>
 </html>
