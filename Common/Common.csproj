@@ -49,6 +49,7 @@
     <Compile Include="Model\Name.cs" />
     <Compile Include="Model\Pool.cs" />
     <Compile Include="Model\Statistics.cs" />
+    <Compile Include="Model\StringTriple.cs" />
     <Compile Include="PossibleNames.cs" />
     <Compile Include="DataStorageStuff.cs" />
     <Compile Include="FgWindowAccess.cs" />

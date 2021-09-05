@@ -89,14 +89,7 @@ namespace Common
 
             foreach (var line in lines)
             {
-                try
-                {
-                    result.Add(new Pattern(line));
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Error while reading names-file. Item Skipped.");
-                }
+                result.Add(new Pattern(line));
             }
             return result;
         }

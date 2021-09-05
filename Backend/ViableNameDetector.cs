@@ -72,8 +72,8 @@ namespace Backend
                 var possibilities3CorrectCase = PossibleNames.ThirdNames(false).ToList();
 
                 var word1index = possibilities1Lower.IndexOf(w1Lower);
-                var word2index = possibilities1Lower.IndexOf(w2Lower);
-                var word3index = possibilities1Lower.IndexOf(w3Lower);
+                var word2index = possibilities2Lower.IndexOf(w2Lower);
+                var word3index = possibilities3Lower.IndexOf(w3Lower);
 
                 var w1Cleaned = possibilities1CorrectCase.ElementAt(word1index);
                 var w2Cleaned = possibilities2CorrectCase.ElementAt(word2index);

@@ -32,6 +32,7 @@ namespace FallGuysNameFinder
         {
             try
             {
+
                 var options = DataStorageStuff.GetOptions();
                 var patterns = DataStorageStuff.ReadPatterns();
                 var pool = DataStorageStuff.GetStoredPool();
@@ -53,6 +54,7 @@ namespace FallGuysNameFinder
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
         }
 
@@ -102,7 +104,7 @@ namespace FallGuysNameFinder
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                AddPattern(w.Vm.Pattern);
+                AddPattern(w.Vm.Words.ToPattern());
             };
         }
 
@@ -158,12 +160,12 @@ namespace FallGuysNameFinder
                 return;
             }
             var pattern = this.ViewModel.Patterns[index];
-            var clone = pattern.Clone();
-            var w = new AddPatternWindow(clone);
+
+            var w = new AddPatternWindow(new StringTriple(pattern));
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                EditPattern(index, w.Vm.Pattern);
+                EditPattern(index, w.Vm.Words.ToPattern());
             };
         }
 

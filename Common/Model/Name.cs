@@ -4,9 +4,6 @@ using System.Linq;
 
 namespace Common.Model
 {
-    // Although being the same as StringTriple, I think the semantic differntiation between the two makes sense.
-    // Could add a check if the name really exists and correct possible casing issues theoretically but i skip it for now. (would be good for fail fast principle)
-
     public struct Name
     {
         public string First { get; set; }
@@ -15,11 +12,6 @@ namespace Common.Model
 
         public Name(string first, string second, string third)
             : this(new string[] { first, second ,third})
-        {
-        }
-
-        public Name(IEnumerable<string> words)
-            : this(words.ToArray())
         {
         }
 

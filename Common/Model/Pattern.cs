@@ -4,43 +4,12 @@ using System.Linq;
 
 namespace Common.Model
 {
-    public class Pattern : INotifyPropertyChanged
+    public struct Pattern
     {
-        private string first;
-        private string second;
-        private string third;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string First
-        {
-            get => first;
-            set
-            {
-                first = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(First)));
-            }
-        }
-
-        public string Second
-        {
-            get => second;
-            set
-            {
-                second = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Second)));
-            }
-        }
-
-        public string Third
-        {
-            get => third;
-            set
-            {
-                third = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Third)));
-            }
-        }
+        public string First { get; }
+        public string Second { get; }
+        public string Third { get; }
 
         public const string Wildcard = "*";
 
@@ -62,22 +31,16 @@ namespace Common.Model
 
             if (!firstgood || !secondgood || ! thirdgood)
             {
-                throw new ArgumentException($"{splitted[0]} {splitted[1]} {splitted[2]} is not a viable Pattern");
+                throw new ArgumentException($"{splitted[0]} {splitted[1]} {splitted[2]} is not a viable pattern");
             }
             First = splitted[0];
             Second = splitted[1];
             Third = splitted[2];
         }
 
-        public static Pattern GetEmpty()
+        public Pattern(string first, string second, string third)
+            : this(new string[] { first, second, third })
         {
-            return new Pattern(new string[] { string.Empty, string.Empty, string.Empty });
-        }
-
-        public Pattern Clone()
-        {
-            var s = new string[] { First, Second, Third };
-            return new Pattern(s);
         }
 
         public override string ToString()

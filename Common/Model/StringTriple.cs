@@ -1,14 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
-namespace Backend.Model
+namespace Common.Model
 {
-    public struct StringTriple
+    public class StringTriple : INotifyPropertyChanged
     {
-        public string First { get; set; }
-        public string Second { get; set; }
-        public string Third { get; set; }
+
+        private string first;
+        private string second;
+        private string third;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string First
+        {
+            get => first;
+            set
+            {
+                first = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(First)));
+            }
+        }
+
+        public string Second
+        {
+            get => second;
+            set
+            {
+                second = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Second)));
+            }
+        }
+
+        public string Third
+        {
+            get => third;
+            set
+            {
+                third = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Third)));
+            }
+        }
+
+        public StringTriple() { }
 
         public StringTriple(string first, string second, string third) => (First, Second, Third) = (first, second, third);
 
@@ -26,6 +62,20 @@ namespace Backend.Model
             First = words[0];
             Second = words[1];
             Third = words[2];
+        }
+
+        public StringTriple(Pattern p) : this(new string[] { p.First, p.Second, p.Third })
+        {
+        }
+
+        public Name ToName()
+        {
+            return new Name(First, Second, Third);
+        }
+
+        public Pattern ToPattern()
+        {
+            return new Pattern(First, Second, Third);
         }
 
         public override string ToString()
