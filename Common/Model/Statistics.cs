@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,33 @@ namespace Common.Model
         public Dictionary<string, int> FirstNames { get; private set; } = new Dictionary<string, int>();
         public Dictionary<string, int> SecondNames { get; private set; } = new Dictionary<string, int>();
         public Dictionary<string, int> ThirdNames { get; private set; } = new Dictionary<string, int>();
+
+        public void AddAllPoosiibleNamesToSeeIFSomeAreEmpty()
+        {
+            foreach (var pn in PossibleNames.FirstNames(false))
+            {
+                if (!FirstNames.ContainsKey(pn))
+                {
+                    FirstNames.Add(pn, 0);
+                }
+            }
+
+            foreach (var pn in PossibleNames.SecondNames(false))
+            {
+                if (!SecondNames.ContainsKey(pn))
+                {
+                    SecondNames.Add(pn, 0);
+                }
+            }
+
+            foreach (var pn in PossibleNames.ThirdNames(false))
+            {
+                if (!ThirdNames.ContainsKey(pn))
+                {
+                    ThirdNames.Add(pn, 0);
+                }
+            }
+        }
 
         public void Account(List<Name> previousNames)
         {

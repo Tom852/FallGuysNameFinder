@@ -100,7 +100,7 @@ namespace Backend
 
                     PressP();
 
-                    Thread.Sleep(3750 + new Random().Next(500));
+                    Thread.Sleep(2500 + new Random().Next(500));
 
                     if (stopRequested)
                     {
