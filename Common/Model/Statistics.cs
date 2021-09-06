@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,21 +7,35 @@ namespace Common.Model
 {
     public class Statistics
     {
-        private Dictionary<string, int> firstNames = new Dictionary<string, int>();
-        private Dictionary<string, int> secondNames = new Dictionary<string, int>();
-        private Dictionary<string, int> thirdNames = new Dictionary<string, int>();
+        public Dictionary<string, int> FirstNames { get; private set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> SecondNames { get; private set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> ThirdNames { get; private set; } = new Dictionary<string, int>();
 
-        public Dictionary<string, int> FirstNames {
-            get => firstNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, k => k.Value);
-            set => firstNames = value;
-        }
-        public Dictionary<string, int> SecondNames {
-            get => secondNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, v=>v.Value);
-            set => secondNames = value;
-        }
-        public Dictionary<string, int> ThirdNames {
-            get => thirdNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, k => k.Value);
-            set => thirdNames = value;
+        public void AddAllPoosiibleNamesToSeeIFSomeAreEmpty()
+        {
+            foreach (var pn in PossibleNames.FirstNames(false))
+            {
+                if (!FirstNames.ContainsKey(pn))
+                {
+                    FirstNames.Add(pn, 0);
+                }
+            }
+
+            foreach (var pn in PossibleNames.SecondNames(false))
+            {
+                if (!SecondNames.ContainsKey(pn))
+                {
+                    SecondNames.Add(pn, 0);
+                }
+            }
+
+            foreach (var pn in PossibleNames.ThirdNames(false))
+            {
+                if (!ThirdNames.ContainsKey(pn))
+                {
+                    ThirdNames.Add(pn, 0);
+                }
+            }
         }
 
         public void Account(List<Name> previousNames)
@@ -31,6 +46,13 @@ namespace Common.Model
                 SecondNames.AddOrIncrease(node.Second, 1);
                 ThirdNames.AddOrIncrease(node.Third, 1);
             }
+        }
+
+        public void Sort()
+        {
+            FirstNames = FirstNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, k => k.Value);
+            SecondNames = SecondNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, v => v.Value);
+            ThirdNames = ThirdNames.OrderBy(s => s.Key).ToDictionary(k => k.Key, k => k.Value); ;
         }
     }
 }

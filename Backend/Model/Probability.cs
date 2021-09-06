@@ -4,7 +4,7 @@ namespace Backend.Model
 {
     public struct Probability
     {
-        private const double timePerHit = 4.1d; // adding 100ms for ocr and parsing.
+        private const double timePerHit = 2.85d; // adding 100ms for ocr and parsing.
 
         public double Value { get; }
         public double Percentage => 100 * Value;
