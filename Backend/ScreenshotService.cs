@@ -8,13 +8,18 @@ namespace Backend
 {
     public class ScreenshotService
     {
-        private const double xStartPercentage = 0.60;
         private const double yStartPercentrage = 0.29;
-        private const double xEndPercentage = 0.745;
         private const double yEndPercentage = 0.335;
 
+
+        private const double xStartPercentage16by9 = 0.60;
+        private const double xEndPercentage16by9 = 0.745;
+
+        private const double xStartPercentage21by9 = 0.58;
+        private const double xEndPercentage21by9 = 0.68;
+
         private const decimal ratio16by9 = (decimal)16 / 9;
-        private const decimal ratio32by9 = (decimal)32 / 9;
+        private const decimal ratio21by9 = 2.389m; // 2.370 / 2.3888 / 2.4 depending on res :O
 
         private readonly int[,] variations = new int[,] {
             { 0,0,0,0, },
@@ -57,6 +62,7 @@ namespace Backend
             return bmpScreenshot;
         }
 
+
         private WindowPosition GetScreenshotArea()
         {
             var windowPosition = FgWindowAccess.GetPositionShit();
@@ -66,19 +72,18 @@ namespace Backend
             WindowPosition result = default;
 
             // todo: someone should probably refactor this
-
-            if (Math.Abs((ratio - ratio16by9)) < 0.001m)
+            if (DecimalIsEqual(ratio, ratio16by9))
             {
                 // Full Screen 16:9 Aspect Ratio
-                double relativeStartX = windowPosition.Width * xStartPercentage;
+                double relativeStartX = windowPosition.Width * xStartPercentage16by9;
                 double relativeStartY = windowPosition.Height * yStartPercentrage;
                 result.Left = (int)relativeStartX + windowPosition.Left;
                 result.Top = (int)relativeStartY + windowPosition.Top;
 
-                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
+                result.Right = (int)(windowPosition.Width * xEndPercentage16by9 + windowPosition.Left);
                 result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
 
-                Log.Debug("Detected Full Screen 16:9");
+                Log.Debug("Detected full screen 16:9");
             }
             else if (ratio == 1.6m)
             {
@@ -87,22 +92,33 @@ namespace Backend
                 {
                     throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 full screen. Try running FG in windowed mode with 16:9. If many people require this, e.g. for Steam Deck, send me an Email :P.");
                 }
-                Log.Debug("Detected Full Screen 1920x1200");
+                Log.Debug("Detected full screen 1920x1200");
 
-                double relativeStartX = windowPosition.Width * xStartPercentage;
+                double relativeStartX = windowPosition.Width * xStartPercentage16by9;
                 double relativeStartY = 1080 * yStartPercentrage;
                 result.Left = (int)relativeStartX + windowPosition.Left;
                 result.Top = (int)relativeStartY + windowPosition.Top + 60;
 
-                result.Right = (int)(windowPosition.Width * xEndPercentage + windowPosition.Left);
+                result.Right = (int)(windowPosition.Width * xEndPercentage16by9 + windowPosition.Left);
                 result.Bottom = (int)(1080 * yEndPercentage) + 60 + windowPosition.Top;
             }
-            else if (Math.Abs((ratio - ratio32by9)) < 0.001m)
+            else if (DecimalIsEqual(ratio, ratio21by9, 0.03m))
             {
-                throw new Exception($"Ultrawide not yet supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement this. I don't have enough data :O. Please send me a fullscreen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
+                // Full Screen "21:9" Aspect Ratio
+                double relativeStartX = windowPosition.Width * xStartPercentage21by9;
+                double relativeStartY = windowPosition.Height * yStartPercentrage;
+                result.Left = (int)relativeStartX + windowPosition.Left;
+                result.Top = (int)relativeStartY + windowPosition.Top;
+
+                result.Right = (int)(windowPosition.Width * xEndPercentage21by9 + windowPosition.Left);
+                result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
+
+                Log.Debug("Detected full screen 21:9");
             }
             else
             {
+                // assuming windowed
+                // Windowed case: Adds 30px top, and 8 all other sides.
                 var effectiveWindowWidth = windowPosition.Width - 2 * 8;
                 var effectiveWindowHeight = windowPosition.Height - 31 - 8;
                 var effectiveWindowLeft = windowPosition.Left + 8;
@@ -110,23 +126,25 @@ namespace Backend
 
                 decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
 
-                if (!((ratioWhenWindowed - ratio16by9) < 0.001m))
+                if (!DecimalIsEqual(ratio, ratio16by9))
                 {
-                    throw new Exception("Unknown aspect ratio or programmatic error. Try to run 16:9 fullscreen. That usually works. 16:9 windowed should work too.");
+                    throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, 21:9 fullscreen, 1920x1200 fullscree, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a fullscreen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
                 }
 
                 Log.Debug("Detected windowed Fall Guys. Effective width: {0}. Effective height: {1}", effectiveWindowWidth, effectiveWindowHeight);
 
-                // Windowed case: Adds 30px top, and 8 all other sides.
-                double relativeStartX = effectiveWindowWidth * xStartPercentage;
+                double relativeStartX = effectiveWindowWidth * xStartPercentage16by9;
                 double relativeStartY = effectiveWindowHeight * yStartPercentrage;
                 result.Left = (int)relativeStartX + effectiveWindowLeft;
                 result.Top = (int)relativeStartY + effectiveWindowTop;
 
-                result.Right = (int)(effectiveWindowWidth * xEndPercentage + effectiveWindowLeft);
+                result.Right = (int)(effectiveWindowWidth * xEndPercentage16by9 + effectiveWindowLeft);
                 result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop);
             }
             return result;
         }
+
+        private bool DecimalIsEqual(decimal a, decimal b, decimal tolerance = 0.001m) => Math.Abs(a - b) < tolerance;
+
     }
 }
