@@ -52,12 +52,8 @@ namespace Backend
                     }
                 }
 
-                if (i == 0)
-                {
-                    bmp.Save(GetScreenshotFileName(0, 0), ImageFormat.Jpeg);
-                    Log.Debug("Screenshot archived.");
-
-                }
+                bmp.Save(GetScreenshotFileName(i, 0), ImageFormat.Jpeg);
+                Log.Debug($"Parsing unsuccesful - Debug screenshot archived at {GetScreenshotFileName(i, 0)}");
             }
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");

@@ -139,7 +139,10 @@ namespace Backend
                             }
 
                             PrintFunnySuccessLog();
-                            PressEscapeAtEnd();
+                            if (Options.AutoConfirm)
+                            {
+                                PressEscapeAtEnd();
+                            }
                             Stop();
                         }
                         else
@@ -235,8 +238,7 @@ namespace Backend
 
         private static void PressEscapeAtEnd()
         {
-            Log.Information("Your name is not yet stored at Mediatonic servers. This will happen, after we go back to the main menu. Since in case you are afk, your session will timeout and an error will result once you come back. Thus the engine will now press ESC to return to the main menu.");
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             Log.Debug("Pressing ESC");
             SendKeys.SendWait("{ESC}");
         }

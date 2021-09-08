@@ -79,7 +79,7 @@ namespace Backend
                 double relativeStartY = windowPosition.Height * yStartPercentrage;
                 result.Left = (int)relativeStartX + windowPosition.Left;
                 result.Top = (int)relativeStartY + windowPosition.Top;
-
+                
                 result.Right = (int)(windowPosition.Width * xEndPercentage16by9 + windowPosition.Left);
                 result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
 

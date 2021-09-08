@@ -119,7 +119,7 @@
         </figure>
         <figure>
             <img src="gootNickname1.png" />
-            <figcaption>Plate bad, nickname good.<br />Bright artifacts at right do interfere.<br />Snowflake may not be parsed everytime.<br />Since parkour is no name option,<br/>this will at least not result in "Special Bitter Parkour"</figcaption>
+            <figcaption>Plate bad, nickname good.<br />Bright artifacts at right do interfere.<br />Snowflake may not be parsed everytime.<br />Since parkour is no name option,<br />this will at least not result in "Special Bitter Parkour"</figcaption>
         </figure>
     </div>
 
@@ -171,22 +171,28 @@
         </ul>
     </div>
 
+    <h2>Auto confirm name</h2>
+    <div class="content">
+        <img src="nameGenerationFailed.png" align="right" />
+
+        <p>
+            When you are rerolling your name, it is not instantly stored to your account. You could at any time <code>Alt+F4</code> the game, and you would keep the name you started with.
+            This means, you can roll for a while, and if you are not happy with the results, just terminate the game process, and you can safely keep your old name.
+            Let's say, you are called "Good Fall Guy", but you wan't to go for a "* Fall Guy". You are hoping for "Best Fall Guy" or "Great Fall Guy", but you get "Diggly Fall Guy" or sth, which you don't want.
+            With this option unchecked, you can now just <code>Alt+F4</code> the game, and keep your "Good Fall Guy" you started with.
+        </p>
+        <p>So why should you enable it anyway then? Because if you idle for too long, you get disconnected from the server. Let's say you run the tool overnight. After 1hour, it finds just the perfect name.
+            But until you wake up, you idle 8 hours in the profile page. Once you come back, you want to press <code>ESC</code> to return to the main menu and to definitely store your new name.
+            But by that time, you are timed out and all you will see is an error. You would loose your newly rolled name! Thus, the engine will press <code>ESC</code> for you when you are still connected.
+        </p>
+        <p><span class="hint">Recommendation: </span>Have it checked until you read and understood what I just wrote.</p>
+    </div>
+
     <h2>Stop on error</h2>
     <div class="content">
         <p>Sometimes, things may go wrong. Imagine you get your desired name, but the software doesn't recognize it. With this option, the program will halt, without it it will continue. Realistically, chances are super low that the error occurs on just that single perfect name. I spent a lot of effort to detect even unclear names on bad nameplates. The disadvantage of the option is, that if you want to run the program over night. It would be uncool if it stops after just a few minutes but you expected it to test thousands of names. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
         <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
         <p>Note that after 10 consecutive major errors, the engine stops regardless of your setting. For example, when your profile page is not open or Fall Guys crashed or so.</p>
-    </div>
-
-    <h1>On success</h1>
-    <h2>Returning to the main menu</h2>
-    <div class="content">
-        <p>Once a pattern matched, the engine will press <code>ESC</code> to return to the main menu. This is necessary to store your new name. Weirdly, you don't get your name assigned at the time you roll it, but when you return to the main menu. If the time between rolling and going back to the main menu is too long, ther will be an idle-error. Thus, the engine goes back to the menu.</p>
-    </div>
-
-    <h2>Pro Tip: Keep your old name</h2>
-    <div class="content">
-        <p>As just learned above, your name gets stored once you return to the main menu. This means, if you never return to the menu, you keep your old name. If you only rolled garbage and your original name was better, you can Alt+F4 the game from the profile screen and you keep whatever name you originally had.</p>
     </div>
 </body>
 </html>

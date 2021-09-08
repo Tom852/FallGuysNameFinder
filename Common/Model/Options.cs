@@ -8,6 +8,7 @@ namespace Common.Model
         private bool stopOnDoubleWord;
         private bool stopOnError;
         private bool verbose = true;
+        private bool autoConfirm = true;
 
         public bool StopOnAlliteration
         {
@@ -26,6 +27,16 @@ namespace Common.Model
             {
                 stopOnDoubleWord = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopOnDoubleWord)));
+            }
+        }
+
+        public bool AutoConfirm
+        {
+            get => autoConfirm;
+            set
+            {
+                autoConfirm = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutoConfirm)));
             }
         }
 
