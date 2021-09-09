@@ -53,7 +53,7 @@ namespace Common.Util
             StringBuilder builder = new StringBuilder();
             foreach (var entry in Scores.OrderByDescending(d => d.Value))
             {
-                builder.AppendLine($"{entry.Key}:\t{entry.Value} Pts");
+                builder.AppendLine($"{entry.Key}: {entry.Value} Pts");
             }
             return builder.ToString();
         }

@@ -1,4 +1,5 @@
-﻿using Common.Model;
+﻿using Common;
+using Common.Model;
 using Common.Util;
 using System;
 using System.Linq;
@@ -8,7 +9,6 @@ namespace Backend.Model
 {
     public class FuzzyMatchingResult
     {
-        const float clearWinnerDicidingFactor = 1.5f;
 
         public Scoreboard<string> First { get; set; } = new Scoreboard<string>();
         public Scoreboard<string> Second { get; set; } = new Scoreboard<string>();
@@ -16,9 +16,9 @@ namespace Backend.Model
 
         public bool HasClearResult()
         {
-            var ic1 = First.IsClear(clearWinnerDicidingFactor);
-            var ic2 = Second.IsClear(clearWinnerDicidingFactor);
-            var ic3 = Third.IsClear(clearWinnerDicidingFactor);
+            var ic1 = First.IsClear(Constants.FuzzyMatchingClearDifferenceFaktor);
+            var ic2 = Second.IsClear(Constants.FuzzyMatchingClearDifferenceFaktor);
+            var ic3 = Third.IsClear(Constants.FuzzyMatchingClearDifferenceFaktor);
             return ic1 && ic2 && ic3;
         }
 

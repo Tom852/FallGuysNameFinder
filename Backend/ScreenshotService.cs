@@ -132,7 +132,7 @@ namespace Backend
 
                 decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
 
-                if (!DecimalIsEqual(ratio, ratio16by9))
+                if (!DecimalIsEqual(ratioWhenWindowed, ratio16by9))
                 {
                     throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, 21:9 full screen, 1920x1200 full screen, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a full screen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
                 }
@@ -150,7 +150,7 @@ namespace Backend
             return result;
         }
 
-        private bool DecimalIsEqual(decimal a, decimal b, decimal tolerance = 0.001m) => Math.Abs(a - b) < tolerance;
+        private bool DecimalIsEqual(decimal a, decimal b, decimal tolerance = 0.01m) => Math.Abs(a - b) < tolerance;
 
     }
 }

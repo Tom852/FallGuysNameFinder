@@ -14,8 +14,9 @@
         public const int TimeVariationBetweenPresses = 300;
         public const int TimePerHitOnAverageForStatistics = 3000;
 
-        public const int LogFileSizeLimit = 10 * 1024 * 1024;
+        public const int LogFileSizeLimit = 50 * 1024 * 1024;
         public const int LogFilesToKeep = 10;
 
+        public const float FuzzyMatchingClearDifferenceFaktor = 1.5f;
     }
 }
