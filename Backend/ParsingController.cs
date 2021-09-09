@@ -53,7 +53,7 @@ namespace Backend
                 }
 
                 bmp.Save(GetScreenshotFileName(i, 0), ImageFormat.Jpeg);
-                Log.Information($"Parsing unsuccesful - Debug screenshot archived at {GetScreenshotFileName(i, 0)}");
+                Log.Information($"Parsing unsuccessful - Debug screen shot archived at {GetScreenshotFileName(i, 0)}");
             }
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
@@ -78,7 +78,7 @@ namespace Backend
                 return false;
             }
 
-            // We can think about skipping results with less than 3 words already here... right now they are kept but skiopped later and never used :O
+            // We can think about skipping results with less than 3 words already here... right now they are kept but skipped later and never used :O
             // But it may make sense if you get two perfect words and only the third is lost.
 
             if (!ocrResult.HasText)
@@ -103,7 +103,7 @@ namespace Backend
 
             if (ocrResult.Confidence > CONFIDENCE_SURE_LIMIT)
             {
-                Log.Warning("OCR was very confident, yet there was no name match. This could happen if Mediatonic added new name possiblities. Manual review recommended.");
+                Log.Warning("OCR was very confident, yet there was no name match. This could happen if Mediatonic added new name possibilities. Manual review recommended.");
             }
 
             ToFuzzyAnyalyze.Add(spaceInvariant);

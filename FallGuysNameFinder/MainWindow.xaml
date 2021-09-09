@@ -10,7 +10,7 @@
         Icon="Icon1.ico">
 
     <DockPanel Margin="10px">
-        <Label Content="Fall Guys Names Finder" FontFamily="{StaticResource FGFont}"  FontSize="24pt" FontWeight="Bold" DockPanel.Dock="Top" Margin="30" HorizontalAlignment="Center" />
+        <Label Content="Fall Guys Name Finder" FontFamily="{StaticResource FGFont}"  FontSize="24pt" FontWeight="Bold" DockPanel.Dock="Top" Margin="30" HorizontalAlignment="Center" />
         <DockPanel DockPanel.Dock="Bottom">
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="StartStop" Content="{Binding StartStopButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Right" Click="StartStop_Click" />
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click" />

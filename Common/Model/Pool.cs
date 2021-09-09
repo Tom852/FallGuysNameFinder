@@ -72,7 +72,7 @@ namespace Common.Model
 
             if (!possibleNames.Contains(name))
             {
-                throw new ArgumentException($"{name} is not a possiblity.");
+                throw new ArgumentException($"{name} is not a possibility.");
             }
 
             if (property.Contains(name))

@@ -65,10 +65,10 @@ namespace FallGuysNameFinder
             Console.WriteLine("Observe it in the beginning to ensure everything works properly.");
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine("Tips for bettter results:");
+            Console.WriteLine("Tips for better results:");
             Console.WriteLine("- Clean unicolor nameplate background");
             Console.WriteLine("- Small icon in nameplate");
-            Console.WriteLine("- Dark namepalte for high contrast");
+            Console.WriteLine("- Dark nameplate for high contrast");
             Console.WriteLine("- One-worded nickname, that is not similar to a user-name");
             Console.WriteLine("- High resolution");
             Console.WriteLine();

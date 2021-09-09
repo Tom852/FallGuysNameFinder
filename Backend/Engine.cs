@@ -132,7 +132,7 @@ namespace Backend
                                 case MatchingResult.NoMatch :
                                     throw new InvalidOperationException("Programmatic error.");
                                 default:
-                                    Log.Information("Unknwon match type detected.");
+                                    Log.Information("Unknown match type detected.");
                                     break;
                             }
 

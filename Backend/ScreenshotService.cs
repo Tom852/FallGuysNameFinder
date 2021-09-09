@@ -33,7 +33,7 @@ namespace Backend
 
             { 4, 2, -8, -4},  // narrow area slightly in case too much is captured, e.g. for 21:9 variance
 
-            { -5, -5, 10, 10 },  // increase area incase we are off, e.g. for 21:9 variance
+            { -5, -5, 10, 10 },  // increase area in case we are off, e.g. for 21:9 variance
             { -10, -10, 20, 20 },  // going more radical to get more data for fuzzy matching
             { -25, -25, 50, 50 },
             { -50, -50, 100, 100},
@@ -134,7 +134,7 @@ namespace Backend
 
                 if (!DecimalIsEqual(ratio, ratio16by9))
                 {
-                    throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, 21:9 fullscreen, 1920x1200 fullscree, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a fullscreen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
+                    throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, 21:9 full screen, 1920x1200 full screen, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a full screen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
                 }
 
                 Log.Debug("Detected windowed Fall Guys. Effective width: {0}. Effective height: {1}", effectiveWindowWidth, effectiveWindowHeight);
