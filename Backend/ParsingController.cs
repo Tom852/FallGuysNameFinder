@@ -44,7 +44,7 @@ namespace Backend
 
                 for (int j = 0; j < colorModifications.Count; j++)
                 {
-                    Log.Information("OCR Attempt {0}-{1}", i, j);
+                    Log.Debug("OCR Attempt {0}-{1}", i, j);
                     bool success = AnalyzeBmp(colorModifications[j]);
                     if (success)
                     {
@@ -53,7 +53,7 @@ namespace Backend
                 }
 
                 bmp.Save(GetScreenshotFileName(i, 0), ImageFormat.Jpeg);
-                Log.Debug($"Parsing unsuccesful - Debug screenshot archived at {GetScreenshotFileName(i, 0)}");
+                Log.Information($"Parsing unsuccesful - Debug screenshot archived at {GetScreenshotFileName(i, 0)}");
             }
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
@@ -95,7 +95,7 @@ namespace Backend
             if (success)
             {
                 Result = viableNameDetector.LastMatch;
-                Log.Debug("Viable name detected: {0}", Result);
+                Log.Information("Viable name extracted: {0}", Result);
                 return true;
             }
 

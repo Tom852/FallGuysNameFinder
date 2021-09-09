@@ -22,15 +22,21 @@ namespace Backend
         private const decimal ratio21by9 = 2.389m; // 2.370 / 2.3888 / 2.4 depending on res :O
 
         private readonly int[,] variations = new int[,] {
-            { 0,0,0,0, },
-            { -10, -10, 20, 20,  },
-            { 5, 5, 10, 10,  },
-            { 10, 10, -20, -20,  },
-            { 10, 0, -20, 0,  },
-            { 20, 0, -40, 0,  },
-            { -10, 0, 20, 0,  },
-            { -20, -20, 40, 40,  },
-            { -40, -40, 80, 80, },
+            // left, top, width, height
+            { 0, 0, 0, 0 },
+
+            { 0, -5, 0, 10 },  // increase height - for two-lined names
+            { 0, -10, 0, 20 },  // increase height - for two-lined names
+
+            { 5, 0, -5, 0 },   // decrease width from left in case artifact is in screen
+            { 10, 0, -10, 0 },   // same
+
+            { 4, 2, -8, -4},  // narrow area slightly in case too much is captured, e.g. for 21:9 variance
+
+            { -5, -5, 10, 10 },  // increase area incase we are off, e.g. for 21:9 variance
+            { -10, -10, 20, 20 },  // going more radical to get more data for fuzzy matching
+            { -25, -25, 50, 50 },
+            { -50, -50, 100, 100},
         };
 
         public int AmountOfPositionVariations => variations.GetLength(0);
@@ -52,8 +58,8 @@ namespace Backend
 
             var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
 
-            gfxScreenshot.CopyFromScreen((int)screenshotArea.Left + startVariationX,
-                                         (int)screenshotArea.Top + startVariationY,
+            gfxScreenshot.CopyFromScreen(screenshotArea.Left + startVariationX,
+                                         screenshotArea.Top + startVariationY,
                                 0,
                                 0,
                                 sizeToCapture,
