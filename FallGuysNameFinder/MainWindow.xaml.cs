@@ -32,11 +32,14 @@ namespace FallGuysNameFinder
         {
             try
             {
+
                 var options = DataStorageStuff.GetOptions();
                 var patterns = DataStorageStuff.ReadPatterns();
+                var pool = DataStorageStuff.GetStoredPool();
 
                 ViewModel.Options = options;
                 ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
+                ViewModel.Pool = pool;
                 DataContext = ViewModel;
 
                 probabilitySerivce = new ProbabilityService();
@@ -51,6 +54,7 @@ namespace FallGuysNameFinder
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
         }
 
@@ -100,7 +104,7 @@ namespace FallGuysNameFinder
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                AddPattern(w.Vm.Pattern);
+                AddPattern(w.Vm.Words.ToPattern());
             };
         }
 
@@ -156,12 +160,12 @@ namespace FallGuysNameFinder
                 return;
             }
             var pattern = this.ViewModel.Patterns[index];
-            var clone = pattern.Clone();
-            var w = new AddPatternWindow(clone);
+
+            var w = new AddPatternWindow(new StringTriple(pattern));
             w.Show();
             w.OnOkClick += (d1, d2) =>
             {
-                EditPattern(index, w.Vm.Pattern);
+                EditPattern(index, w.Vm.Words.ToPattern());
             };
         }
 
@@ -284,7 +288,7 @@ namespace FallGuysNameFinder
 
                 previousTokenSrc = new CancellationTokenSource();
 
-                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Options, previousTokenSrc.Token);
+                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Pool, ViewModel.Options, previousTokenSrc.Token);
                 this.ViewModel.TimeEstimate = result.GetTimeRequired();
                 this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
             }

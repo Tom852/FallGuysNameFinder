@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Backend.Model;
+using Common;
 using Common.Model;
 using System;
 using System.Linq;
@@ -17,10 +18,10 @@ namespace FallGuysNameFinder
 
         public AddPatternViewModel Vm { get; set; }
 
-        public AddPatternWindow(Pattern p)
+        public AddPatternWindow(StringTriple words)
         {
             var vm = new AddPatternViewModel();
-            vm.Pattern = p;
+            vm.Words = words;
             vm.FirstNames = PossibleNames.FirstNames(false).ToList().OrderBy(s => s).ToList();
             vm.SecondNames = PossibleNames.SecondNames(false).ToList().OrderBy(s => s).ToList();
             vm.ThirdNames = PossibleNames.ThirdNames(false).ToList().OrderBy(s => s).ToList();
@@ -35,15 +36,15 @@ namespace FallGuysNameFinder
         }
 
         public AddPatternWindow()
-            : this(Pattern.GetEmpty())
+            : this(new StringTriple())
         {
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            var isValid1 = this.Vm.FirstNames.Contains(this.Vm.Pattern.First);
-            var isValid2 = this.Vm.SecondNames.Contains(this.Vm.Pattern.Second);
-            var isValid3 = this.Vm.ThirdNames.Contains(this.Vm.Pattern.Third);
+            var isValid1 = this.Vm.FirstNames.Contains(this.Vm.Words.First);
+            var isValid2 = this.Vm.SecondNames.Contains(this.Vm.Words.Second);
+            var isValid3 = this.Vm.ThirdNames.Contains(this.Vm.Words.Third);
 
             if (!isValid1 || !isValid2 || !isValid3)
             {

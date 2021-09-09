@@ -15,13 +15,13 @@ namespace Backend
         private readonly string[] SecondPossibleNames = PossibleNames.SecondNames(false);
         private readonly string[] ThirdPossibleNames = PossibleNames.ThirdNames(false);
 
-        public async Task<Probability> GetProbabilityAsync(List<Pattern> patterns, Options options, CancellationToken token)
+        public async Task<Probability> GetProbabilityAsync(List<Pattern> patterns, Pool pool, Options options, CancellationToken token)
         {
             return await Task.Run(() =>
             {
                 ParallelOptions o = new ParallelOptions() { CancellationToken = token };
 
-                var matchingService = new MatchingService(patterns, options);
+                var matchingService = new MatchingService(patterns, pool, options);
                 int matchCount = 0;
 
                 Parallel.ForEach(FirstPossibleNames, o, firstname =>

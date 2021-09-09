@@ -1,5 +1,6 @@
 ﻿using Backend.Model;
 using Common;
+using Common.Model;
 using Common.Util;
 using FuzzySharp;
 using FuzzySharp.Extractor;

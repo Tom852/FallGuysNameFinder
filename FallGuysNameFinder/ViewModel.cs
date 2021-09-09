@@ -11,6 +11,7 @@ namespace FallGuysNameFinder
     {
         private ObservableCollection<Pattern> patterns;
         private Options options;
+        private Pool pool;
         private bool isConsoleShown;
         private FgStatus fgStatus = FgStatus.NotRunning;
         private EngineStatus engineStatus = EngineStatus.Stopped;
@@ -25,6 +26,15 @@ namespace FallGuysNameFinder
             {
                 patterns = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Patterns)));
+            }
+        }
+
+        public Pool Pool
+        {
+            get => pool; set
+            {
+                pool = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pool)));
             }
         }
 
