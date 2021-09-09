@@ -77,7 +77,7 @@ namespace FallGuysNameFinder
                         return SystemIcons.Error;
 
                     default:
-                        throw new Exception("Unkonwon FGStatus");
+                        throw new Exception("Unknown Fall Guys Status");
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace FallGuysNameFinder
                         return "Not Found";
 
                     default:
-                        throw new Exception("Unkonwon FGStatus");
+                        throw new Exception("Unknown Fall Guys Status");
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace FallGuysNameFinder
                         return SystemIcons.Error;
 
                     default:
-                        throw new Exception("Unkonwon FGStatus");
+                        throw new Exception("Unknown Engine Status");
                 }
             }
         }
@@ -165,7 +165,7 @@ namespace FallGuysNameFinder
                         return "Start";
 
                     default:
-                        throw new Exception("Unkonwn Engine Status");
+                        throw new Exception("Unknown Engine Status");
                 }
             }
         }

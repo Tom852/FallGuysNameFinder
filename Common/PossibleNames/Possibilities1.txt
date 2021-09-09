@@ -105,7 +105,6 @@ Rad
 Rapid
 Rare
 Real
-Red
 Rocky
 Rolly
 Round
@@ -145,7 +144,6 @@ Tiny
 Toothy
 Tough
 Tricky
-Tumbling
 Tumbly
 Unbeaten
 Unlucky

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="EngineStatus.cs" />
     <Compile Include="Extensions\DictionaryExtension.cs" />
     <Compile Include="FgStatus.cs" />

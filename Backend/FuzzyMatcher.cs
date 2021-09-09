@@ -47,17 +47,17 @@ namespace Backend
 
             if (!Result.HasAnyResult())
             {
-                Log.Warning("Fuzzy Matching delivered no result.");
+                Log.Warning("Fuzzy matching delivered no result.");
                 return false;
             }
+
+            Log.Information("Fuzzy matching succeeded. The result is: {0}", Result);
             if (!Result.HasClearResult())
             {
                 // todo: there could be an option, stop on uncertainty or such. behaviour here could be revisited.
                 // note: turns out it is basically never clear, even not with factor 1.5
                 Log.Warning("Fuzzy matching has a result, but it is not very certain.");
             }
-
-            Log.Information("Fuzzy matching succeeded. The result is: {0}", Result);
             return true;
         }
 
@@ -66,7 +66,7 @@ namespace Backend
             Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             StringBuilder b = new StringBuilder();
-            b.AppendLine("The following string triples are availble");
+            b.AppendLine("The following string triples are available");
             inputs.ForEach(f => b.AppendLine(f.ToString()));
 
             Log.Debug(b.ToString());

@@ -54,9 +54,9 @@ h4 {
     margin: 20px;
     padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
-    max-width: 200px;
+    flex-basis: 600px;
 }
 
 figcaption {

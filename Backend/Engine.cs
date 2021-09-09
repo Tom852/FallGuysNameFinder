@@ -13,8 +13,6 @@ namespace Backend
 {
     public class Engine
     {
-        private const int FailInRowLimit = 10;
-
         public History History { get; private set; }
         private ParsingController ParsingController { get; set; }
         private MatchingService ComparisonService { get; set; }
@@ -45,7 +43,7 @@ namespace Backend
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: 10 * 1024 * 1024, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: 3)
+                .WriteTo.File(DataStorageStuff.LogFile, fileSizeLimitBytes: Constants.LogFileSizeLimit, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, shared: true, flushToDiskInterval: TimeSpan.FromSeconds(5), retainedFileCountLimit: Constants.LogFilesToKeep)
                 .MinimumLevel.Is(loglevel)
                 .CreateLogger();
 
@@ -61,6 +59,7 @@ namespace Backend
 
         public void Stop()
         {
+            Log.Information("Stopping engine...");
             stopRequested = true;
         }
 
@@ -77,8 +76,7 @@ namespace Backend
                 throw new Exception("not initialized!");
             }
 
-            Thread.Sleep(3000);
-
+            Thread.Sleep(Constants.TimeBeforeStart);
 
             //FgWindowAccess.BringToFront(); // could make an option here to initially foreground the window. but is it necessary?
 
@@ -93,14 +91,14 @@ namespace Backend
                     {
                         Log.Information("Fall Guys is not in foreground. Iteration skipped.");
                         iterations--;
-                        Thread.Sleep(4000);
+                        Thread.Sleep(Constants.TimeWaitWhenFgNotForeground);
                         continue;
                     }
 
 
                     PressP();
 
-                    Thread.Sleep(2500 + new Random().Next(500));
+                    Thread.Sleep(Constants.TimeBetweenPresses + new Random().Next(Constants.TimeVariationBetweenPresses));
 
                     if (stopRequested)
                     {
@@ -132,9 +130,9 @@ namespace Backend
                                     Log.Information("Pool match detected");
                                     break;
                                 case MatchingResult.NoMatch :
-                                    throw new InvalidOperationException("this shoudl not happen");
+                                    throw new InvalidOperationException("Programmatic error.");
                                 default:
-                                    Log.Information("Unknwon match detected");
+                                    Log.Information("Unknwon match type detected.");
                                     break;
                             }
 
@@ -147,22 +145,21 @@ namespace Backend
                         }
                         else
                         {
-                            Log.Debug("No pattern matched.");
+                            Log.Information("No match.");
                         }
                     }
                     else
                     {
-                        Log.Error("Optical Character Recognition failed.");
+                        Log.Error("Optical character recognition failed.");
                         if (this.Options.StopOnError)
                         {
-                            Log.Information("Stopping Engine.");
                             Stop();
                         }
 
                         failsInRow++;
-                        if (failsInRow > FailInRowLimit)
+                        if (failsInRow > Constants.FailInRowLimit)
                         {
-                            Log.Fatal($"{FailInRowLimit} fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
+                            Log.Fatal($"{Constants.FailInRowLimit} fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
                             Stop();
                         }
                     }
@@ -177,7 +174,6 @@ namespace Backend
                     Log.Error(e, "Unexpected Error");
                     if (this.Options.StopOnError)
                     {
-                        Log.Information("Stopping Engine.");
                         Stop();
                     }
                 }
@@ -208,7 +204,7 @@ namespace Backend
         {
             if (this.History.WereLastNamesAllEqual(8))
             {
-                Log.Error("Still no improvement. Something is broken. Engine will Stop.");
+                Log.Error("Still no improvement. Something is broken. Engine will stop.");
                 Stop();
             }
             else if (this.History.WereLastNamesAllEqual(6))
@@ -233,7 +229,7 @@ namespace Backend
         {
             Log.Debug("Pressing SPACE");
             SendKeys.SendWait(" ");
-            Thread.Sleep(500);
+            Thread.Sleep(Constants.TimeWaitAfterSpace);
         }
 
         private static void PressEscapeAtEnd()

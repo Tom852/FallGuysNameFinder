@@ -14,28 +14,29 @@
         <li>Partial wildcards don't work: <del class="code">L* S*ing Ham*</del></li>
     </ul>
 
-    <h1>Is this legal?</h1>
+    <h1>Is this tool legal?</h1>
     <div class="content">
-        <p>The <a href="https://fallguys.com/eula-combined">Mediatonic EULA</a> say that a hack or a cheat is defined as a tool giving you a competitive advantage. Since your name is not making you faster, we should be good. I also do not think this tool is fraudulent. No memory modification, no log-file-analysis, no data-mining, just making a screenshot and pressing a button. Instead of giving players a bad experience (we all hate cheaters), this tool makes us all happy by people having cool names. This is also why I didn't hesitate to provide my email and steam account in the about section. I don't feel like I have to hide. If Mediatonic reads this, and is not sharing my opinion, feel free to get in touch with me.</p>
+        <p>The <a href="https://fallguys.com/eula-combined">Mediatonic EULA</a> states that a hack or a cheat is defined as a tool giving you a competitive advantage. Since your name is not making you faster, we should be good. I also do not think this tool is fraudulent in any way. No memory modification, no log-file-analysis, no data-mining, just making a screenshot and pressing a button. Instead of giving players a bad experience like hacks do, this tool makes us all happier by people having cooler names. This is also why I didn't hesitate to provide my identity in the about section. I don't feel like I have to hide. If Mediatonic has a differnt opinion on this, feel free to get in touch with me.</p>
         <p>I used the tool extensively during testing and had no problems at all. But as always: Use at your own risk :)</p>
     </div>
 
     <h1>Possible Name Occurences</h1>
     <div class="content">
         <p>I kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>.</p>
+        <p>When adding patterns, you will also see all available names in the dropdown menu.</p>
     </div>
 
     <h1>Patterns</h1>
     <h2>Adding, Editing, Removing</h2>
     <div class="content">
         <p>Add Patterns by clicking on the <code>add</code> button. To edit them, you can also double click in the list aside the proper button. To remove, you can also press <code>DEL</code> or <code>BACKSPACE</code>.</p>
-        <p>If you navigate to <code>%APPDATA%/FallGuysNameFinder/Patterns.txt</code>, you can also do a text-file-based editing (not recommended). Note that there is no file watcher. Restart the software after you edited this file.</p>
+        <p>If you navigate to <code>%APPDATA%/FallGuysNameFinder/Patterns.txt</code>, you can also do a text-file-based editing (not recommended, watch your spelling). Note that there is no file watcher. Restart the software after you edited this file.</p>
     </div>
 
     <h2>Pattern Format</h2>
     <div class="content">
 
-        <p>To add a specific name, just enter the proper words. Please watch your spelling!</p>
+        <p>To add a specific name, just enter the proper words. You must not leave a field empty. Use <code>*</code> as wildcards (see below).</p>
         <h4>Example</h4>
         <ul class="code">
             <li>Cold Gaming Gamer</li>
@@ -44,7 +45,7 @@
 
     <h2>Wildcards</h2>
     <div class="content">
-        <img src="patterns.png" align="right" />
+        <img src="patterns.png" />
         <p>There is the option to add a <code>*</code> as a wildcard or placeholder. Whatever will be rolled on that position, it will match.</p>
         <h4>Examples</h4>
         <ul class="code">
@@ -62,19 +63,18 @@
             <li>Good Yeeted Yeeter</li>
             <li>Good Yeeted Yeetus</li>
         </ul>
-        <p><span class="warn">Attention: </span> Patterns must match exactly. Watch your spelling!</p>
     </div>
 
     <div class="picarray">
         <figure>
             <img src="patternExample.png" />
-            <figcaption>Matches on <code>Alawys Adoring Acrobat</code>, but not on Always Beaming Champion</figcaption>
+            <figcaption>Matches on Always Adoring Acrobat, but not on Always Beaming Champion</figcaption>
         </figure>
         </div>
 
         <h1>Pools</h1>
         <div class="content">
-            <p>Yet there is no option to define pool-matching, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come in v1.1 approx late September.</p>
+            <p>Yet there is no option to define pool-matching, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come in v1.1 ETA October.</p>
         </div>
 
         <h1>Setting up Fall Guys</h1>
@@ -86,7 +86,7 @@
                 <li>The <b>left-side graphic</b> of the nameplate should be as far away from your name as possible. If it's too large, parts of it may get captured in the screenshot. This usually gets filtered, but may not be optimal.</li>
                 <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
             </ol>
-            <p><span class="warn">Important: </span>Observe the program's behaviour for a while before you leave it running afk, to ensure your settings work well.</p>
+            <p><span class="warn">Important: </span>Observe the program's behaviour for a while before you leave it running afk, to ensure your settings work well (Working well means it finds almost all names at the first parsing attempt).</p>
         </div>
 
         <div class="picarray">
@@ -106,6 +106,11 @@
             <figure>
                 <img src="badPlate2.png" />
                 <figcaption>Bad Plate<br />The contrast is too low.<br />Note the failed monochrome transformation.</figcaption>
+            </figure>
+
+            <figure>
+                <img src="badPlate3.png" />
+                <figcaption>Bad Plate<br />Text and image overlap, and image is white<br />You can use this if you want to challenge my programming skills :D</figcaption>
             </figure>
         </div>
 
@@ -136,7 +141,7 @@
         <h2>Resolution and Windowed Mode</h2>
         <div class="content">
             <p>The higher the resolution, the better it will work. 1080p and larger is recommended. The engine is very robust and will also work on 720p, but it is not recommended.</p>
-            <p>The tool has been tested for 16:9 aspect ratios with the exception of 1920x1200 also being supported (cause I have that :D ). It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be interesting to observe the console.</p>
+            <p>The tool has been tested for 16:9 aspect ratios with the exception of 1920x1200 (16:10) also being supported (cause I have that :D). 21:9 ratios should also work. It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be interesting to observe the console. If you have another aspect ratio, you can run Fall Guys in windowed 16:9 mode.</p>
             <p><span class="warn">Warning: </span> The lower the resolution, the less accuracy! The effect is well noticable at resolutions lower than 1920x1080!</p>
         </div>
 
@@ -148,7 +153,7 @@
         <h1>Console</h1>
         <div class="content">
             <p>If you like, you can show the console. This gives you information about what the software is doing. This helps a lot in the beginning to detect if it runs smoothly with your settings or if it is struggling. Just move it to your secondary monitor, if available. You can also run Fall Guys in windowed mode, if you only have one monitor.</p>
-            <p><span class="warn">Attention:</span> Don't mark text on the console. This halts the program. If you are stuck, just click into the console and press a few times <code>ENTER</code></p>
+            <p><span class="warn">Attention:</span> Don't mark text on the console. This halts the program. If you are stuck, just click into the console and press a few times <code>ENTER</code>.</p>
             <p><span class="warn">Attention:</span> Don't close the console. Imagine the conosle is the program's mind and the UI is the body. As we know from Matrix, the body can't exist without a mind.</p>
         </div>
 
@@ -168,7 +173,7 @@
 
         <h2>Stop on double-word</h2>
         <div class="content">
-            <p>The software will stop rerolling your name, whenever two of three words start with the same 4 letters.</p>
+            <p>The software will stop rerolling your name, whenever two out of three words start with the same 4 letters.</p>
             <h4>Examples:</h4>
             <ul class="code">
                 <li>Bouncy Yeeted Yeeter</li>
@@ -194,7 +199,7 @@
             <p>
                 So why should you enable it anyway then? Because if you idle for too long, you get disconnected from the server. Let's say you run the tool overnight. After 1hour, it finds just the perfect name.
                 But until you wake up, you idle 8 hours in the profile page. Once you come back, you want to press <code>ESC</code> to return to the main menu and to definitely store your new name.
-                But by that time, you are timed out and all you will see is an error. You would loose your newly rolled name! Thus, the engine will press <code>ESC</code> for you when you are still connected.
+                But by that time, you are timed out and all you will see is an error. You would loose your newly rolled name! Thus, the engine will press <code>ESC</code> for you while you are still connected.
             </p>
             <p><span class="hint">Recommendation: </span>Have it checked until you read and understood what I just wrote.</p>
         </div>
@@ -202,8 +207,8 @@
         <h2>Stop on error</h2>
         <div class="content">
             <p>Sometimes, things may go wrong. Imagine you get your desired name, but the software doesn't recognize it. With this option, the program will halt, without it it will continue. Realistically, chances are super low that the error occurs on just that single perfect name. I spent a lot of effort to detect even unclear names on bad nameplates. The disadvantage of the option is, that if you want to run the program over night. It would be uncool if it stops after just a few minutes but you expected it to test thousands of names. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
-            <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well. If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
-            <p>Note that after 10 consecutive major errors, the engine stops regardless of your setting. For example, when your profile page is not open or Fall Guys crashed or so.</p>
+            <p>Note that after 10 consecutive major errors, or on irregularities, the engine stops regardless of your setting. For example, when your profile page is not open or names do not change for any reason.</p>
+            <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well (it finds almost all names at the first parsing attempt). If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
         </div>
 </body>
 </html>

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Common;
+using System;
 
 namespace Backend.Model
 {
     public struct Probability
     {
-        private const double timePerHit = 2.85d; // adding 100ms for ocr and parsing.
-
         public double Value { get; }
         public double Percentage => 100 * Value;
 
@@ -49,7 +48,7 @@ namespace Backend.Model
             }
 
             var attempts = 1d / Value;
-            var timeRquired = TimeSpan.FromSeconds(attempts * timePerHit);
+            var timeRquired = TimeSpan.FromSeconds(attempts * Constants.TimePerHitOnAverageForStatistics / 1000);
 
             if (timeRquired.Days != 0)
             {
