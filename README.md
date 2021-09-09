@@ -1,7 +1,7 @@
 # Fall Guys Name Finder
 Automatically rerolls your name until it matches specific patterns.
  
- ![Screenshot](/Release/screenshot.png "Screenshot")
+ ![Screenshot](/screenshot.png "Screenshot")
  
 ## Features
 - User-definable patterns
@@ -29,7 +29,7 @@ Pool matching. Define a bunch of first, second and third names. Any combination 
 Most likely yes. There is a longer explanation in the tool's user guide section.
 
 ## Download
-[v 1.0](https://github.com/Tom852/SeriesRenamer/releases/download/v1/publish.rar)
+[v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip)
 
 ## Bugs and feature requests
 Feel free to get in touch with me if there are any bugs or if you have feature requests.
