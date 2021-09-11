@@ -53,7 +53,6 @@ namespace Backend
                 }
 
                 bmp.Save(GetScreenshotFileName(i, 0), ImageFormat.Jpeg);
-                Log.Information($"Parsing unsuccessful - Debug screen shot archived at {GetScreenshotFileName(i, 0)}");
             }
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
