@@ -139,4 +139,50 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="Black" />
     </Style>
+
+    <Style TargetType="{x:Type ListBox}">
+        <Setter Property="Height" Value="642" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Margin" Value="10 0" />
+        <Setter Property="SelectionMode" Value="Multiple" />
+        <Setter Property="Background" Value="{StaticResource MediumColor}" />
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter TargetName="Bd"
+                                 Property="Background"
+                                 Value="{StaticResource BackgroundColor}"/>
+                            <Setter TargetName="Bd"
+                                 Property="BorderBrush"
+                                 Value="Black"/>
+                            <Setter Property="FontWeight"
+                                  Value="DemiBold"/>
+                            <Setter Property="Foreground"
+                                  Value="{DynamicResource AccentTextColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground"
+                                Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

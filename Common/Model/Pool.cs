@@ -8,9 +8,9 @@ namespace Common.Model
 {
     public class Pool
     {
-        public ObservableCollection<string> First { get; } = new ObservableCollection<string>(); // todo: not sure if we need obs. coll.
-        public ObservableCollection<string> Second { get; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Third { get; } = new ObservableCollection<string>();
+        public List<string> First { get; } = new List<string>();
+        public List<string> Second { get; } = new List<string>();
+        public List<string> Third { get; } = new List<string>();
 
         public void AddFirst(string name) => AddName(name, 1);
         public void AddSecond(string name) => AddName(name, 2);
@@ -22,7 +22,7 @@ namespace Common.Model
 
         private void RemoveName(string name, int which)
         {
-            ObservableCollection<string> property;
+            List<string> property;
 
             switch (which)
             {
@@ -50,7 +50,7 @@ namespace Common.Model
         private void AddName(string name, int which)
         {
             string[] possibleNames;
-            ObservableCollection<string> property;
+            List<string> property;
 
             switch (which)
             {

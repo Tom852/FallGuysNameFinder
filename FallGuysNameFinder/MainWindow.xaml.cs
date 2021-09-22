@@ -35,11 +35,9 @@ namespace FallGuysNameFinder
 
                 var options = DataStorageStuff.GetOptions();
                 var patterns = DataStorageStuff.ReadPatterns();
-                var pool = DataStorageStuff.GetStoredPool();
 
                 ViewModel.Options = options;
                 ViewModel.Patterns = new ObservableCollection<Pattern>(patterns);
-                ViewModel.Pool = pool;
                 DataContext = ViewModel;
 
                 probabilitySerivce = new ProbabilityService();
@@ -259,6 +257,19 @@ namespace FallGuysNameFinder
             OpenDocPage("userGuide.html");
         }
 
+        private void EditPools_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new PoolWindow();
+            w.Show();
+            w.OnOkClick += (d1, d2) =>
+            {
+                RecalculateProbability();
+            };
+        }
+
+
+        
+
 
 
         private void About_Click(object sender, RoutedEventArgs e)
@@ -288,7 +299,7 @@ namespace FallGuysNameFinder
 
                 previousTokenSrc = new CancellationTokenSource();
 
-                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), ViewModel.Pool, ViewModel.Options, previousTokenSrc.Token);
+                Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), DataStorageStuff.GetStoredPool(), ViewModel.Options, previousTokenSrc.Token);
                 this.ViewModel.TimeEstimate = result.GetTimeRequired();
                 this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
             }
