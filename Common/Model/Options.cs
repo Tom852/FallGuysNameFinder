@@ -7,8 +7,19 @@ namespace Common.Model
         private bool stopOnAlliteration;
         private bool stopOnDoubleWord;
         private bool stopOnError;
+        private bool alwaysOnTop = true;
         private bool verbose = true;
         private bool autoConfirm = true;
+
+        public bool AlwaysOnTop
+        {
+            get => alwaysOnTop;
+            set
+            {
+                alwaysOnTop = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AlwaysOnTop)));
+            }
+        }
 
         public bool StopOnAlliteration
         {

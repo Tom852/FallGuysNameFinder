@@ -44,6 +44,9 @@ namespace FallGuysNameFinder
                 RecalculateProbability();
 
                 InitializeComponent();
+                this.Topmost = this.ViewModel.Options.AlwaysOnTop;
+                this.ViewModel.PoolOptionsActiveAsNumber = DataStorageStuff.GetStoredPool().Combinations;
+
 
                 SetupFallguysProcessChecker();
 
@@ -167,7 +170,19 @@ namespace FallGuysNameFinder
             };
         }
 
+        // todo: if more options like this come should make this different. like an evaluate options event stuff.
+        private void OnAlwaysOnTopClick(object sender, RoutedEventArgs e)
+        {
+            DataStorageStuff.SaveOptions(this.ViewModel.Options);
+            this.Topmost = this.ViewModel.Options.AlwaysOnTop;
+        }
+
         private void OnOptionsClick(object sender, RoutedEventArgs e)
+        {
+            DataStorageStuff.SaveOptions(this.ViewModel.Options);
+        }
+
+        private void OnOptionsClickWithRecalc(object sender, RoutedEventArgs e)
         {
             DataStorageStuff.SaveOptions(this.ViewModel.Options);
             RecalculateProbability();
@@ -268,9 +283,10 @@ namespace FallGuysNameFinder
         {
             var w = new PoolWindow();
             w.Show();
-            w.OnOkClick += (d1, d2) =>
+            w.OnOkClick += (_, newPool) =>
             {
                 RecalculateProbability();
+                this.ViewModel.PoolOptionsActiveAsNumber = newPool.Combinations;
             };
         }
 

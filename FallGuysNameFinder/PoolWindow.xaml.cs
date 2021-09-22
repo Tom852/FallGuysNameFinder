@@ -21,7 +21,7 @@ namespace FallGuysNameFinder
     /// </summary>
     public partial class PoolWindow : Window
     {
-        public event EventHandler OnOkClick;
+        public event EventHandler<Pool> OnOkClick;
 
         public PoolWindow()
         {
@@ -62,7 +62,7 @@ namespace FallGuysNameFinder
             }
             DataStorageStuff.SavePool(newPool);
 
-            OnOkClick?.Invoke(this, new EventArgs());
+            OnOkClick?.Invoke(this, newPool);
 
             this.Close();
         }

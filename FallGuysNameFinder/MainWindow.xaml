@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FallGuysNameFinder"
         mc:Ignorable="d"
-        Title="Fall Guys Name Finder" Height="500" Width="850"
+        Title="Fall Guys Name Finder" Height="600" Width="1000"
         Background="{StaticResource GradientBackground}"
         Icon="Icon1.ico">
 
@@ -29,18 +29,18 @@
             </ProgressBar>
         </DockPanel>
 
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Width="200">
             <Label Content="Options" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}" />
             <CheckBox Name="StopOnAlliteration" Content="Stop on alliteration" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Alliteration = All three words start with the same letter"
                   IsChecked = "{Binding Options.StopOnAlliteration}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
-                  Click="OnOptionsClick" />
+                  Click="OnOptionsClickWithRecalc" /> <!--// todo: really should use command with args here.-->
             <CheckBox Name="StopOnDoubleWord" Content="Stop on double-word" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Double Word = Two out of three words start with the same 4 letters."
                   IsChecked="{Binding Options.StopOnDoubleWord}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
-                  Click="OnOptionsClick" />
+                  Click="OnOptionsClickWithRecalc" />
             <CheckBox Name="AutoConfirmName" Content="Auto confirm name" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
                   ToolTip="Read more about this setting in the user guide. Recommended: checked."
                   IsChecked="{Binding Options.AutoConfirm}"
@@ -56,13 +56,17 @@
                   IsChecked="{Binding Options.Verbose}"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick" />
-            
+            <CheckBox Name="AlwaysOnTop" Content="Always on top" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
+                  ToolTip="If checked, this window stays on top, even over Fall Guys. Recommended for single-monitor users."
+                  IsChecked="{Binding Options.AlwaysOnTop}"
+                  Click="OnAlwaysOnTopClick" />
+
 
             <Grid Margin="0, 20, 0, 20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="85"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -108,9 +112,10 @@
             </Grid>
         </StackPanel>
         
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Width="200">
             <Label Content="Pool Matching" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}" />
             <Button Style="{DynamicResource MyButton}" Name="EditPools" Content="Configure" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPools_Click" />
+            <Label Content="{Binding PoolOptionsActive}" />
         </StackPanel>
         
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
@@ -119,7 +124,7 @@
             <DataGrid Name ="dGrid" Margin="0,10" ItemsSource="{Binding Patterns}" PreviewKeyDown="DataGrid_PreviewKeyDown"
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                       Background="{StaticResource GradientBackground}"
-                  Width="450" MaxHeight="158"
+                  Width="450" MaxHeight="250"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="False" CanUserResizeRows="False"
                   HorizontalScrollBarVisibility="Hidden"

@@ -17,8 +17,20 @@ namespace FallGuysNameFinder
         private string chanceToHit;
         private string timeEstimate;
         private bool probabilityIsCalcing;
+        private int poolOptionsActiveAsNumber;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int PoolOptionsActiveAsNumber
+        {
+            get => poolOptionsActiveAsNumber; set
+            {
+                poolOptionsActiveAsNumber = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PoolOptionsActive)));
+            }
+        }
+
+        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber} pool combinations selected";
 
         public ObservableCollection<Pattern> Patterns
         {

@@ -20,6 +20,9 @@ namespace Common.Model
         public void RemoveSecond(string name) => RemoveName(name, 2);
         public void RemoveThird(string name) => RemoveName(name, 3);
 
+        public int Combinations => First.Count * Second.Count * Third.Count;
+
+
         private void RemoveName(string name, int which)
         {
             List<string> property;
