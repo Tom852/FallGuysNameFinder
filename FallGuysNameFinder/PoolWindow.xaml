@@ -25,16 +25,20 @@
             <StackPanel Orientation="Vertical">
                 <Label Content="First Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List1" ItemsSource="{Binding FirstNames}" />
+                <Button Style="{DynamicResource MyButton}" Name="Clear1" Content="Clear" Margin="10" Width="60" Height ="25" FontSize="12pt" Click="Clear1_Click" />
+                            <!-- font size not working here, dunno why -->
             </StackPanel>
             
             <StackPanel Orientation="Vertical">
                 <Label Content="Second Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List2" ItemsSource="{Binding SecondNames}" />
+                <Button Style="{DynamicResource MyButton}" Name="Clear2" Content="Clear" Margin="10" Width="60" Height="25" FontSize="12pt"  Click="Clear2_Click" />
             </StackPanel>
             
             <StackPanel Orientation="Vertical">
                 <Label Content="Third Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List3" ItemsSource="{Binding ThirdNames}" />
+                <Button Style="{DynamicResource MyButton}" Name="Clear3" Content="Clear" Margin="10" Width="60" Height ="25" FontSize="12pt" Click="Clear3_Click" />
             </StackPanel>
 
 

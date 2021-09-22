@@ -43,6 +43,9 @@ namespace FallGuysNameFinder
 
         }
 
+        private void Clear1_Click(object sender, RoutedEventArgs e) => List1.SelectedItems.Clear();
+        private void Clear2_Click(object sender, RoutedEventArgs e) => List2.SelectedItems.Clear();
+        private void Clear3_Click(object sender, RoutedEventArgs e) => List3.SelectedItems.Clear();
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
