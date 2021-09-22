@@ -51,8 +51,9 @@ namespace Backend
                         return true;
                     }
                 }
-
-                bmp.Save(GetScreenshotFileName(i, 0), ImageFormat.Jpeg);
+                 
+                bmp.Save(screenshotService.GetScreenshotFileName("snippetParseFail_" + i.ToString()), ImageFormat.Jpeg);
+                Log.Debug("Debug screenshot saved in " + DataStorageStuff.AppDir);
             }
 
             Log.Information("No attempt led to a viable name. The engine will try to fit the parsed text to a viable name approximately.");
@@ -111,12 +112,6 @@ namespace Backend
 
             Log.Debug("No viable name fits perfectly. Parsing result temporarily stored for further analysis.");
             return false;
-        }
-
-        private string GetScreenshotFileName(int attempt, int style)
-        {
-            var dateString = DateTime.Now.ToString("y-MM-dd_HH-mm-ss");
-            return Path.Combine(DataStorageStuff.AppDir, "Screenshots", $"{dateString}_{attempt}_{style}.jpg");
         }
     }
 }

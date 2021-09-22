@@ -3,6 +3,8 @@ using Serilog;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Backend
 {
@@ -66,6 +68,12 @@ namespace Backend
                                 CopyPixelOperation.SourceCopy);
 
             return bmpScreenshot;
+        }
+
+        public string GetScreenshotFileName(string tag)
+        {
+            var dateString = DateTime.Now.ToString("y-MM-dd_HH-mm-ss");
+            return Path.Combine(DataStorageStuff.AppDir, "Screenshots", $"{dateString}_{tag}.jpg");
         }
 
 
@@ -152,5 +160,24 @@ namespace Backend
 
         private bool DecimalIsEqual(decimal a, decimal b, decimal tolerance = 0.01m) => Math.Abs(a - b) < tolerance;
 
+        public void SaveFullScreenDebugScreenshot(string tag)
+        {
+            var bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width,
+                                           Screen.PrimaryScreen.Bounds.Height,
+                                           PixelFormat.Format32bppArgb);
+
+            var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
+
+            gfxScreenshot.CopyFromScreen(Screen.PrimaryScreen.Bounds.X,
+                                        Screen.PrimaryScreen.Bounds.Y,
+                                        0,
+                                        0,
+                                        Screen.PrimaryScreen.Bounds.Size,
+                                        CopyPixelOperation.SourceCopy);
+
+            bmpScreenshot.Save(this.GetScreenshotFileName(tag), ImageFormat.Jpeg);
+
+            Log.Debug("Debug Screenshot Saved at " + DataStorageStuff.AppDir);
+        }
     }
 }

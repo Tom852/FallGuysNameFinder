@@ -17,6 +17,8 @@ namespace Backend
         private ParsingController ParsingController { get; set; }
         private MatchingService ComparisonService { get; set; }
         private StatisticsService StatisticsService { get; set; }
+
+        private ScreenshotService ScreenshotService { get; set; }
         private Options Options { get; set; }
 
         private bool isInit = false;
@@ -54,7 +56,10 @@ namespace Backend
             ParsingController = new ParsingController();
             ComparisonService = new MatchingService();
             StatisticsService = new StatisticsService();
+            ScreenshotService = new ScreenshotService();
             isInit = true;
+            Log.Information("Engine successfully initialized...");
+
         }
 
         public void Stop()
@@ -160,6 +165,7 @@ namespace Backend
                         if (failsInRow > Constants.FailInRowLimit)
                         {
                             Log.Fatal($"{Constants.FailInRowLimit} fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
+                            ScreenshotService.SaveFullScreenDebugScreenshot("failsInRowLimit");
                             Stop();
                         }
                     }
@@ -172,6 +178,7 @@ namespace Backend
                 catch (Exception e)
                 {
                     Log.Error(e, "Unexpected Error");
+                    ScreenshotService.SaveFullScreenDebugScreenshot("unexpected_error");
                     if (this.Options.StopOnError)
                     {
                         Stop();
@@ -204,16 +211,19 @@ namespace Backend
         {
             if (this.History.WereLastNamesAllEqual(8))
             {
-                Log.Error("Still no improvement. Something is broken. Engine will stop.");
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_8");
+                Log.Error("The parsed name is still equal to the previous ones. Pressing SPACE multiple times did not resolve the issue. Something is broken. Engine will stop.");
                 Stop();
             }
             else if (this.History.WereLastNamesAllEqual(6))
             {
-                Log.Warning("Yet no improvement. Pressing SPACE again for the case we lifted the Amazon Link Page or revealed support id...");
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_6_or_7");
+                Log.Warning("The parsed name is still equal to the previous ones. Pressing SPACE again in case the previous SPACE-press lifted the Amazon page instead of closing it, or in case it revealed support id...");
                 PressSpace();
             }
             else if (this.History.WereLastNamesAllEqual(5))
             {
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_5");
                 Log.Warning("All 5 previous names were equal. Assuming a window in front. The engine will now press SPACE to get rid of a possible overlay message.");
                 PressSpace();
             }
@@ -227,6 +237,7 @@ namespace Backend
 
         private static void PressSpace()
         {
+            // todo: hier wären screenshots nice um zus ehen, was hier passiert ist.
             Log.Debug("Pressing SPACE");
             SendKeys.SendWait(" ");
             Thread.Sleep(Constants.TimeWaitAfterSpace);
