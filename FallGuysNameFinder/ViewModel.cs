@@ -16,6 +16,7 @@ namespace FallGuysNameFinder
         private EngineStatus engineStatus = EngineStatus.Stopped;
         private string chanceToHit;
         private string timeEstimate;
+        private bool probabilityIsCalcing;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -92,6 +93,14 @@ namespace FallGuysNameFinder
                     default:
                         throw new Exception("Unknown Fall Guys Status");
                 }
+            }
+        }
+        public bool ProbabilityIsCalcing // todo: could use this for the ... display as well at the percentage and time estimate
+        {
+            get => probabilityIsCalcing; set
+            {
+                probabilityIsCalcing = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ProbabilityIsCalcing)));
             }
         }
 

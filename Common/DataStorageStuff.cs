@@ -13,6 +13,7 @@ namespace Common
         private const string RootFolderName = "FallGuysNameFinder";
         private const string ScreenshotFolderName = "Screenshots";
         private const string PatternFileName = "patterns.txt";
+        private const string PreviewFileName = "preview.txt";
         private const string PoolFileName = "pool.json";
         private const string OptionFileName = "options.json";
         private const string StatsFileName = "stats.json";
@@ -21,6 +22,7 @@ namespace Common
         public static string AppDir { get; private set; }
         public static string ScreenshotDir { get; private set; }
         public static string PatternsFile { get; private set; }
+        public static string PreviewFile { get; private set; }
         public static string OptionsFile { get; private set; }
         public static string LogFile { get; private set; }
         public static string StatsFile { get; private set; }
@@ -32,6 +34,7 @@ namespace Common
             AppDir = Path.Combine(env, RootFolderName);
             ScreenshotDir = Path.Combine(env, RootFolderName, ScreenshotFolderName);
             PatternsFile = Path.Combine(env, RootFolderName, PatternFileName);
+            PreviewFile = Path.Combine(env, RootFolderName, PreviewFileName);
             PoolFile = Path.Combine(env, RootFolderName, PoolFileName);
             OptionsFile = Path.Combine(env, RootFolderName, OptionFileName);
             LogFile = Path.Combine(env, RootFolderName, LogFileName);
@@ -175,6 +178,20 @@ namespace Common
                 serializer.Formatting = Formatting.Indented;
                 serializer.Serialize(writer, p);
             }
+        }
+
+        public static void CreatePreviewList(List<Name> dinger)
+        {
+            var stream = File.Create(PreviewFile);
+            StreamWriter sw = new StreamWriter(stream);
+            dinger.ForEach(d => sw.WriteLine(d.ToString()));
+            sw.Flush();
+            stream.Close();
+        }
+
+        public static void OpenPreviewList()
+        {
+            System.Diagnostics.Process.Start(PreviewFile);
         }
     }
 }

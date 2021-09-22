@@ -2,6 +2,7 @@
 using Common;
 using Common.Model;
 using Serilog;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -15,10 +16,14 @@ namespace Backend
         private readonly string[] SecondPossibleNames = PossibleNames.SecondNames(false);
         private readonly string[] ThirdPossibleNames = PossibleNames.ThirdNames(false);
 
+        public ConcurrentBag<Name> AllNamesThatMatch { get; private set; }
+
         public async Task<Probability> GetProbabilityAsync(List<Pattern> patterns, Pool pool, Options options, CancellationToken token)
         {
             return await Task.Run(() =>
             {
+                AllNamesThatMatch = new ConcurrentBag<Name>();
+
                 ParallelOptions o = new ParallelOptions() { CancellationToken = token };
 
                 var matchingService = new MatchingService(patterns, pool, options);
@@ -30,12 +35,14 @@ namespace Backend
                     {
                         foreach (var thirdname in ThirdPossibleNames)
                         {
-                            var testresult = matchingService.Test(new Name(firstname, secondname, thirdname));
+                            var nameToTest = new Name(firstname, secondname, thirdname);
+                            var testresult = matchingService.Test(nameToTest);
                             if (testresult.IsMatching())
                             {
                                 lock (this)
                                 {
                                     matchCount++;
+                                    AllNamesThatMatch.Add(nameToTest);
                                 }
                             }
                         }

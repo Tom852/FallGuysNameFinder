@@ -5,6 +5,7 @@ using Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +27,6 @@ namespace FallGuysNameFinder
         private DispatcherTimer PenetrantForeGroundChecker { get; set; }
 
         private ProbabilityService probabilitySerivce { get; set; }
-
 
         public MainWindow()
         {
@@ -205,7 +205,14 @@ namespace FallGuysNameFinder
             RecalculateProbability();
         }
 
-        private void ShowConsole_Click(object sender, RoutedEventArgs e)
+        private void Preview_Click(object sender, RoutedEventArgs e)
+        {
+            var dinger = this.probabilitySerivce.AllNamesThatMatch.ToList();
+            DataStorageStuff.CreatePreviewList(dinger);
+            DataStorageStuff.OpenPreviewList();
+        }
+
+            private void ShowConsole_Click(object sender, RoutedEventArgs e)
         {
             if (this.ViewModel.IsConsoleShown)
             {
@@ -292,6 +299,8 @@ namespace FallGuysNameFinder
         {
             this.ViewModel.TimeEstimate = "...";
             this.ViewModel.ChanceToHit = "...";
+            this.ViewModel.ProbabilityIsCalcing = true;
+
             try
             {
                 previousTokenSrc?.Cancel();
@@ -302,6 +311,7 @@ namespace FallGuysNameFinder
                 Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), DataStorageStuff.GetStoredPool(), ViewModel.Options, previousTokenSrc.Token);
                 this.ViewModel.TimeEstimate = result.GetTimeRequired();
                 this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
+                this.ViewModel.ProbabilityIsCalcing = false;
             }
             catch (OperationCanceledException)
             {
