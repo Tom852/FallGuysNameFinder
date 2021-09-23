@@ -1,7 +1,7 @@
 # Fall Guys Name Finder
 Automatically rerolls your name until it matches specific patterns.
  
- ![Screenshot](/doc/bild.png "Screenshot")
+ ![Screenshot](FallGuysNameFinder/doc/bild.png "Screenshot")
  
 ## Features
 - User-definable pattern matching
