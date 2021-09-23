@@ -315,6 +315,7 @@ namespace FallGuysNameFinder
         {
             this.ViewModel.TimeEstimate = "...";
             this.ViewModel.ChanceToHit = "...";
+            this.ViewModel.SelectedCombinations = "...";
             this.ViewModel.ProbabilityIsCalcing = true;
 
             try
@@ -327,6 +328,8 @@ namespace FallGuysNameFinder
                 Probability result = await probabilitySerivce.GetProbabilityAsync(new List<Pattern>(ViewModel.Patterns), DataStorageStuff.GetStoredPool(), ViewModel.Options, previousTokenSrc.Token);
                 this.ViewModel.TimeEstimate = result.GetTimeRequired();
                 this.ViewModel.ChanceToHit = result.GetProbabilityAsFormattedString();
+                this.ViewModel.SelectedCombinations = result.GetCombinationsAsFormattedString();
+
                 this.ViewModel.ProbabilityIsCalcing = false;
             }
             catch (OperationCanceledException)

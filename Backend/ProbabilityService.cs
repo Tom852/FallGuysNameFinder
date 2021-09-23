@@ -53,7 +53,7 @@ namespace Backend
 
                 double totalOptions = FirstPossibleNames.Length * SecondPossibleNames.Length * ThirdPossibleNames.Length;
 
-                return new Probability(matchCount / totalOptions);
+                return new Probability(matchCount, totalOptions);
             });
         }
     }

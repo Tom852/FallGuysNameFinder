@@ -74,6 +74,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.ColumnSpan="2"
@@ -100,13 +101,21 @@
                        Content="{Binding FgStatusDescription}" />
 
                 <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                       Content="Chance to hit:" />
+                       ToolTip="The amount of names that match your settings. Use the preview button to inspect them."
+                       Content="Combinations:" />
                 <Label Grid.Row="3" Grid.Column="2"
-                       Content="{Binding ChanceToHit}" />
+                       ToolTip="The amount of names that match your settings. Use the preview button to inspect them."
+                       Content="{Binding SelectedCombinations}" />
+
                 <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                       Content="Chance to hit:" />
+                <Label Grid.Row="4" Grid.Column="2"
+                       Content="{Binding ChanceToHit}" />
+                
+                <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                        ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
                        Content="Time estimate:" />
-                <Label Grid.Row="4" Grid.Column="2"
+                <Label Grid.Row="5" Grid.Column="2"
                        ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
                        Content="{Binding TimeEstimate}" />
             </Grid>

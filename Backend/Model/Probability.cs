@@ -5,19 +5,30 @@ namespace Backend.Model
 {
     public struct Probability
     {
-        public double Value { get; }
-        public double Percentage => 100 * Value;
 
-        public double Promille => 1000 * Value;
+        public double MatchCount { get; }
+        public double TotalCount { get; }
+        public double ProbabilityValue { get; }
+        public double Percentage { get; }
+        public double Promille { get; }
 
-        public Probability(double raw)
+        public Probability(double matchCount, double totalOptions)
         {
-            this.Value = raw;
+            this.MatchCount = matchCount;
+            this.TotalCount = totalOptions;
+            this.ProbabilityValue = matchCount / totalOptions;
+            this.Percentage = 100 * this.ProbabilityValue;
+            this.Promille = 1000 * this.ProbabilityValue;
+        }
+
+        public string GetCombinationsAsFormattedString()
+        {
+            return this.MatchCount.ToString("n0");
         }
 
         public string GetProbabilityAsFormattedString()
         {
-            if (Value == 0)
+            if (ProbabilityValue == 0)
             {
                 return "0.00 %";
             }
@@ -42,12 +53,12 @@ namespace Backend.Model
 
         public string GetTimeRequired()
         {
-            if (Value == 0)
+            if (ProbabilityValue == 0)
             {
                 return "N/A";
             }
 
-            var attempts = 1d / Value;
+            var attempts = 1d / ProbabilityValue;
             var timeRquired = TimeSpan.FromSeconds(attempts * Constants.TimePerHitOnAverageForStatistics / 1000);
 
             if (timeRquired.Days != 0)
@@ -68,6 +79,5 @@ namespace Backend.Model
             return timeRquired.TotalSeconds.ToString("n0") + " sec";
 
         }
-
     }
 }

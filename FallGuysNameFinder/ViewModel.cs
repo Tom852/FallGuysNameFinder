@@ -15,11 +15,23 @@ namespace FallGuysNameFinder
         private FgStatus fgStatus = FgStatus.NotRunning;
         private EngineStatus engineStatus = EngineStatus.Stopped;
         private string chanceToHit;
+        private string selectedCombinations;
         private string timeEstimate;
         private bool probabilityIsCalcing;
         private int poolOptionsActiveAsNumber;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string SelectedCombinations
+        {
+            get => selectedCombinations;
+            set
+            {
+                selectedCombinations = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCombinations)));
+            }
+        }
+
 
         public int PoolOptionsActiveAsNumber
         {
@@ -30,7 +42,7 @@ namespace FallGuysNameFinder
             }
         }
 
-        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber.ToString("n0")} combinations selected";
+        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber.ToString("n0")} pool combinations selected";
 
         public ObservableCollection<Pattern> Patterns
         {
