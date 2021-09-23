@@ -18,7 +18,7 @@
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{DynamicResource MyButton}" Name="CancelBtn" Content="Cancel" Margin="10" Width="100" HorizontalAlignment="Right"  Click="CancelBtn_Click" />
-            <Button Style="{DynamicResource MyButton}" Name="OkBtn" Content="Apply" Margin="10" Width="100" HorizontalAlignment="Right"  Click="OkBtn_Click" />
+            <Button Style="{DynamicResource MyButton}" Name="OkBtn" Content="Save" Margin="10" Width="100" HorizontalAlignment="Right"  Click="OkBtn_Click" />
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" >

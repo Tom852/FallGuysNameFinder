@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace FallGuysNameFinder
 {
+    // todo: bindable base, etc pp, using model as viewmodel xD whatever.
     public class ViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<Pattern> patterns;
@@ -18,9 +19,39 @@ namespace FallGuysNameFinder
         private string selectedCombinations;
         private string timeEstimate;
         private bool probabilityIsCalcing;
-        private int poolOptionsActiveAsNumber;
+        private int poolOptions1;
+        private int poolOptions2;
+        private int poolOptions3;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int PoolOptions1
+        {
+            get => poolOptions1;
+            set
+            {
+                poolOptions1 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PoolOptions1)));
+            }
+        }
+        public int PoolOptions2
+        {
+            get => poolOptions2;
+            set
+            {
+                poolOptions2 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PoolOptions2)));
+            }
+        }
+        public int PoolOptions3
+        {
+            get => poolOptions3;
+            set
+            {
+                poolOptions3 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PoolOptions3)));
+            }
+        }
 
         public string SelectedCombinations
         {
@@ -32,17 +63,6 @@ namespace FallGuysNameFinder
             }
         }
 
-
-        public int PoolOptionsActiveAsNumber
-        {
-            get => poolOptionsActiveAsNumber; set
-            {
-                poolOptionsActiveAsNumber = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PoolOptionsActive)));
-            }
-        }
-
-        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber.ToString("n0")} pool combinations selected";
 
         public ObservableCollection<Pattern> Patterns
         {

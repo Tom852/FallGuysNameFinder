@@ -45,7 +45,10 @@ namespace FallGuysNameFinder
 
                 InitializeComponent();
                 this.Topmost = this.ViewModel.Options.AlwaysOnTop;
-                this.ViewModel.PoolOptionsActiveAsNumber = DataStorageStuff.GetStoredPool().Combinations;
+                var pool = DataStorageStuff.GetStoredPool();
+                this.ViewModel.PoolOptions1 = pool.First.Count();
+                this.ViewModel.PoolOptions2 = pool.Second.Count();
+                this.ViewModel.PoolOptions3 = pool.Third.Count();
 
 
                 SetupFallguysProcessChecker();
@@ -220,7 +223,7 @@ namespace FallGuysNameFinder
             RecalculateProbability();
         }
 
-        private void Preview_Click(object sender, RoutedEventArgs e)
+        private void Show_Click(object sender, RoutedEventArgs e)
         {
             var dinger = this.probabilitySerivce.AllNamesThatMatch.ToList();
             DataStorageStuff.CreatePreviewList(dinger);
@@ -286,7 +289,10 @@ namespace FallGuysNameFinder
             w.OnOkClick += (_, newPool) =>
             {
                 RecalculateProbability();
-                this.ViewModel.PoolOptionsActiveAsNumber = newPool.Combinations;
+                var pool = DataStorageStuff.GetStoredPool();
+                this.ViewModel.PoolOptions1 = newPool.First.Count();
+                this.ViewModel.PoolOptions2 = newPool.Second.Count();
+                this.ViewModel.PoolOptions3 = newPool.Third.Count();
             };
         }
 

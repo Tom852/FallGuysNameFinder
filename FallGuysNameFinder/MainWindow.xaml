@@ -14,7 +14,6 @@
         <DockPanel DockPanel.Dock="Bottom">
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="StartStop" Content="{Binding StartStopButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Right" Click="StartStop_Click" />
             <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowConsole" Content="{Binding ShowConsoleButtonDesc}" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="ShowConsole_Click" />
-            <Button DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="PreviewButton" Content="Preview" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="Preview_Click" ToolTip="Shows all names that match your settings." IsEnabled="{Binding ProbabilityIsCalcing, Converter={StaticResource InvertedBool}}"/>
             <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="Help" Content="User Guide" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="Help_Click" />
             <Button DockPanel.Dock="Left" Style="{DynamicResource MyButton}" Name="About" Content="About" Margin="10" Width="100" HorizontalAlignment="Stretch" Click="About_Click" />
 
@@ -62,16 +61,13 @@
                   Click="OnAlwaysOnTopClick" />
 
 
-            <Grid Margin="0, 20, 0, 20">
+            <Grid Margin="0, 10, 0, 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="85"/>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -99,32 +95,59 @@
                            Width="16" Height="16" />
                 <Label Grid.Row="2" Grid.Column="2"
                        Content="{Binding FgStatusDescription}" />
+            </Grid>
 
-                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                       ToolTip="The amount of names that match your settings. Use the preview button to inspect them."
-                       Content="Combinations:" />
-                <Label Grid.Row="3" Grid.Column="2"
-                       ToolTip="The amount of names that match your settings. Use the preview button to inspect them."
-                       Content="{Binding SelectedCombinations}" />
-
-                <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                       Content="Chance to hit:" />
-                <Label Grid.Row="4" Grid.Column="2"
-                       Content="{Binding ChanceToHit}" />
+            <Grid Margin="0, 0, 0, 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2"
+                    Content="Stats" FontSize="16pt" FontWeight="Regular" FontFamily="{StaticResource FGFont}" />
                 
-                <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"
+                       ToolTip="The amount of names that match your settings. Use the show-button to inspect them."
+                       Content="Combinations:" />
+                <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
+                    <Label HorizontalAlignment="Left"
+                       ToolTip="The amount of names that match your settings. Use the show-button to inspect them."
+                       Content="{Binding SelectedCombinations}" />
+                    <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        DockPanel.Dock="Right" Style="{DynamicResource MyButton}" Name="ShowButton" Content="Show"
+                        Width="50" Height="22" Click="Show_Click"
+                        ToolTip="Shows all names that match your settings. File output is cropped at 64MB."
+                        IsEnabled="{Binding ProbabilityIsCalcing, Converter={StaticResource InvertedBool}}"/>
+                </Grid>
+
+
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"
+                       Content="Chance to hit:" />
+                <Label Grid.Row="3" Grid.Column="1"
+                       Content="{Binding ChanceToHit}" />
+
+                <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"
                        ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
                        Content="Time estimate:" />
-                <Label Grid.Row="5" Grid.Column="2"
+                <Label Grid.Row="4" Grid.Column="1"
                        ToolTip="Note: This is a statistical value. Regardless of this value, you can get it on first try, or never."
                        Content="{Binding TimeEstimate}" />
+
             </Grid>
         </StackPanel>
         
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Width="200">
             <Label Content="Pool Matching" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}" />
             <Button Style="{DynamicResource MyButton}" Name="EditPools" Content="Configure" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPools_Click" />
-            <Label Content="{Binding PoolOptionsActive}" HorizontalAlignment="Center"/>
+            <Label Content="{Binding PoolOptions1}" ContentStringFormat=" {0} first names selected" HorizontalAlignment="Center"/>
+            <Label Content="{Binding PoolOptions2}" ContentStringFormat=" {0} second names selected" HorizontalAlignment="Center"/>
+            <Label Content="{Binding PoolOptions3}" ContentStringFormat=" {0} third names selected" HorizontalAlignment="Center"/>
         </StackPanel>
         
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
