@@ -30,7 +30,7 @@ namespace FallGuysNameFinder
             }
         }
 
-        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber} pool combinations selected";
+        public string PoolOptionsActive => $"{poolOptionsActiveAsNumber.ToString("n0")} combinations selected";
 
         public ObservableCollection<Pattern> Patterns
         {

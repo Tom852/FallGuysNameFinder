@@ -47,6 +47,10 @@ namespace FallGuysNameFinder
         private void Clear2_Click(object sender, RoutedEventArgs e) => List2.SelectedItems.Clear();
         private void Clear3_Click(object sender, RoutedEventArgs e) => List3.SelectedItems.Clear();
 
+        private void All1_Click(object sender, RoutedEventArgs e) => List1.SelectAll();
+        private void All2_Click(object sender, RoutedEventArgs e) => List2.SelectAll();
+        private void All3_Click(object sender, RoutedEventArgs e) => List3.SelectAll();
+
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
             var newPool = new Pool();
@@ -67,6 +71,11 @@ namespace FallGuysNameFinder
 
             OnOkClick?.Invoke(this, newPool);
 
+            this.Close();
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }

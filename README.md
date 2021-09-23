@@ -1,35 +1,36 @@
 # Fall Guys Name Finder
 Automatically rerolls your name until it matches specific patterns.
  
- ![Screenshot](/screenshot.png "Screenshot")
+ ![Screenshot](/doc/bild.png "Screenshot")
  
 ## Features
-- User-definable patterns
+- User-definable pattern matching
   - Dropdown lists with all possibilities
   - Option to use wildcards
+- User-definable pool matching
+  - Select a bunch of first, second and third names
+  - Any combination will match
 - Detects alliterations
 - Detects double-words
-- Detects if the amazon link-page got opened.
+- Detects if the amazon link-page got opened
 - Avoids idle-timeouts upon matches
 - Support for 16:9 and 21:9 full screen aspect ratios
 - Windowed support
-- Very robust engine (100% correct parsing rate under ideal conditions)
+- Very robust engine (100% correct parsing rate even under sub-ideal conditions)
   - Modifies screenshot area on failure
   - Modifies color information on failure
   - Various monochrome transformations for optimal OCR conditions
   - Artifact filtering and word extraction
-  - Case insensitive
+  - Case insensitivity
   - Fuzzy matching upon OCR failure
 - Swiss made
 
-## Upcoming features
-Pool matching. Define a bunch of first, second and third names. Any combination of these will match.
-
 ## Is it legal
-Most likely yes. There is a longer explanation in the tool's user guide section.
+Yes. Indirectly approved by Oliver himself.
 
 ## Download
-[v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip)
+[v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip) (11.09.2021)
+[v 2.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.0/FallGuysNameFinder.zip) (coming very soon)
 
 ## Bugs and feature requests
 Feel free to get in touch with me if there are any bugs or if you have feature requests.

@@ -40,6 +40,20 @@ h4 {
     font-size: 12pt;
 }
 
+img.left {
+    float: left;
+    margin: 10px;
+    margin-right: 20px;
+}
+img.right {
+    float: right;
+    margin: 10px;
+    margin-left: 20px;
+}
+div.center {
+    text-align: center;
+}
+
 .warn {
     font-weight: bold;
     color: #aa0000;

@@ -10,43 +10,79 @@
     <h1>Quick Start Guide</h1>
     <ul>
         <li>Set a nameplate with a small icon, no scribbles in the background and high contrast.</li>
-        <li>Add patterns like <code>* Golden Hotdog</code></li>
+        <li>Use the options to stop at alliterations or double-words.</li>
+        <li>Add patterns like <code>* Golden Hotdog</code>. Exact matches will stop the program, whereas * is a wildcard.</li>
         <li>Partial wildcards don't work: <del class="code">L* S*ing Ham*</del></li>
+        <li>With pools, you can select a bunch of first, second and third names. Any combination of them will match.</li>
     </ul>
 
     <h1>Is this tool legal?</h1>
     <div class="content">
-        <p>The <a href="https://fallguys.com/eula-combined">Mediatonic EULA</a> states that a hack or a cheat is defined as a tool giving you a competitive advantage. Since your name is not making you faster, we should be good. I also do not think this tool is fraudulent in any way. No memory modification, no log-file-analysis, no data-mining, just making a screenshot and pressing a button. Instead of giving players a bad experience like hacks do, this tool makes us all happier by people having cooler names. This is also why I didn't hesitate to provide my identity in the about section. I don't feel like I have to hide. If Mediatonic has a differnt opinion on this, feel free to get in touch with me.</p>
-        <p>I used the tool extensively during testing and had no problems at all. But as always: Use at your own risk :)</p>
+        <p>Yes. The <a href="https://fallguys.com/eula-combined">Mediatonic EULA</a> states that a hack or a cheat is defined as a tool giving you a competitive advantage. Since your name is not making you faster, we should be good. Indeed, Oliver himself stumbled accross my tool and approved it indirectly. He even recommended it :)</p>
+        <div class="center"><img src="approval.png" /></div>
     </div>
 
     <h1>Possible Name Occurrences</h1>
     <div class="content">
-        <p>I kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>.</p>
-        <p>When adding patterns, you will also see all available names in the dropdown menu.</p>
+        <p>When adding patterns or configuring pools, you will see all available names within the program.</p>
+        <p>I also kindly refer you to <a href="https://docs.google.com/spreadsheets/d/1jSAlQGSY4-mX4mDfDxfQA4GISTS--FDibHp86GtDyiI/edit#gid=0">this list</a>. There are some discrepancies due to spelling issues and changed names of Mediatonic's side. The name list of this tool has been statistically proven correct.</p>
     </div>
 
-    <h1>Patterns</h1>
-    <h2>Adding, Editing, Removing</h2>
-    <div class="content">
-        <p>Add Patterns by clicking on the <code>add</code> button. To edit them, you can also double click in the list aside the proper button. To remove, you can also press <code>DEL</code> or <code>BACKSPACE</code>.</p>
-        <p>If you navigate to <code>%APPDATA%/FallGuysNameFinder/Patterns.txt</code>, you can also do a text-file-based editing (not recommended, watch your spelling). Note that there is no file watcher. Restart the software after you edited this file.</p>
-    </div>
+    <h1>Options</h1>
 
-    <h2>Pattern Format</h2>
+    <h2>Stop on Alliteration</h2>
     <div class="content">
-
-        <p>To add a specific name, just enter the proper words. You must not leave a field empty. Use <code>*</code> as wildcards (see below).</p>
-        <h4>Example</h4>
+        <img src="options.png" class="right" />
+        <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
+        <h4>Examples:</h4>
         <ul class="code">
-            <li>Cold Gaming Gamer</li>
+            <li>Chic Chasing Crown</li>
+            <li>Gifted Gaming Goliath</li>
         </ul>
     </div>
 
-    <h2>Wildcards</h2>
+    <h2>Stop on double-word</h2>
     <div class="content">
-        <img src="patterns.png" />
-        <p>There is the option to add a <code>*</code> as a wildcard or placeholder. Whatever will be rolled on that position, it will match.</p>
+        <p>The software will stop rerolling your name, whenever two out of three words start with the same 4 letters.</p>
+        <h4>Examples:</h4>
+        <ul class="code">
+            <li>Bouncy Yeeted Yeeter</li>
+            <li>Nifty Dancing Dancer</li>
+        </ul>
+        <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter examples: <code>Gaming</code> and <code>Gamer</code> don't share the same first four letters. <code>Infallible</code> and <code>Fall</code> neither. You would have to add these combinations manually. On the other hand, <code>Charging Charmer</code> would match since the first four letters are equal. It's a bit of a compromise-option.</p>
+    </div>
+
+    <h2>Auto confirm name</h2>
+    <div class="content">
+        <img src="nameGenerationFailed.png" class="left" />
+        <p>
+            When you are rerolling your name, it is not instantly stored to your account. You could at any time <code>Alt+F4</code> the game, and you would keep the name you started with. This means, you can roll for a while, and if you are not happy with the results, just terminate the game process, and you can safely keep your old name. Let's say, you are called <code>Good Fall Guy</code>, but you want to go for a <code>* Fall Guy</code>. You are hoping for <code>Best Fall Guy</code> or <code>Great Fall Guy</code>, but you get <code>Diggly Fall Guy</code> or sth, which you don't want.
+            With this option unchecked, you can now just <code>Alt+F4</code> the game, and keep your <code>Good Fall Guy</code> you started with.
+        </p>
+        <p>
+            So why should you enable it anyway then? Because if you idle for too long, you get disconnected from the server. Let's say you run the tool overnight. After 1hour, it finds just the perfect name.
+            But until you wake up, you idle 8 hours in the profile page. Once you come back, you want to press <code>ESC</code> to return to the main menu and to definitely store your new name.
+            But by that time, you are timed out and all you will see is an error. You would loose your newly rolled name! Thus, the engine will press <code>ESC</code> for you while you are still connected.
+        </p>
+        <p><span class="hint">Recommendation: </span>Have it checked unless you read and understood what I just wrote, then decide on your own.</p>
+    </div>
+
+    <h2>Stop on error</h2>
+    <div class="content">
+        <p>Sometimes, things may go wrong. Imagine you get your desired name, but the software doesn't recognize it. With this option, the program will halt, without it, it will continue. Realistically, chances are super low that the error occurs on just that single perfect name. I spent a lot of effort to detect even unclear names on bad nameplates. The disadvantage of the option is, that if you want to run the program over night. It would be uncool if it stops after just a few minutes but you expected it to test thousands of names. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
+        <p>Note that after 10 consecutive major errors, or on irregularities, the engine stops regardless of your setting. For example, when your profile page is not open or names do not change for any reason.</p>
+        <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well (it finds almost all names at the first parsing attempt). If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
+    </div>
+    <h2>Always on top</h2>
+    <div class="content">
+        <p>This will cause the name finder to be always on top, even over Fall Guys when it is in focus. This option is meant for single-monitor-users to have quick access to the stop button. When using this option, you still have to give Fall Guys keyboard-focus.</p>
+        <p><span class="warn">Warning: </span>Do not cover the name with the always-on-top Name Finder. This will break the functionality!</p>
+    </div>
+
+    <h1>Patterns</h1>
+    <div class="content">
+        <img src="patterns.png" class="right" />
+        <p>You can add, edit and remove patterns by using the proper buttons. When editing a pattern, just enter the name you want or use the dropdown menus. You have to select all three names. There is the option to add a <code>*</code> as a wildcard or placeholder. Whatever will be rolled on that position, it will match.</p>
         <h4>Examples</h4>
         <ul class="code">
             <li>* Gaming Gamer</li>
@@ -58,11 +94,12 @@
         <ul class="code">
             <li>Good Yeeted Yeet*</li>
         </ul>
-        <p>You have to record two patterns for this case:</p>
+        <p>You have to record two patterns for this case as shown below. Even better, you could use pool matching for this case.</p>
         <ul class="code">
             <li>Good Yeeted Yeeter</li>
             <li>Good Yeeted Yeetus</li>
         </ul>
+
     </div>
 
     <div class="picarray">
@@ -70,145 +107,140 @@
             <img src="patternExample.png" />
             <figcaption>Matches on Always Adoring Acrobat, but not on Always Beaming Champion</figcaption>
         </figure>
-        </div>
+    </div>
 
-        <h1>Pools</h1>
-        <div class="content">
-            <p>Yet there is no option to define pool-matching, like you define a bunch of acceptable first, second and third names, and any combination of these will match. This will come in v1.1 ETA October.</p>
-        </div>
+    <h1>Pools</h1>
+    <div class="content">
+        <p>When using pools, you can select a bunch of first, second, and third names. Any combination of these will then match. Consider the following example:</p>
+        <ul>
+            <li>First Names Selected: <code>Always, Best</code></li>
+            <li>Second Names Selected: <code>Chilling, Dancing</code></li>
+            <li>Second Names Selected: <code>Eagle, Fish</code></li>
+        </ul>
+        <p>In this case, the engine would stop at all eight combinations of these, for example at <code>Always Chilling Eagle</code>, <code>Always Dancing Fish</code> or <code>Best Chilling Fish</code>.</p>
+        <p>Pools, Pattern and Options can be freely combined.</p>
+    </div>
 
-        <h1>Setting up Fall Guys</h1>
-        <h2>Nameplate</h2>
-        <div class="content">
-            <p>The software takes screenshots of the ingame-footage. Thus, the result quality depends on your nameplate. Obey the following rules, whereas their importance goes from very high to high.</p>
-            <ol>
-                <li>Nameplate must <b>not have scribbles or drawings</b> in its background. It should be as unicolor as possible.</li>
-                <li>The <b>left-side graphic</b> of the nameplate should be as far away from your name as possible. If it's too large, parts of it may get captured in the screenshot. This usually gets filtered, but may not be optimal.</li>
-                <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
-            </ol>
-            <p><span class="warn">Important: </span>Observe the program's behavior for a while before you leave it running afk, to ensure your settings work well (Working well means it finds almost all names at the first parsing attempt).</p>
-        </div>
+    <div class="picarray">
+        <figure>
+            <img src="pools.png" />
+            <figcaption>Matches on any of the eight possible combinations.</figcaption>
+        </figure>
+    </div>
 
-        <div class="picarray">
-            <figure>
-                <img src="gootPlate1.png" />
-                <figcaption>Recommended Plate<br />Unicolor background.<br />Only few flame tips interfere.<br />Sufficient contrast.</figcaption>
-            </figure>
-            <figure>
-                <img src="gootPlate2.png" />
-                <figcaption>Recommended Plate<br />Thin image.<br />High contrast.<br />Binary background usually no problem.</figcaption>
-            </figure>
-            <figure>
-                <img src="badPlate1.png" />
-                <figcaption>Bad Plate<br />Dino is too big.<br />Circles in background.<br />Low contrast.</figcaption>
-            </figure>
+    <h1>Setting up Fall Guys</h1>
+    <h2>Nameplate</h2>
+    <div class="content">
+        <p>The software takes screenshots of the ingame-footage. Thus, the result quality depends on your nameplate. Obey the following rules, whereas their importance goes from very high to high.</p>
+        <ol>
+            <li>Nameplate must <b>not have scribbles or drawings</b> in its background. It should be as unicolor as possible.</li>
+            <li>The <b>left-side graphic</b> of the nameplate should be as far away from your name as possible. If it's too large, parts of it may get captured in the screenshot. This usually gets filtered, but may not be optimal.</li>
+            <li>The nameplate should have a <b>high contrast</b>. The screenshot will anyway be transformed to monochrome, so its not massively important, but try to avoid yellow plates anyway.</li>
+        </ol>
+        <p><span class="warn">Important: </span>Observe the program's behavior for a while before you leave it running afk, to ensure your settings work well (see below)</p>
+    </div>
 
-            <figure>
-                <img src="badPlate2.png" />
-                <figcaption>Bad Plate<br />The contrast is too low.<br />Note the failed monochrome transformation.</figcaption>
-            </figure>
+    <div class="picarray">
+        <figure>
+            <img src="gootPlate1.png" />
+            <figcaption>Recommended Plate<br />Unicolor background.<br />Only few flame tips interfere.<br />Sufficient contrast.</figcaption>
+        </figure>
+        <figure>
+            <img src="gootPlate2.png" />
+            <figcaption>Recommended Plate<br />Thin image.<br />High contrast.<br />Binary background usually no problem.</figcaption>
+        </figure>
+        <figure>
+            <img src="badPlate1.png" />
+            <figcaption>Bad Plate<br />Dino is too big.<br />Circles in background.<br />Low contrast.</figcaption>
+        </figure>
 
-            <figure>
-                <img src="badPlate3.png" />
-                <figcaption>Bad Plate<br />Text and image overlap, and image is white<br />You can use this if you want to challenge my programming skills :D</figcaption>
-            </figure>
-        </div>
+        <figure>
+            <img src="badPlate2.png" />
+            <figcaption>Bad Plate<br />The contrast is too low.<br />Note the failed monochrome transformation.</figcaption>
+        </figure>
 
-        <h2>Nickname</h2>
-        <div class="content">
-            <p>On failures, the screenshot size gets varied to tickle the OCR engine. This means your nickname may also be captured. If your nickname is similar to a possible name, it may actually get matched instead of your actual name. Thus the rules are:</p>
-            <ul>
-                <li>Choose a simple nickname, one word only. Less words are better.</li>
-                <li>Your nickname shall not be similar to an actual possible name.</li>
-                <li>Recommended Nickname: <code>Parkour!</code> or <code>Tryhard</code> (Far away from any possible name and only one word)</li>
-                <li>Bad Nickname: Rookie (Rookie is a possible name, the engine may get confused)</li>
-                <li>Bad Nickname: Pro Slimb Climber (Three words, three potential confusion points)</li>
-            </ul>
-            <p>This of course only applies if you're game is running in English.</p>
-        </div>
+        <figure>
+            <img src="badPlate3.png" />
+            <figcaption>Bad Plate<br />Text and image overlap, and image is white<br />You can use this if you want to challenge my programming skills :D</figcaption>
+        </figure>
+    </div>
 
-        <div class="picarray">
-            <figure>
-                <img src="badNickname1.png" />
-                <figcaption>Terrible Setup.<br />Contrast too low.<br />The third word will often fail.<br /> Nickname is a name possibility.<br />Will often result in "Rocky Singing Rookie"</figcaption>
-            </figure>
-            <figure>
-                <img src="gootNickname1.png" />
-                <figcaption>Plate bad, nickname good.<br />Bright artifacts at right do interfere.<br />Snowflake may not be parsed every time.<br />Since parkour is no name option, this will at least not result in "Special Bitter Parkour"</figcaption>
-            </figure>
-        </div>
+    <h2>Nickname</h2>
+    <div class="content">
+        <p>On failures, the screenshot size gets varied to tickle the OCR engine. This means your nickname may also be captured. If your nickname is similar to a possible name, it may actually get matched instead of your actual name. Thus the rules are:</p>
+        <ul>
+            <li>Choose a simple nickname, one word only. Less words are better.</li>
+            <li>Your nickname shall not be similar to an actual possible name.</li>
+            <li>Recommended Nickname: <code>Parkour!</code> or <code>Tryhard</code> (Far away from any possible name and only one word)</li>
+            <li>Bad Nickname: Rookie (Rookie is a possible name, the engine may get confused)</li>
+            <li>Bad Nickname: Pro Slimb Climber (Three words, three potential confusion points)</li>
+        </ul>
+        <p>This of course only applies if you're game is running in English.</p>
+    </div>
 
-        <h2>Resolution and Windowed Mode</h2>
-        <div class="content">
-            <p>The higher the resolution, the better it will work. 1080p and larger is recommended. The engine is very robust and will also work on 720p, but it is not recommended.</p>
-            <p>The tool has been tested for 16:9 aspect ratios with the exception of 1920x1200 (16:10) also being supported (cause I have that :D). 21:9 ratios should also work. It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be interesting to observe the console. If you have another aspect ratio, you can run Fall Guys in windowed 16:9 mode.</p>
-            <p><span class="warn">Warning: </span> The lower the resolution, the less accuracy! The effect is well noticeable at resolutions lower than 1920x1080!</p>
-        </div>
+    <div class="picarray">
+        <figure>
+            <img src="badNickname1.png" />
+            <figcaption>Terrible Setup.<br />Contrast too low.<br />The third word will often fail.<br /> Nickname is a name possibility.<br />Will often result in "Rocky Singing Rookie"</figcaption>
+        </figure>
+        <figure>
+            <img src="gootNickname1.png" />
+            <figcaption>Plate bad, nickname good.<br />Bright artifacts at right do interfere.<br />Snowflake may not be parsed every time.<br />Since parkour is no name option, this will at least not result in "Special Bitter Parkour"</figcaption>
+        </figure>
+    </div>
 
-        <h1>Letting it run</h1>
-        <div class="content">
-            <p>After everything is setup, navigate to your profile page, so that the name can be rerolled. Press the start button and ensure that Fall Guys is in keyboard-focus (it must be the active window). You can move the console and the NameFinder to your secondary screens or just minimize them.</p>
-        </div>
+    <h2>Resolution and Windowed Mode</h2>
+    <div class="content">
+        <p>The higher the resolution, the better it will work. 1080p and larger is recommended. The engine is very robust and will also work on 720p, but it is not recommended.</p>
+        <p>The tool has been tested for 16:9 aspect ratios with the exception of 1920x1200 (16:10) also being supported (cause I have that :D). 21:9 ratios should also work. It works in full screen, as well as windowed. If you only have one monitor, windowed mode could be interesting to observe the console. If you have another aspect ratio, you can run Fall Guys in windowed 16:9 mode.</p>
+        <p><span class="warn">Warning: </span> The lower the resolution, the less accuracy! The effect is well noticeable at resolutions lower than 1920x1080!</p>
+    </div>
 
-        <h1>Console</h1>
-        <div class="content">
-            <p>If you like, you can show the console. This gives you information about what the software is doing. This helps a lot in the beginning to detect if it runs smoothly with your settings or if it is struggling. Just move it to your secondary monitor, if available. You can also run Fall Guys in windowed mode, if you only have one monitor.</p>
-            <p><span class="warn">Attention:</span> Don't mark text on the console. This halts the program. If you are stuck, just click into the console and press a few times <code>ENTER</code>.</p>
-            <p><span class="warn">Attention:</span> Don't close the console. Imagine the console is the program's mind and the UI is the body. As we know from Matrix, the body can't exist without a mind.</p>
-        </div>
+    <h1>Letting it run</h1>
+    <div class="content">
+        <p>After everything is setup, navigate to your profile page, so that the name can be rerolled. Press the start button and ensure that Fall Guys is in keyboard-focus (it must be the active window). You can move the console and the NameFinder to your secondary screens or just minimize them. Single-monitor-users can also use the always-on-top option, but do not cover the name with the tool!</p>
+    </div>
 
-        <h1>Options</h1>
+    <h1>Console</h1>
+    <div class="content">
+        <p>If you like, you can show the console. This gives you information about what the software is doing. This helps a lot in the beginning to detect if it runs smoothly with your settings or if it is struggling. Just move it to your secondary monitor, if available. You can also run Fall Guys in windowed mode, if you only have one monitor. The console cannot be set to always-on-top.</p>
+        <p><span class="warn">Attention:</span> Don't mark text on the console. This halts the program. If you are stuck, just click into the console and press a few times <code>ENTER</code>.</p>
+        <p><span class="warn">Attention:</span> Don't close the console. Imagine the console is the program's mind and the UI is the body. As we know from Matrix, the body can't exist without a mind.</p>
+    </div>
 
-        <h2>Stop on Alliteration</h2>
-        <img src="options.png" align="right" />
+    <h1>Ensure it works well</h1>
+    <div class="content">
+        <p>Once you are set up, you should check that the name finder works well for your configuration and that it's not struggling. The tool is quite a tryhard and even works for very poor settings, but if you try to go for its limitations, you may get a false parsing result here and there. Examples were mentioned above. To ensure it works well, set the console output to verbose and observe the console a while. If it reads a viable name at parsing attempt <code>0-0</code> most of the time, you are good to go. If it is regularly going up to, say parsing attempt <code>5-5</code> and if sometimes even the approximate matching algorithm triggers, you may revisit your settings. Note that it is normal that not every single name gets parsed at <code>0-0</code>, even under ideal conditions. For example, when they are split on two lines.</p>
+    </div>
 
-        <div class="content">
-            <p>The software will stop rerolling your name, whenever all three words start with the same letter.</p>
-            <h4>Examples:</h4>
-            <ul class="code">
-                <li>Chic Chasing Crown</li>
-                <li>Gifted Gaming Goliath</li>
-            </ul>
-        </div>
+    <h1>Advanced</h1>
+    <h2>File based pattern and pool edits</h2>
+    <div class="content">
+        <p>If you'd like, you can navigate to <code>C:\Users\[your name]\AppData\Roaming\FallGuysNameFinder\</code> and edit the files <code>patterns.txt</code> and <code>pool.json</code> manually. This may be faster for you, if you are after many explicit combinations. But watch your spelling! The tool will not start or may crash when you have spelling issues or format errors in those files.</p>
+        <p><span class="warn">Attention:</span> The tool is not made for manual file edits. This is really only for advanced users. Restart the tool after manual edits, so the UI reloads the files.</p>
+    </div>
 
-        <h2>Stop on double-word</h2>
-        <div class="content">
-            <p>The software will stop rerolling your name, whenever two out of three words start with the same 4 letters.</p>
-            <h4>Examples:</h4>
-            <ul class="code">
-                <li>Bouncy Yeeted Yeeter</li>
-                <li>Nifty Dancing Dancer</li>
-            </ul>
-            <p><span class="warn">Attention:</span> Beware that the double-words are not hardcoded. Note the following counter examples. Gaming and Gamer don't share the same first four letters. Infallible and fall neither. You would have to add these combinations manually. On the other hand, <code>Charging Charmer</code> would match since the first four letters are equal. It's a bit of a compromise-option.</p>
-            <ul class="code">
-                <li>Cold Gaming Gamer</li>
-                <li>Infallible Fallen Apple</li>
-            </ul>
-        </div>
+    <h2>Statistics</h2>
+    <div class="content">
+        <p>In the folder above, you find a file <code>stats.json</code>. It may be interesting to see which name rolled how often.</p>
+    </div>
 
-        <h2>Auto confirm name</h2>
-        <div class="content">
-            <img src="nameGenerationFailed.png" align="right" />
+    <h2>Logs</h2>
+    <div class="content">
+        <p>The most recent log files are also stored in the folder mentioned above. It contains the same information as shown on the console. If you report a bug, please include relevant parts of the log.</p>
+    </div>
 
-            <p>
-                When you are rerolling your name, it is not instantly stored to your account. You could at any time <code>Alt+F4</code> the game, and you would keep the name you started with.
-                This means, you can roll for a while, and if you are not happy with the results, just terminate the game process, and you can safely keep your old name.
-                Let's say, you are called "Good Fall Guy", but you want to go for a "* Fall Guy". You are hoping for "Best Fall Guy" or "Great Fall Guy", but you get "Diggly Fall Guy" or sth, which you don't want.
-                With this option unchecked, you can now just <code>Alt+F4</code> the game, and keep your "Good Fall Guy" you started with.
-            </p>
-            <p>
-                So why should you enable it anyway then? Because if you idle for too long, you get disconnected from the server. Let's say you run the tool overnight. After 1hour, it finds just the perfect name.
-                But until you wake up, you idle 8 hours in the profile page. Once you come back, you want to press <code>ESC</code> to return to the main menu and to definitely store your new name.
-                But by that time, you are timed out and all you will see is an error. You would loose your newly rolled name! Thus, the engine will press <code>ESC</code> for you while you are still connected.
-            </p>
-            <p><span class="hint">Recommendation: </span>Have it checked until you read and understood what I just wrote.</p>
-        </div>
+    <h2>Screenshots</h2>
+    <div class="content">
+        <p>The screenshots folder within the location mentioned above contains screenshot of parsing fails. They may also be helpful for debugging. Only failures are stored, so it should not fill up your disk space.</p>
+    </div>
 
-        <h2>Stop on error</h2>
-        <div class="content">
-            <p>Sometimes, things may go wrong. Imagine you get your desired name, but the software doesn't recognize it. With this option, the program will halt, without it it will continue. Realistically, chances are super low that the error occurs on just that single perfect name. I spent a lot of effort to detect even unclear names on bad nameplates. The disadvantage of the option is, that if you want to run the program over night. It would be uncool if it stops after just a few minutes but you expected it to test thousands of names. Decide for yourself, if you want to be safe or if you want to take the risk of skipping your perfect name.</p>
-            <p>Note that after 10 consecutive major errors, or on irregularities, the engine stops regardless of your setting. For example, when your profile page is not open or names do not change for any reason.</p>
-            <p><span class="hint">Recommendation: </span>Test the software while you sit in front of your computer. Watch the console. Let it run for a while. Observe if it runs well (it finds almost all names at the first parsing attempt). If it does, chances are high that it will do so for most if not all cases. Then, enable the option if you are actively on your computer and can react on errors, but disable it if you run it overnight.</p>
-        </div>
+    <h1>How to uninstall</h1>
+    <div class="content">
+        <p>I made no installer / uninstaller for this small software project. Thus, you have to do it manually. Just delete your unzipped files and also delete this folder: <code>C:\Users\[your name]\AppData\Roaming\FallGuysNameFinder\</code>.</p>
+    </div>
+
+
+
 </body>
 </html>

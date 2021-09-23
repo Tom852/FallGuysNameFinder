@@ -16,7 +16,8 @@
     <DockPanel Background="{StaticResource GradientBackground}">
         <Label DockPanel.Dock="Top" Content="Any combination of your selection below will generate a match." FontSize="9pt" HorizontalAlignment="Center" Margin="5" Foreground="Gray" FontStyle="Italic"/>
 
-        <StackPanel DockPanel.Dock="Bottom">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{DynamicResource MyButton}" Name="CancelBtn" Content="Cancel" Margin="10" Width="100" HorizontalAlignment="Right"  Click="CancelBtn_Click" />
             <Button Style="{DynamicResource MyButton}" Name="OkBtn" Content="Apply" Margin="10" Width="100" HorizontalAlignment="Right"  Click="OkBtn_Click" />
         </StackPanel>
         
@@ -25,20 +26,31 @@
             <StackPanel Orientation="Vertical">
                 <Label Content="First Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List1" ItemsSource="{Binding FirstNames}" />
-                <Button Style="{DynamicResource MyButton}" Name="Clear1" Content="Clear" Margin="10" Width="60" Height ="25" FontSize="12pt" Click="Clear1_Click" />
-                            <!-- font size not working here, dunno why -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Style="{DynamicResource MyButton}" Name="Clear1" Content="Clear" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="Clear1_Click" />
+                    <Button Style="{DynamicResource MyButton}" Name="All1" Content="All" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="All1_Click" />
+                    <!-- font size not working here, dunno why -->
+                </StackPanel>
             </StackPanel>
             
             <StackPanel Orientation="Vertical">
                 <Label Content="Second Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List2" ItemsSource="{Binding SecondNames}" />
-                <Button Style="{DynamicResource MyButton}" Name="Clear2" Content="Clear" Margin="10" Width="60" Height="25" FontSize="12pt"  Click="Clear2_Click" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Style="{DynamicResource MyButton}" Name="Clear2" Content="Clear" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="Clear2_Click" />
+                    <Button Style="{DynamicResource MyButton}" Name="All2" Content="All" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="All2_Click" />
+                    <!-- font size not working here, dunno why -->
+                </StackPanel>
             </StackPanel>
             
             <StackPanel Orientation="Vertical">
                 <Label Content="Third Names" FontSize="10pt" HorizontalAlignment="Center" FontWeight="Bold"/>
                 <ListBox Name="List3" ItemsSource="{Binding ThirdNames}" />
-                <Button Style="{DynamicResource MyButton}" Name="Clear3" Content="Clear" Margin="10" Width="60" Height ="25" FontSize="12pt" Click="Clear3_Click" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Style="{DynamicResource MyButton}" Name="Clear3" Content="Clear" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="Clear3_Click" />
+                    <Button Style="{DynamicResource MyButton}" Name="All3" Content="All" Margin="5" Width="40" Height ="25" FontSize="12pt" Click="All3_Click" />
+                    <!-- font size not working here, dunno why -->
+                </StackPanel>
             </StackPanel>
 
 

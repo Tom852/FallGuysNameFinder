@@ -57,7 +57,7 @@
                   IsEnabled="{Binding Path=IsRunning, Converter={StaticResource InvertedBool}}"
                   Click="OnOptionsClick" />
             <CheckBox Name="AlwaysOnTop" Content="Always on top" HorizontalAlignment="Left" Margin="0,0" VerticalAlignment="Top"
-                  ToolTip="If checked, this window stays on top, even over Fall Guys. Recommended for single-monitor users."
+                  ToolTip="If checked, this window stays on top, even over Fall Guys. Recommended for single-monitor users. ***WARN:*** Do not cover the nameplate!!!!111+"
                   IsChecked="{Binding Options.AlwaysOnTop}"
                   Click="OnAlwaysOnTopClick" />
 
@@ -115,7 +115,7 @@
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Width="200">
             <Label Content="Pool Matching" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}" />
             <Button Style="{DynamicResource MyButton}" Name="EditPools" Content="Configure" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPools_Click" />
-            <Label Content="{Binding PoolOptionsActive}" />
+            <Label Content="{Binding PoolOptionsActive}" HorizontalAlignment="Center"/>
         </StackPanel>
         
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
