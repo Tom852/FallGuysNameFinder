@@ -143,8 +143,8 @@
         </StackPanel>
         
         <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Width="200">
-            <Label Content="Pool Matching" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}" />
-            <Button Style="{DynamicResource MyButton}" Name="EditPools" Content="Configure" Margin="10" Width="100" HorizontalAlignment="Center"  Click="EditPools_Click" />
+            <Label Content="Pool Matching" FontSize="16pt" FontWeight="Regular" HorizontalAlignment="Center" FontFamily="{StaticResource FGFont}"/>
+            <Button Style="{DynamicResource MyButton}" Name="EditPools" Content="Configure" Margin="10" Width="100" HorizontalAlignment="Center" Click="EditPools_Click" IsEnabled="{Binding IsRunning, Converter={StaticResource InvertedBool}}"/>
             <Label Content="{Binding PoolOptions1}" ContentStringFormat=" {0} first names selected" HorizontalAlignment="Center"/>
             <Label Content="{Binding PoolOptions2}" ContentStringFormat=" {0} second names selected" HorizontalAlignment="Center"/>
             <Label Content="{Binding PoolOptions3}" ContentStringFormat=" {0} third names selected" HorizontalAlignment="Center"/>

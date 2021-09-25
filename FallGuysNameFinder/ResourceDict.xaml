@@ -16,13 +16,13 @@
     <RadialGradientBrush x:Key="GradientBackground" GradientOrigin="0.496,1.052">
         <RadialGradientBrush.RelativeTransform>
             <TransformGroup>
-                <ScaleTransform CenterX="0.5" CenterY="0.5"
-                                                        ScaleX="1.5" ScaleY="1.5" />
+                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5" />
                 <TranslateTransform X="0.02" Y="0.3" />
             </TransformGroup>
         </RadialGradientBrush.RelativeTransform>
-        <GradientStop Offset="1" Color="#ddeeff" />
-        <GradientStop Offset="0.3" Color="#ddeeff" />
+        <GradientStop Offset="0.3" Color="#abc" />
+        <GradientStop Offset="1" Color="#def" />
+
     </RadialGradientBrush>
 
     <BooleanToVisibilityConverter x:Key="BoolToVis" />

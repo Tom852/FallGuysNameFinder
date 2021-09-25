@@ -246,6 +246,7 @@ namespace FallGuysNameFinder
 
         private void StartStop_Click(object sender, RoutedEventArgs e)
         {
+            this.dGrid.SelectedItem = null;
             if (this.ViewModel.EngineStatus != EngineStatus.Stopped)
             {
                 this.ViewModel.EngineStatus = EngineStatus.Stopping;
