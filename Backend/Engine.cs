@@ -164,7 +164,7 @@ namespace Backend
                         failsInRow++;
                         if (failsInRow > Constants.FailInRowLimit)
                         {
-                            Log.Fatal($"{Constants.FailInRowLimit} fails in a row. Something is broken. Option Stop-On-Error overridden. Forcing stop...");
+                            Log.Error($"{Constants.FailInRowLimit} errors occurred in a row. Something seems broken. Option Stop-On-Error overridden. Forcing stop...");
                             ScreenshotService.SaveFullScreenDebugScreenshot("failsInRowLimit");
                             Stop();
                         }
@@ -201,7 +201,6 @@ namespace Backend
                  "It's a Match!",
                  "Don't forget your matches when you want to make a fire. Speaking of matches, we got one here.",
             };
-            // hmm, is this really funny?
 
             var i = new Random().Next(successmessages.Length);
             Log.Information(successmessages[i]);
@@ -211,8 +210,8 @@ namespace Backend
         {
             if (this.History.WereLastNamesAllEqual(10))
             {
-                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_8");
-                Log.Error("The parsed name is still equal to the previous ones. Pressing SPACE multiple times did not resolve the issue. Something is broken. Engine will stop.");
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_10");
+                Log.Error("The name does not change anymore. Trying to await server timeouts and trying to remove popup messages did not resolve the issue. Something is broken. You are probably disconnected from the server and can't reroll anymore, until you restart the game. Engine will stop.");
                 Stop();
             }
             else if (this.History.WereLastNamesAllEqual(3))
