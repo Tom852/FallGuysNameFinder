@@ -7,6 +7,8 @@
         public const int TimeBeforeStart = 5000;
         public const int TiemAtEndBeforePressingEsc = 500;
         public const int TimeWaitAfterSpace = 3000;
+        public const int TimeWaitOnTimeout = 30 * 1000;
+
 
         public const int TimeWaitWhenFgNotForeground = 5000;
 
@@ -18,5 +20,6 @@
         public const int LogFilesToKeep = 10;
 
         public const float FuzzyMatchingClearDifferenceFaktor = 1.5f;
+
     }
 }

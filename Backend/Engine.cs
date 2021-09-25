@@ -209,23 +209,22 @@ namespace Backend
 
         private void HandleServerErrorMessage()
         {
-            if (this.History.WereLastNamesAllEqual(8))
+            if (this.History.WereLastNamesAllEqual(10))
             {
                 ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_8");
                 Log.Error("The parsed name is still equal to the previous ones. Pressing SPACE multiple times did not resolve the issue. Something is broken. Engine will stop.");
                 Stop();
             }
-            else if (this.History.WereLastNamesAllEqual(6))
+            else if (this.History.WereLastNamesAllEqual(3))
             {
-                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_6_or_7");
-                Log.Warning("The parsed name is still equal to the previous ones. Pressing SPACE again in case the previous SPACE-press lifted the Amazon page instead of closing it, or in case it revealed support id...");
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_preWait");
+                Log.Warning("All 3 previous names were equal. Assuming server timeout, connection issue, or Amazon/Support Id window in front.");
+                Log.Information("The engine will now wait 30 seconds to counteract a connection issue.");
+                Thread.Sleep(Constants.TimeWaitOnTimeout);
+                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_postWait");
+                Log.Information("The engine will now press Space to remove a possible error message or the Amazon/Support Id window.");
                 PressSpace();
-            }
-            else if (this.History.WereLastNamesAllEqual(5))
-            {
-                ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_5");
-                Log.Warning("All 5 previous names were equal. Assuming a window in front. The engine will now press SPACE to get rid of a possible overlay message.");
-                PressSpace();
+                Thread.Sleep(Constants.TimeWaitAfterSpace);
             }
         }
 
@@ -237,10 +236,8 @@ namespace Backend
 
         private static void PressSpace()
         {
-            // todo: hier wären screenshots nice um zus ehen, was hier passiert ist.
             Log.Debug("Pressing SPACE");
             SendKeys.SendWait(" ");
-            Thread.Sleep(Constants.TimeWaitAfterSpace);
         }
 
         private static void PressEscapeAtEnd()
