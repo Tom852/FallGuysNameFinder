@@ -46,7 +46,11 @@ namespace FallGuysNameFinder
             var isValid2 = this.Vm.SecondNames.Contains(this.Vm.Words.Second);
             var isValid3 = this.Vm.ThirdNames.Contains(this.Vm.Words.Third);
 
-            if (!isValid1 || !isValid2 || !isValid3)
+            if (this.Vm.Words.Third == "Grabber")
+            {
+                MessageBox.Show("You can't select Grabber as the third name because I hate grabbers!!", "Nope", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else if (!isValid1 || !isValid2 || !isValid3)
             {
                 MessageBox.Show("At least one name is not valid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

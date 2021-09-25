@@ -67,6 +67,13 @@ namespace FallGuysNameFinder
             {
                 newPool.Third.Add((string)i);
             }
+
+            if (newPool.Third.Contains("Grabber"))
+            {
+                MessageBox.Show("You can't select Grabber as the third name because I hate grabbers!!", "Nope", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
             DataStorageStuff.SavePool(newPool);
 
             OnOkClick?.Invoke(this, newPool);
