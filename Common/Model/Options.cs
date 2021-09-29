@@ -7,7 +7,7 @@ namespace Common.Model
         private bool stopOnAlliteration;
         private bool stopOnDoubleWord;
         private bool stopOnError;
-        private bool alwaysOnTop = true;
+        private bool alwaysOnTop;
         private bool verbose = true;
         private bool autoConfirm = true;
 
