@@ -20,8 +20,13 @@ namespace Backend
         private const double xStartPercentage21by9 = 0.58;
         private const double xEndPercentage21by9 = 0.68;
 
-        private const decimal ratio16by9 = (decimal)16 / 9;
+        private const decimal ratio16by9 = (decimal)16 / 9;   // 1.7777777
+        private const decimal ratioTolerance16by9 = 0.01m;
+
         private const decimal ratio21by9 = 2.389m; // 2.370 / 2.3888 / 2.4 depending on res :O
+        private const decimal ratioTolerance21by9 = 0.03m;
+
+
 
         private readonly int[,] variations = new int[,] {
             // left, top, width, height
@@ -50,7 +55,7 @@ namespace Backend
             int sizeVariationX = variations[variationIndex, 2];
             int sizeVariationY = variations[variationIndex, 3];
 
-            var screenshotArea = this.GetScreenshotArea();
+            var screenshotArea = this.EvaluateScreenshotArea();
 
             var sizeToCapture = new Size((int)screenshotArea.Width + sizeVariationX, (int)screenshotArea.Height + sizeVariationY);
 
@@ -77,88 +82,104 @@ namespace Backend
         }
 
 
-        private WindowPosition GetScreenshotArea()
+        private WindowPosition EvaluateScreenshotArea()
         {
-            var windowPosition = FgWindowAccess.GetPositionShit();
+            var rawWindowPosition = FgWindowAccess.GetPositionShit();
 
-            decimal ratio = windowPosition.Width / (decimal)windowPosition.Height;
+            decimal ratio = rawWindowPosition.Width / (decimal)rawWindowPosition.Height;
 
+
+            if (IsWindowed16by9(rawWindowPosition, out var effectiveWindowedModePosition))
+            {
+                Log.Debug("Detected windowed Fall Guys.");
+                return GetScreenshotAreaFor16by9Ratio(effectiveWindowedModePosition);
+            }
+
+
+            if (Is16by9orNarrower(rawWindowPosition))
+            {
+                var effectivePosition = GetEffectiveWindowPositionFor16by9orNarrower(rawWindowPosition);
+                Log.Debug("Detected full screen 16:9 or narrower.");
+                return GetScreenshotAreaFor16by9Ratio(effectivePosition);
+            }
+
+
+            // todo: derive general rule for wider ratios, but I have no data from e.g. 32:9
+            if (Math.Abs(ratio - ratio21by9) < ratioTolerance21by9)
+            {
+                Log.Debug("Detected full screen 21:9");
+                return GetScreenshotAreaFor21by9Ratio(rawWindowPosition);
+            }
+
+            throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, ratios narrower than 16:9 (e.g. 3:2 or 16:10) full screen, 21:9 full screen, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a full screen screenshot of your profile page and the following data: Width:{rawWindowPosition.Width} Height:{rawWindowPosition.Height} Left:{rawWindowPosition.Left} Top:{rawWindowPosition.Top} Right:{rawWindowPosition.Right} Bot:{rawWindowPosition.Bottom}");
+
+        }
+
+        private bool Is16by9orNarrower(WindowPosition windowPosition)
+        {
+            Log.Debug("Temp Log: 16:9 Or Narrower Check Result: {0}", windowPosition.Width / windowPosition.Height <= ratio16by9 + ratioTolerance16by9);
+            return windowPosition.Width / windowPosition.Height <= ratio16by9 + ratioTolerance16by9;
+        }
+
+        private WindowPosition GetEffectiveWindowPositionFor16by9orNarrower(WindowPosition windowPosition)
+        {
+            var blackBarPixelsForNarrowRatios = windowPosition.Height - windowPosition.Width / ratio16by9;
+
+            var effectiveWindowLeft = windowPosition.Left;
+            var effectiveWindowRight = windowPosition.Right;
+
+            var effectiveWindowTop = windowPosition.Top + (int)blackBarPixelsForNarrowRatios / 2;
+            var effectiveWindowBot = windowPosition.Bottom - (int)blackBarPixelsForNarrowRatios / 2;
+
+            var result = new WindowPosition(effectiveWindowLeft, effectiveWindowRight, effectiveWindowTop, effectiveWindowBot);
+
+
+            return result;
+
+        }
+
+        private bool IsWindowed16by9(WindowPosition windowPosition, out WindowPosition effectivePosition)
+        {
+
+            // Windowed case: Adds 31px top, and 8 all other sides for the window border, mouse overhead and title bar.
+            var effectiveWindowLeft = windowPosition.Left + 8;
+            var effectiveWindowTop = windowPosition.Top + 31;
+            var effectiveWindowRight = windowPosition.Right - 8;
+            var effectiveWindowBot = windowPosition.Bottom - 8;
+
+            effectivePosition = new WindowPosition(effectiveWindowLeft, effectiveWindowRight, effectiveWindowTop, effectiveWindowBot);
+            var ratioWhenWindowed = effectivePosition.Width / (decimal)effectivePosition.Height;
+
+            return Math.Abs(ratioWhenWindowed - ratio16by9) < ratioTolerance16by9;
+        }
+
+        private WindowPosition GetScreenshotAreaFor16by9Ratio(WindowPosition effective16by9Position)
+        {
             WindowPosition result = default;
 
-            // todo: someone should probably refactor this
-            if (DecimalIsEqual(ratio, ratio16by9))
-            {
-                // Full Screen 16:9 Aspect Ratio
-                double relativeStartX = windowPosition.Width * xStartPercentage16by9;
-                double relativeStartY = windowPosition.Height * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Top = (int)relativeStartY + windowPosition.Top;
-                
-                result.Right = (int)(windowPosition.Width * xEndPercentage16by9 + windowPosition.Left);
-                result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
+            double relativeStartX = effective16by9Position.Width * xStartPercentage16by9;
+            double relativeStartY = effective16by9Position.Height * yStartPercentrage;
+            result.Left = (int)relativeStartX + effective16by9Position.Left;
+            result.Top = (int)relativeStartY + effective16by9Position.Top;
 
-                Log.Debug("Detected full screen 16:9");
-            }
-            else if (ratio == 1.6m)
-            {
-                //Full Screen 16:10 (because i have that xD)
-                if (windowPosition.Height != 1200)
-                {
-                    throw new Exception("16:10 Resolution is not supported unless it's 1920x1200 full screen. Try running FG in windowed mode with 16:9. If many people require this, e.g. for Steam Deck, send me an Email :P.");
-                }
-                Log.Debug("Detected full screen 1920x1200");
-
-                double relativeStartX = windowPosition.Width * xStartPercentage16by9;
-                double relativeStartY = 1080 * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Top = (int)relativeStartY + windowPosition.Top + 60;
-
-                result.Right = (int)(windowPosition.Width * xEndPercentage16by9 + windowPosition.Left);
-                result.Bottom = (int)(1080 * yEndPercentage) + 60 + windowPosition.Top;
-            }
-            else if (DecimalIsEqual(ratio, ratio21by9, 0.03m))
-            {
-                // Full Screen "21:9" Aspect Ratio
-                double relativeStartX = windowPosition.Width * xStartPercentage21by9;
-                double relativeStartY = windowPosition.Height * yStartPercentrage;
-                result.Left = (int)relativeStartX + windowPosition.Left;
-                result.Top = (int)relativeStartY + windowPosition.Top;
-
-                result.Right = (int)(windowPosition.Width * xEndPercentage21by9 + windowPosition.Left);
-                result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
-
-                Log.Debug("Detected full screen 21:9");
-            }
-            else
-            {
-                // assuming windowed
-                // Windowed case: Adds 30px top, and 8 all other sides.
-                var effectiveWindowWidth = windowPosition.Width - 2 * 8;
-                var effectiveWindowHeight = windowPosition.Height - 31 - 8;
-                var effectiveWindowLeft = windowPosition.Left + 8;
-                var effectiveWindowTop = windowPosition.Top + 31;
-
-                decimal ratioWhenWindowed = effectiveWindowWidth / (decimal)effectiveWindowHeight;
-
-                if (!DecimalIsEqual(ratioWhenWindowed, ratio16by9))
-                {
-                    throw new Exception($"Aspect ratio not supported. Only 16:9 full screen, 21:9 full screen, 1920x1200 full screen, 16:9 windowed are supported. Use windowed 16:9 for now. --> Please get in touch with me (see about section) so I can implement your resolution. Please send me a full screen screenshot of your profile page and the following data: Width:{windowPosition.Width} Height:{windowPosition.Height} Left:{windowPosition.Left} Top:{windowPosition.Top} Right:{windowPosition.Right} Bot:{windowPosition.Bottom}");
-                }
-
-                Log.Debug("Detected windowed Fall Guys. Effective width: {0}. Effective height: {1}", effectiveWindowWidth, effectiveWindowHeight);
-
-                double relativeStartX = effectiveWindowWidth * xStartPercentage16by9;
-                double relativeStartY = effectiveWindowHeight * yStartPercentrage;
-                result.Left = (int)relativeStartX + effectiveWindowLeft;
-                result.Top = (int)relativeStartY + effectiveWindowTop;
-
-                result.Right = (int)(effectiveWindowWidth * xEndPercentage16by9 + effectiveWindowLeft);
-                result.Bottom = (int)(effectiveWindowHeight * yEndPercentage + effectiveWindowTop);
-            }
+            result.Right = (int)(effective16by9Position.Width * xEndPercentage16by9 + effective16by9Position.Left);
+            result.Bottom = (int)(effective16by9Position.Height * yEndPercentage + effective16by9Position.Top);
             return result;
         }
 
-        private bool DecimalIsEqual(decimal a, decimal b, decimal tolerance = 0.01m) => Math.Abs(a - b) < tolerance;
+        private WindowPosition GetScreenshotAreaFor21by9Ratio(WindowPosition windowPosition)
+        {
+            WindowPosition result = default;
+
+            double relativeStartX = windowPosition.Width * xStartPercentage21by9;
+            double relativeStartY = windowPosition.Height * yStartPercentrage;
+            result.Left = (int)relativeStartX + windowPosition.Left;
+            result.Top = (int)relativeStartY + windowPosition.Top;
+
+            result.Right = (int)(windowPosition.Width * xEndPercentage21by9 + windowPosition.Left);
+            result.Bottom = (int)(windowPosition.Height * yEndPercentage + windowPosition.Top);
+            return result;
+        }
 
         public void SaveFullScreenDebugScreenshot(string tag)
         {
