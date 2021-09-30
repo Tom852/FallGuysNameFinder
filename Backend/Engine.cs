@@ -49,7 +49,7 @@ namespace Backend
                 .MinimumLevel.Is(loglevel)
                 .CreateLogger();
 
-            Log.Information("Initializing Backend Engine...");
+            Log.Information("Initializing backend engine...");
 
             History = new History();
 
@@ -78,7 +78,7 @@ namespace Backend
         {
             if (!isInit)
             {
-                throw new Exception("not initialized!");
+                throw new Exception("not initialized");
             }
 
             Thread.Sleep(Constants.TimeBeforeStart);
@@ -137,13 +137,15 @@ namespace Backend
                                 case MatchingResult.NoMatch :
                                     throw new InvalidOperationException("Programmatic error.");
                                 default:
-                                    Log.Information("Unknown match type detected.");
+                                    Log.Warning("Unknown match type detected.");
                                     break;
                             }
 
                             PrintFunnySuccessLog();
+                            PrintDonateMessage();
                             if (Options.AutoConfirm)
                             {
+                                Thread.Sleep(500);
                                 PressEscapeAtEnd();
                             }
                             Stop();
@@ -156,6 +158,8 @@ namespace Backend
                     else
                     {
                         Log.Error("Optical character recognition failed.");
+                        ScreenshotService.SaveFullScreenDebugScreenshot("OcrFail");
+
                         if (this.Options.StopOnError)
                         {
                             Stop();
@@ -172,7 +176,7 @@ namespace Backend
 
                     if (!stopRequested)
                     {
-                        HandleServerErrorMessage();
+                        HandleNameNotChanging();
                     }
                 }
                 catch (Exception e)
@@ -192,6 +196,14 @@ namespace Backend
             Log.Information("Engine stopped after {iterations} iterations", iterations);
         }
 
+        private void PrintDonateMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("If you like this tool, please consider donating at https://www.paypal.me/tomk453");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+        
+        }
         private void PrintFunnySuccessLog()
         {
             string[] successmessages = new string[]
@@ -200,13 +212,16 @@ namespace Backend
                  "Unlike on my Tinder, we got a match here!",
                  "It's a Match!",
                  "Don't forget your matches when you want to make a fire. Speaking of matches, we got one here.",
+                 "Tennis match, soccer match, basketball match, name match!",
+                 "Forget about Tinder, here is where the real matches happen!",
+                 "Holy Bonkus! We got it!"
             };
 
             var i = new Random().Next(successmessages.Length);
             Log.Information(successmessages[i]);
         }
 
-        private void HandleServerErrorMessage()
+        private void HandleNameNotChanging()
         {
             if (this.History.WereLastNamesAllEqual(10))
             {
@@ -241,7 +256,6 @@ namespace Backend
 
         private static void PressEscapeAtEnd()
         {
-            Thread.Sleep(500);
             Log.Debug("Pressing ESC");
             SendKeys.SendWait("{ESC}");
         }
