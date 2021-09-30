@@ -28,10 +28,19 @@ namespace FallGuysNameFinder
 
         private ProbabilityService probabilitySerivce { get; set; }
 
+        private event EventHandler OnSecondaryWindowOpening;
+
         public MainWindow()
         {
             try
             {
+
+                OnSecondaryWindowOpening += (_1, _2) =>
+                {
+                    this.ViewModel.Options.AlwaysOnTop = false;
+                    DataStorageStuff.SaveOptions(this.ViewModel.Options);
+                    this.Topmost = false;
+                };
 
                 var options = DataStorageStuff.GetOptions();
                 var patterns = DataStorageStuff.ReadPatterns();
@@ -104,8 +113,11 @@ namespace FallGuysNameFinder
 
         private void AddPattern_Click(object sender, RoutedEventArgs e)
         {
+            OnSecondaryWindowOpening?.Invoke(sender, e);
+
             var w = new AddPatternWindow();
             w.Show();
+
             w.OnOkClick += (d1, d2) =>
             {
                 AddPattern(w.Vm.Words.ToPattern());
@@ -116,6 +128,7 @@ namespace FallGuysNameFinder
 
         private void EditPattern_Click(object sender, RoutedEventArgs e)
         {
+
             ShowEditPatternMask(dGrid);
         }
 
@@ -158,6 +171,8 @@ namespace FallGuysNameFinder
 
         private void ShowEditPatternMask(DataGrid dataGrid)
         {
+            OnSecondaryWindowOpening?.Invoke(null, null);
+
             var index = dataGrid.SelectedIndex;
             if (index == -1)
             {
@@ -285,6 +300,8 @@ namespace FallGuysNameFinder
 
         private void EditPools_Click(object sender, RoutedEventArgs e)
         {
+            OnSecondaryWindowOpening?.Invoke(null, null);
+
             var w = new PoolWindow();
             w.Show();
             w.OnOkClick += (_, newPool) =>
