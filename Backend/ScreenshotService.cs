@@ -117,7 +117,6 @@ namespace Backend
 
         private bool Is16by9orNarrower(WindowPosition windowPosition)
         {
-            Log.Debug("Temp Log: 16:9 Or Narrower Check Result: {0}", windowPosition.Width / windowPosition.Height <= ratio16by9 + ratioTolerance16by9);
             return windowPosition.Width / windowPosition.Height <= ratio16by9 + ratioTolerance16by9;
         }
 

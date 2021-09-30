@@ -23,6 +23,7 @@ namespace Backend
 
         private bool isInit = false;
         private bool stopRequested = false;
+        private bool stopBecauseSuccess = false;
 
         private Thread t;
 
@@ -142,7 +143,8 @@ namespace Backend
                             }
 
                             PrintFunnySuccessLog();
-                            PrintDonateMessage();
+                            stopBecauseSuccess = true;
+
                             if (Options.AutoConfirm)
                             {
                                 Thread.Sleep(500);
@@ -194,16 +196,20 @@ namespace Backend
 
             OnStop?.Invoke(this, new EventArgs());
             Log.Information("Engine stopped after {iterations} iterations", iterations);
+
+            if (stopBecauseSuccess)
+            {
+                PrintDonateMessage();
+            }
         }
 
         private void PrintDonateMessage()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("If you like this tool, please consider donating at https://www.paypal.me/tomk453");
+            Console.WriteLine("\nIf you like this tool, please consider supporting me at https://www.paypal.me/tomk453 \n");
             Console.ForegroundColor = ConsoleColor.Gray;
-
-        
         }
+
         private void PrintFunnySuccessLog()
         {
             string[] successmessages = new string[]
