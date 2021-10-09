@@ -29,7 +29,9 @@ Automatically rerolls your name until it matches specific patterns.
 Yes. Indirectly approved by Oliver himself.
 
 ## Download
-[v 2.1](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.0/FallGuysNameFinder.zip) (30.09.2021)
+[v 2.2](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.2/FallGuysNameFinder.zip) (09.10.2021)
+
+[v 2.1](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.1/FallGuysNameFinder.zip) (30.09.2021)
 
 [v 2.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.0/FallGuysNameFinder.zip) (29.09.2021)
 
