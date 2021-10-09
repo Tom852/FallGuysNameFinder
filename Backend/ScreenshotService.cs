@@ -10,15 +10,15 @@ namespace Backend
 {
     public class ScreenshotService
     {
-        private const double yStartPercentrage = 0.29;
-        private const double yEndPercentage = 0.335;
+        private const double yStartPercentrage = 0.301;
+        private const double yEndPercentage = 0.342;
 
 
-        private const double xStartPercentage16by9 = 0.60;
-        private const double xEndPercentage16by9 = 0.745;
+        private const double xStartPercentage16by9 = 0.6155;
+        private const double xEndPercentage16by9 = 0.751;
 
-        private const double xStartPercentage21by9 = 0.58;
-        private const double xEndPercentage21by9 = 0.68;
+        private const double xStartPercentage21by9 = 0.59;  // value just guessed for new UI patch + 0.01
+        private const double xEndPercentage21by9 = 0.69;   // value just guessed for new UI patch  + 0.01 was  
 
         private const decimal ratio16by9 = (decimal)16 / 9;   // 1.7777777
         private const decimal ratioTolerance16by9 = 0.01m;
@@ -26,7 +26,7 @@ namespace Backend
         private const decimal ratio21by9 = 2.389m; // 2.370 / 2.3888 / 2.4 depending on res :O
         private const decimal ratioTolerance21by9 = 0.03m;
 
-
+        // todo: patch oct: if namepalte stays definitely, could optimize here as well.
 
         private readonly int[,] variations = new int[,] {
             // left, top, width, height
@@ -37,6 +37,10 @@ namespace Backend
 
             { 5, 0, -5, 0 },   // decrease width from left in case artifact is in screen
             { 10, 0, -10, 0 },   // same
+
+            { -5, 0, 5, 0 },   // increase width from left since it is tight cause of the ` from the crown.
+            { -10, 0, 10, 0 },   // same
+
 
             { 4, 2, -8, -4},  // narrow area slightly in case too much is captured, e.g. for 21:9 variance
 

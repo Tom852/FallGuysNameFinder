@@ -1,18 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Backend
 {
     public class ColorModificator
     {
-        private const int MONOCHROME_WHITE_BOUNDARY = 250;
-        private const int MONOCHROME_BRIGHT_BOUNDARY = 200;
-        private const int MONOCHROME_WHEN_IN_BG_BOUNDARY = 150;
+
+        // patch data okt 21  "paint brightness 0-240"
+        // paint ftw
+
+        //normal
+        // foregroudn 240
+        // plate brightest: 151
+
+        //window in front:
+        //text: 206
+        //brightest in plkate: 129
+
+
+        private const int MONOCHROME_BRIGHT_BOUNDARY = 200; // nails it always
+        private const int MONOCHROME_WHITE_BOUNDARY = 238;  // specifically for thinning it out
+        private const int MONOCHROME_WHEN_IN_BG_BOUNDARY = 160;  // specifically for error msg.
 
         public List<Bitmap> GetAll(Bitmap bmp)
         {
             List<Bitmap> result = new List<Bitmap>
             {
+                // todo: if the nameplate is definitely fixed to the blue one, flexibilty is not really necessary, grayscale pretty useless etc. first 3 would be fine.
+
                 ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_WHEN_IN_BG_BOUNDARY, true),
@@ -42,7 +58,7 @@ namespace Backend
                 for (int x = 0; x < result.Width; x++)
                 {
                     c = result.GetPixel(x, y);
-                    brightness = GetAverageBrightness(c);
+                    brightness = GetPaintBrightness(c);
                     if (brightness > whiteBoundary)
                     {
                         if (inverted)
@@ -80,7 +96,8 @@ namespace Backend
                 for (int x = 0; x < result.Width; x++)
                 {
                     c = result.GetPixel(x, y);
-                    brightness = GetAverageBrightness(c);
+                    brightness = GetPaintBrightness(c);
+
                     if (inverted)
                     {
                         brightness = 255 - brightness;
@@ -106,6 +123,10 @@ namespace Backend
             return result;
         }
 
-        private int GetAverageBrightness(Color c) => (c.B + c.G + c.B) / 3;
+        private int GetPaintBrightness(Color c)
+        {
+            var floaty = c.GetBrightness();
+            return (int)(240*floaty);
+        }
     }
 }

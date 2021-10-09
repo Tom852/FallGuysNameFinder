@@ -42,8 +42,13 @@ namespace Backend
                 var bmp = screenshotService.TakeScreenshot(i);
                 var colorModifications = colorModificator.GetAll(bmp);
 
+
                 for (int j = 0; j < colorModifications.Count; j++)
                 {
+                    colorModifications[j].Save(screenshotService.GetScreenshotFileName($"dbg_{i}_{j}"), ImageFormat.Jpeg);
+                }
+                for (int j = 0; j < colorModifications.Count; j++)
+                { 
                     Log.Debug("OCR Attempt {0}-{1}", i, j);
                     bool success = AnalyzeBmp(colorModifications[j]);
                     if (success)
