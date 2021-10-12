@@ -1,3 +1,12 @@
+# Download
+[v 2.2](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.2/FallGuysNameFinder.zip) (09.10.2021)
+
+[v 2.1](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.1/FallGuysNameFinder.zip) (30.09.2021)
+
+[v 2.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.0/FallGuysNameFinder.zip) (29.09.2021)
+
+[v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip) (11.09.2021)
+
 # Fall Guys Name Finder
 Automatically rerolls your name until it matches specific patterns.
  
@@ -28,14 +37,6 @@ Automatically rerolls your name until it matches specific patterns.
 ## Is it legal
 Yes. Indirectly approved by Oliver himself.
 
-## Download
-[v 2.2](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.2/FallGuysNameFinder.zip) (09.10.2021)
-
-[v 2.1](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.1/FallGuysNameFinder.zip) (30.09.2021)
-
-[v 2.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v2.0/FallGuysNameFinder.zip) (29.09.2021)
-
-[v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip) (11.09.2021)
 
 ## Bugs and feature requests
 Feel free to get in touch with me if there are any bugs or if you have feature requests.
