@@ -7,8 +7,11 @@
 
 [v 1.0](https://github.com/Tom852/FallGuysNameFinder/releases/download/v1.0/FallGuysNameFinder.zip) (11.09.2021)
 
-# Fall Guys Name Finder
-Automatically rerolls your name until it matches specific patterns.
+# Project Discontinued
+As I heard of today, November 20th 2021, PC players will be forced to link Fall Guys with an Epic Games Account. Their Epic Games name will then be shown ingame. The name finder will thus no longer be updated. I had some cool ideas though, like working with semi-transparent UIs for single monitor users, no longer be forced to have Fall Guys in foreground, specializing parsing to the new unified S5 backplate, letting OCR variants run in parallel an such. It was still a cool project though!
+
+# About
+The Fall Guys Name Finder rerolls your name until it matches specific patterns.
  
  ![Screenshot](FallGuysNameFinder/doc/bild.png "Screenshot")
  

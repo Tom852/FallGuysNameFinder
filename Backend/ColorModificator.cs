@@ -28,6 +28,7 @@ namespace Backend
             List<Bitmap> result = new List<Bitmap>
             {
                 // todo: if the nameplate is definitely fixed to the blue one, flexibilty is not really necessary, grayscale pretty useless etc. first 3 would be fine.
+                // todo: getall is also kinda inefficient, should do multicore here probabily anyway if i use it like this.
 
                 ToMonochrome(bmp, MONOCHROME_BRIGHT_BOUNDARY, true),
                 ToMonochrome(bmp, MONOCHROME_WHITE_BOUNDARY, true),

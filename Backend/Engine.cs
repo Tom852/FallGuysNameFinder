@@ -238,7 +238,7 @@ namespace Backend
             else if (this.History.WereLastNamesAllEqual(3))
             {
                 ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_preWait");
-                Log.Warning("All 3 previous names were equal. Assuming server timeout, connection issue, or Amazon / Support-Id window in front.");
+                Log.Warning("All previous names were equal. Assuming server timeout, connection issue, or Amazon / Support-Id window in front.");
                 Log.Information("The engine will now wait 30 seconds to counteract a connection issue.");
                 Thread.Sleep(Constants.TimeWaitOnTimeout);
                 ScreenshotService.SaveFullScreenDebugScreenshot("namesEqual_postWait");
